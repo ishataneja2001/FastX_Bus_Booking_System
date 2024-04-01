@@ -1,0 +1,52 @@
+﻿using FastXBookingSample.Models;
+using System.Reflection.Metadata.Ecma335;
+
+namespace FastXBookingSample.Repository
+{
+    public class AmenityRepository : IAmenityRepository
+    {
+        private readonly BookingContext _context;
+
+        public AmenityRepository(BookingContext context)
+        {
+            _context = context;
+        }
+        public string DeleteAmenity(int id)
+        {
+            if (!IsAmenityExists(id))
+                return "Invalid Id";
+            var amenity = _context.Amenities.FirstOrDefault(a => a.AmenityId == id);
+            _context.Amenities.Remove(amenity);
+            return _context.SaveChanges()>0?"Deleted Successfully":"Deletion Failed";
+        }
+
+        public List<Amenity> GetAllAmenities()
+        {
+            return _context.Amenities.ToList();
+        }
+
+        public List<Amenity> GetAllAmenitiesByBusId(int id)
+        {
+            return _context.Amenities.Where(x => _context.BusAmenities.Any(ba => ba.BusId == id && ba.AmenityId == x.AmenityId)).ToList();
+        }
+
+        public bool IsAmenityExists(int id)
+        {
+            return _context.Amenities.Any(x => x.AmenityId == id);
+        }
+
+        public string PostAmenity(Amenity amenity)
+        {
+            _context.Amenities.Add(amenity);
+            return _context.SaveChanges() > 0 ? "Added Successfully" : "Addition Failed";
+
+        }
+
+        public string UpdateAmenity(int id, Amenity amenity)
+        {
+            _context.Amenities.Update(amenity);
+            return _context.SaveChanges() > 0 ? "Updated Successfully" : "Updation Failed";
+
+        }
+    }
+}
