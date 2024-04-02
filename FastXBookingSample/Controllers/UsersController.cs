@@ -43,8 +43,6 @@ namespace FastXBookingSample.Controllers
         [ProducesResponseType(400)]
         public async Task<IActionResult> PutUser(int id, UserDto userdto)
         {
-            if (userdto.Role != "User")
-                return BadRequest();
             if (id != userdto.UserId)
             {
                 return BadRequest();
@@ -61,12 +59,9 @@ namespace FastXBookingSample.Controllers
         [ProducesResponseType(400)]
         public async Task<ActionResult<UserDto>> PostUser(UserDto userdto)
         {
-            if (userdto.Role != "User")
-            {
-                ModelState.AddModelError("", "Role Should be user");
-                return StatusCode(408,ModelState);
-            }
-            return Ok(_userRepository.PostUser(_mapper.Map<User>(userdto)));
+            User user = _mapper.Map<User>(userdto);
+            user.Role = "User";
+            return Ok(_userRepository.PostUser(user));
         }
 
         // DELETE: api/Users/5

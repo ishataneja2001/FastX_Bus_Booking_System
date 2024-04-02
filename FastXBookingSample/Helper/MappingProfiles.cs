@@ -21,7 +21,11 @@ namespace FastXBookingSample.Helper
             CreateMap<UserDto, User>();    
             CreateMap<User, UserDto>();    
             CreateMap<BusSeat, BusSeatDto>();    
-            CreateMap<BusSeatDto, BusSeat>();    
+            CreateMap<BusSeatDto, BusSeat>();
+            CreateMap<Booking, BookingDto>();
+            CreateMap<BookingDto, Booking>();    
+            CreateMap<Seat, SeatDto>();    
+            CreateMap<SeatDto, Seat>();    
         }
     }
 }

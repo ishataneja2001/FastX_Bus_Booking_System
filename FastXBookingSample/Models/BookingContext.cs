@@ -69,10 +69,20 @@ namespace FastXBookingSample.Models
 
                 entity.Property(e => e.BookingDateTime).HasColumnType("datetime");
 
+                entity.HasOne(d => d.Boarding)
+                    .WithMany(p => p.Bookings)
+                    .HasForeignKey(d => d.BoardingId)
+                    .HasConstraintName("FK_Booking_BoardingId");
+
                 entity.HasOne(d => d.Bus)
                     .WithMany(p => p.Bookings)
                     .HasForeignKey(d => d.BusId)
                     .HasConstraintName("FK__Booking__BusId__619B8048");
+
+                entity.HasOne(d => d.Dropping)
+                    .WithMany(p => p.Bookings)
+                    .HasForeignKey(d => d.DroppingId)
+                    .HasConstraintName("FK_Booking_DroppingId");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Bookings)

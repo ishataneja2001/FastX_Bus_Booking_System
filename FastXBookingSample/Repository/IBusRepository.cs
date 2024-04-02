@@ -8,7 +8,7 @@ namespace FastXBookingSample.Repository
         string DeleteBus(int id);
         string UpdateBus(int id, Bus bus);
         List<Bus> GetAll();
-        Bus GetBusById(int id);
+        Task<Bus> GetBusById(int id);
         List<Bus> GetBusByDetails(string origin, string destination, DateOnly date);
         bool BusExists(int id);
         bool RoleExists(int id);
