@@ -69,20 +69,19 @@ namespace FastXBookingSample.Controllers
             }
             if (!_busrepository.BusExists(id))
                 return NotFound();
-            var bus = _mapper.Map<Bus>(busdto);
-            Bus existingBus = _busrepository.GetBusById(id);
-            int busSeats = bus.NoOfSeats;
+            Bus existingBus = await _busrepository.GetBusById(id);
+            if ( existingBus.NoOfSeats!= busdto.NoOfSeats)
+            {
+                _busSeatRepository.DeleteSeatsByBusId(busdto.BusId);
+                _busSeatRepository.AddSeatByBusId(busdto.BusId, busdto.NoOfSeats);
+            }
             _context.Entry(existingBus).State = EntityState.Detached;
 
-            existingBus = null; 
-            string message = _busrepository.UpdateBus(id, bus);
+            var bus = _mapper.Map<Bus>(busdto);
+
             
-            if(busSeats != bus.NoOfSeats)
-            {
-                _busSeatRepository.DeleteSeatsByBusId(bus.BusId);
-                _busSeatRepository.AddSeatByBusId(bus.BusId, bus.NoOfSeats);
-            }
-            return Ok(message);
+            
+            return Ok(_busrepository.UpdateBus(id,bus));
         }
 
         // POST: api/Buses

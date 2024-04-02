@@ -16,7 +16,7 @@ namespace FastXBookingSample.Repository
                 return "Invalid Id";
             var user = _context.Users.FirstOrDefault(x => x.UserId == id);
             _context.Users.Remove(user);
-            return _context.SaveChanges()>0?"Deleted Successfuly":"Deleteion Failed";
+            return _context.SaveChanges()>0?"Deleted Successfuly":"Deletion Failed";
 
         }
 

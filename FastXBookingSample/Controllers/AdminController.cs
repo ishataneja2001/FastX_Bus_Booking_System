@@ -7,40 +7,36 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FastXBookingSample.Models;
 using FastXBookingSample.Repository;
-using FastXBookingSample.DTO;
 using AutoMapper;
+using FastXBookingSample.DTO;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace FastXBookingSample.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class AdminController : ControllerBase
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IAdminRepository _adminRepository;
         private readonly IMapper _mapper;
 
-        public UsersController(IUserRepository userRepository,IMapper mapper)
+        public AdminController(IAdminRepository adminRepository, IMapper mapper)
         {
-            _userRepository = userRepository;
+            _adminRepository = adminRepository;
             _mapper = mapper;
         }
 
-        // GET: api/Users
+        // GET: api/Admin
         [HttpGet]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<UserDto>))]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
         {
-          
-            return Ok(_mapper.Map<List<UserDto>>(_userRepository.GetAllUsers()));
+            return Ok(_mapper.Map<List<UserDto>>(_adminRepository.GetAllAdmin()));
         }
 
 
-
-        // PUT: api/Users/5
+        // PUT: api/Admin/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        [ProducesResponseType(200, Type = typeof(string))]
-        [ProducesResponseType(400)]
         public async Task<IActionResult> PutUser(int id, UserDto userdto)
         {
             if (id != userdto.UserId)
@@ -48,32 +44,33 @@ namespace FastXBookingSample.Controllers
                 return BadRequest();
             }
             User user = _mapper.Map<User>(userdto);
-            user.Role = "User";
-            return Ok(_userRepository.ModifyUserDetails(id,user));
+            user.Role = "Admin";
+            return Ok(_adminRepository.ModifyAdminDetails(id, user));
         }
 
 
-        // POST: api/Users
+        // POST: api/Admin
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        [ProducesResponseType(200, Type = typeof(string))]
-        [ProducesResponseType(400)]
-        public async Task<ActionResult<UserDto>> PostUser(UserDto userdto)
+        public async Task<ActionResult<User>> PostUser(UserDto userdto)
         {
             User user = _mapper.Map<User>(userdto);
-            user.Role = "User";
-            return Ok(_userRepository.PostUser(user));
+            user.Role = "Admin";
+            return Ok(_adminRepository.PostAdmin(user));
         }
 
-        // DELETE: api/Users/5
+        // DELETE: api/Admin/5
         [HttpDelete("{id}")]
-        [ProducesResponseType(200, Type = typeof(string))]
-        [ProducesResponseType(400)]
         public async Task<IActionResult> DeleteUser(int id)
         {
-            return Ok(_userRepository.DeleteUser(id));
+
+            return Ok(_adminRepository.DeleteAdmin(id));
         }
 
-        
+        [HttpPatch("{id:int}")]
+        public IActionResult Patch(int id, [FromBody] JsonPatchDocument<User> adminPatch)
+        {
+            return Ok(_adminRepository.PatchAdmin(id, adminPatch));
+        }
     }
 }

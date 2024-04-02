@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace FastXBookingSample.Models
 {
-    //sample
     public partial class User
     {
         public User()
