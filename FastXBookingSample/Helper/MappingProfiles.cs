@@ -20,6 +20,8 @@ namespace FastXBookingSample.Helper
             CreateMap<RouteDto, Models.Route>();    
             CreateMap<UserDto, User>();    
             CreateMap<User, UserDto>();    
+            CreateMap<BusSeat, BusSeatDto>();    
+            CreateMap<BusSeatDto, BusSeat>();    
         }
     }
 }

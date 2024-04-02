@@ -18,11 +18,15 @@ namespace FastXBookingSample.Controllers
     {
         private readonly IBusRepository _busrepository;
         private readonly IMapper _mapper;
+        private readonly IBusSeatRepository _busSeatRepository;
+        private readonly BookingContext _context;
 
-        public BusesController(IBusRepository busrepository,IMapper mapper)
+        public BusesController(IBusRepository busrepository,IMapper mapper, IBusSeatRepository busSeatRepository,BookingContext context)
         {
             _busrepository = busrepository;
             _mapper = mapper;
+            _busSeatRepository = busSeatRepository;
+            _context = context;
         }
 
         // GET: api/Buses
@@ -65,25 +69,20 @@ namespace FastXBookingSample.Controllers
             }
             if (!_busrepository.BusExists(id))
                 return NotFound();
-            try
-            {
-                var bus = _mapper.Map<Bus>(busdto);
-                string message = _busrepository.UpdateBus(id, bus);
-                return Ok(message);
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!_busrepository.BusExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            var bus = _mapper.Map<Bus>(busdto);
+            Bus existingBus = _busrepository.GetBusById(id);
+            int busSeats = bus.NoOfSeats;
+            _context.Entry(existingBus).State = EntityState.Detached;
 
+            existingBus = null; 
+            string message = _busrepository.UpdateBus(id, bus);
             
+            if(busSeats != bus.NoOfSeats)
+            {
+                _busSeatRepository.DeleteSeatsByBusId(bus.BusId);
+                _busSeatRepository.AddSeatByBusId(bus.BusId, bus.NoOfSeats);
+            }
+            return Ok(message);
         }
 
         // POST: api/Buses
@@ -99,7 +98,7 @@ namespace FastXBookingSample.Controllers
                 return BadRequest(ModelState);
             var bus = _mapper.Map<Bus>(busdto);
             string message = _busrepository.CreateBus(bus);
-
+            _busSeatRepository.AddSeatByBusId(bus.BusId, bus.NoOfSeats);
 
             return Ok(message);
         }
@@ -112,8 +111,9 @@ namespace FastXBookingSample.Controllers
         {
             if (!_busrepository.BusExists(id))
                 return NotFound();
+            _busSeatRepository.DeleteSeatsByBusId(id);
             string message = _busrepository.DeleteBus(id);
-
+            
             return Ok(message);
         }
 
