@@ -7,36 +7,36 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FastXBookingSample.Models;
 using FastXBookingSample.Repository;
-using FastXBookingSample.DTO;
 using AutoMapper;
+using FastXBookingSample.DTO;
 
 namespace FastXBookingSample.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class BusOperatorController : ControllerBase
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IBusOperatorRepository _busOperatorRepository;
         private readonly IMapper _mapper;
 
-        public UsersController(IUserRepository userRepository,IMapper mapper)
+        public BusOperatorController(IBusOperatorRepository busOperatorRepository,IMapper mapper)
         {
-            _userRepository = userRepository;
+            _busOperatorRepository = busOperatorRepository;
             _mapper = mapper;
         }
 
-        // GET: api/Users
+        // GET: api/BusOperator
         [HttpGet]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<UserDto>))]
-        public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
+        [ProducesResponseType(200, Type = typeof(List<UserDto>))]
+        [ProducesResponseType(400)]
+        public async Task<ActionResult<IEnumerable<UserDto>>> GetBusOperators()
         {
-          
-            return Ok(_mapper.Map<List<UserDto>>(_userRepository.GetAllUsers()));
+          return Ok(_mapper.Map<List<UserDto>>(_busOperatorRepository.GetAllBusOperators()));
         }
 
+       
 
-
-        // PUT: api/Users/5
+        // PUT: api/BusOperator/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         [ProducesResponseType(200, Type = typeof(string))]
@@ -48,12 +48,11 @@ namespace FastXBookingSample.Controllers
                 return BadRequest();
             }
             User user = _mapper.Map<User>(userdto);
-            user.Role = "User";
-            return Ok(_userRepository.ModifyUserDetails(id,user));
+            user.Role = "Bus Operator";
+            return Ok(_busOperatorRepository.ModifyBusOperatorDetails(id, user));
         }
 
-
-        // POST: api/Users
+        // POST: api/BusOperator
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         [ProducesResponseType(200, Type = typeof(string))]
@@ -61,19 +60,17 @@ namespace FastXBookingSample.Controllers
         public async Task<ActionResult<UserDto>> PostUser(UserDto userdto)
         {
             User user = _mapper.Map<User>(userdto);
-            user.Role = "User";
-            return Ok(_userRepository.PostUser(user));
+            user.Role = "Bus Operator";
+            return Ok(_busOperatorRepository.PostBusOperator(user));
         }
 
-        // DELETE: api/Users/5
+        // DELETE: api/BusOperator/5
         [HttpDelete("{id}")]
         [ProducesResponseType(200, Type = typeof(string))]
         [ProducesResponseType(400)]
         public async Task<IActionResult> DeleteUser(int id)
         {
-            return Ok(_userRepository.DeleteUser(id));
+           return Ok(_busOperatorRepository.DeleteBusOperator(id));
         }
-
-        
     }
 }

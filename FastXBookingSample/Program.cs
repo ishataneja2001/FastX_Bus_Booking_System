@@ -26,8 +26,11 @@ namespace FastXBookingSample
             builder.Services.AddTransient<IBusSeatRepository,BusSeatRepository>();
             builder.Services.AddTransient<IBookingRepository,BookingRepository>();
             builder.Services.AddTransient<ISeatRepository,SeatRepository>();
+            builder.Services.AddTransient<IBusOperatorRepository,BusOperatorRepository>();
+            builder.Services.AddTransient<IAdminRepository,AdminRepository>();
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             builder.Services.AddDbContext<BookingContext>(options => options.UseSqlServer(builder.Configuration["ConnectionStrings:myconnection"]));
+            builder.Services.AddControllers().AddNewtonsoftJson();
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
