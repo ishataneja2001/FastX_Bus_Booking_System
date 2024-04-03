@@ -9,6 +9,7 @@ using FastXBookingSample.Models;
 using FastXBookingSample.Repository;
 using FastXBookingSample.DTO;
 using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace FastXBookingSample.Controllers
 {
@@ -74,6 +75,11 @@ namespace FastXBookingSample.Controllers
             return Ok(_userRepository.DeleteUser(id));
         }
 
-        
+        //PATCH
+        [HttpPatch("{id:int}")]
+        public IActionResult Patch(int id, [FromBody] JsonPatchDocument<User> patchuser)
+        {
+            return Ok(_userRepository.PatchUser(id, patchuser));
+        }
     }
 }

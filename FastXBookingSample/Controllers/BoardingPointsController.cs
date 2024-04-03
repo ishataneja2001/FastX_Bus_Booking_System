@@ -9,6 +9,7 @@ using FastXBookingSample.Models;
 using FastXBookingSample.Repository;
 using AutoMapper;
 using FastXBookingSample.DTO;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace FastXBookingSample.Controllers
 {
@@ -83,6 +84,13 @@ namespace FastXBookingSample.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             return Ok(_boardingPointRepository.DeleteBoardingPoints(id));
+        }
+
+        //Patch
+        [HttpPatch("{id:int}")]
+        public IActionResult Patch(int id, [FromBody] JsonPatchDocument<BoardingPoint> boardingPointPatch)
+        {
+            return Ok(_boardingPointRepository.PatchBoardingPoint(id, boardingPointPatch));
         }
     }
 }

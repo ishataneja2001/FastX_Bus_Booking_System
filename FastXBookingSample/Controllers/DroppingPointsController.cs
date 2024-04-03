@@ -3,6 +3,7 @@ using FastXBookingSample.DTO;
 using FastXBookingSample.Models;
 using FastXBookingSample.Repository;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FastXBookingSample.Controllers
@@ -78,6 +79,13 @@ namespace FastXBookingSample.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             return Ok(_droppingPointRepository.DeleteDroppingPoints(id));
+        }
+
+        //PATCH
+        [HttpPatch("{id:int}")]
+        public IActionResult Patch(int id, [FromBody] JsonPatchDocument<DroppingPoint> patchDroppingPoint)
+        {
+            return Ok(_droppingPointRepository.PatchDroppingPoint(id, patchDroppingPoint));
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using FastXBookingSample.Models;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace FastXBookingSample.Repository
 {
@@ -9,5 +10,7 @@ namespace FastXBookingSample.Repository
         string ModifyBusOperatorDetails(int id, User user);
         string DeleteBusOperator(int id);
         bool IsOperatorExists(int id);
+
+        string PatchBusOperator(int id, JsonPatchDocument<User> patchBusOperator);
     }
 }

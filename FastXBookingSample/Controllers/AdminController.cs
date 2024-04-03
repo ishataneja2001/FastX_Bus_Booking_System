@@ -67,6 +67,7 @@ namespace FastXBookingSample.Controllers
             return Ok(_adminRepository.DeleteAdmin(id));
         }
 
+        
         [HttpPatch("{id:int}")]
         public IActionResult Patch(int id, [FromBody] JsonPatchDocument<User> adminPatch)
         {

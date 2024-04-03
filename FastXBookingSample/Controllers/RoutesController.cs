@@ -9,6 +9,7 @@ using FastXBookingSample.Models;
 using FastXBookingSample.Repository;
 using FastXBookingSample.DTO;
 using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace FastXBookingSample.Controllers
 {
@@ -71,5 +72,11 @@ namespace FastXBookingSample.Controllers
             return Ok(_routeRepository.DeleteBusRoute(id));
         }
 
+        //PATCH
+        [HttpPatch("{id:int}")]
+        public IActionResult PatchRoute(int id, [FromBody] JsonPatchDocument<Models.Route> patchRoute)
+        {
+            return Ok(_routeRepository.PatchRoute(id, patchRoute));
+        }
     }
 }

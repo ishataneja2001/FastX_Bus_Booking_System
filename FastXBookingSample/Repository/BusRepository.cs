@@ -1,4 +1,5 @@
 ﻿using FastXBookingSample.Models;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 
@@ -90,5 +91,15 @@ namespace FastXBookingSample.Repository
             return _context.SaveChanges()>0?"Added Successfully":"Addition Failed";
         }
 
+        public string PatchBus(int id, JsonPatchDocument<Bus> patchBus)
+        {
+            if(!BusExists(id))
+            return "Invalid Id";
+            var bus = _context.Buses.FirstOrDefault(x => x.BusId == id);
+            patchBus.ApplyTo(bus);
+            _context.Update(bus);
+
+            return _context.SaveChanges() > 0 ? "Updated Sucessfully" : "Updation Failed ";
+        }
     }
 }

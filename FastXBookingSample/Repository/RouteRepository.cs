@@ -1,4 +1,5 @@
 ﻿using FastXBookingSample.Models;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace FastXBookingSample.Repository
 {
@@ -47,6 +48,15 @@ namespace FastXBookingSample.Repository
             return _context.Routes.Any(x=>x.RouteId == id);
         }
 
-        
+        public string PatchRoute(int id, JsonPatchDocument<Models.Route> patchRoute)
+        {
+            if (!IsRouteExists(id))
+                return "InValid Id";
+            var route = _context.Routes.FirstOrDefault(y => y.RouteId == id);
+            patchRoute.ApplyTo(route);
+            _context.Update(route);
+
+            return _context.SaveChanges() > 0 ? "Updated Successfully" : "Updation Failed";
+        }
     }
 }
