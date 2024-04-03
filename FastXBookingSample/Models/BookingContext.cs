@@ -67,8 +67,6 @@ namespace FastXBookingSample.Models
             {
                 entity.ToTable("Booking");
 
-                entity.Property(e => e.BookingDateTime).HasColumnType("datetime");
-
                 entity.HasOne(d => d.Boarding)
                     .WithMany(p => p.Bookings)
                     .HasForeignKey(d => d.BoardingId)
@@ -211,6 +209,8 @@ namespace FastXBookingSample.Models
 
             modelBuilder.Entity<Seat>(entity =>
             {
+                entity.Property(e => e.BookingDateTime).HasColumnType("datetime");
+
                 entity.Property(e => e.CardDetails)
                     .HasMaxLength(20)
                     .IsUnicode(false);

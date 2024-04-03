@@ -7,7 +7,7 @@ namespace FastXBookingSample.Repository
         List<Seat> GetSeatsByBookingId(int bookingId);
         List<Seat> GetSeatsByUserId(int userId);
         void PostSeatByBookingId(Seat seat);
-        void DeleteSeatByBookingId(int bookindId);
+        void DeleteSeatBySeatId(int seatId);
         bool IsBookingExists(int id);
 
     }
