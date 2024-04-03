@@ -1,4 +1,5 @@
 ﻿using FastXBookingSample.Models;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace FastXBookingSample.Repository
 {
@@ -9,5 +10,6 @@ namespace FastXBookingSample.Repository
         string UpdateBoardingPoints(int id,BoardingPoint boardingPoint);
         string PostBoardingPoint(BoardingPoint boardingPoint);
         bool BoardingPointExists(int id);
+        string PatchBoardingPoint(int id, JsonPatchDocument<BoardingPoint> boardingPointPatch);
     }
 }

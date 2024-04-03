@@ -1,4 +1,5 @@
 ﻿using FastXBookingSample.Models;
+using Microsoft.AspNetCore.JsonPatch;
 using System.Runtime.Intrinsics.Arm;
 
 namespace FastXBookingSample.Repository
@@ -11,5 +12,6 @@ namespace FastXBookingSample.Repository
         string UpdateAmenity(int id, Amenity amenity);
         string DeleteAmenity(int id);
         bool IsAmenityExists(int id);
+        string PatchAmentity(int id, JsonPatchDocument<Amenity> patchEntity);
     }
 }

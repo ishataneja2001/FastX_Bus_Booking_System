@@ -1,4 +1,6 @@
-﻿namespace FastXBookingSample.Repository
+﻿using Microsoft.AspNetCore.JsonPatch;
+
+namespace FastXBookingSample.Repository
 {
     public interface IRouteRepository
     {
@@ -7,5 +9,7 @@
         string UpdateBusRoute(int id, Models.Route route); 
         string DeleteBusRoute(int id);
         bool IsRouteExists(int id);
+
+        string PatchRoute(int id, JsonPatchDocument<Models.Route> patchRoute);
     }
 }

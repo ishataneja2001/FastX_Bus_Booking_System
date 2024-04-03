@@ -9,6 +9,7 @@ using FastXBookingSample.Models;
 using FastXBookingSample.Repository;
 using AutoMapper;
 using FastXBookingSample.DTO;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace FastXBookingSample.Controllers
 {
@@ -19,7 +20,7 @@ namespace FastXBookingSample.Controllers
         private readonly IBusOperatorRepository _busOperatorRepository;
         private readonly IMapper _mapper;
 
-        public BusOperatorController(IBusOperatorRepository busOperatorRepository,IMapper mapper)
+        public BusOperatorController(IBusOperatorRepository busOperatorRepository, IMapper mapper)
         {
             _busOperatorRepository = busOperatorRepository;
             _mapper = mapper;
@@ -31,10 +32,10 @@ namespace FastXBookingSample.Controllers
         [ProducesResponseType(400)]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetBusOperators()
         {
-          return Ok(_mapper.Map<List<UserDto>>(_busOperatorRepository.GetAllBusOperators()));
+            return Ok(_mapper.Map<List<UserDto>>(_busOperatorRepository.GetAllBusOperators()));
         }
 
-       
+
 
         // PUT: api/BusOperator/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -70,7 +71,14 @@ namespace FastXBookingSample.Controllers
         [ProducesResponseType(400)]
         public async Task<IActionResult> DeleteUser(int id)
         {
-           return Ok(_busOperatorRepository.DeleteBusOperator(id));
+            return Ok(_busOperatorRepository.DeleteBusOperator(id));
+        }
+
+        //PATCH
+        [HttpPatch("{id:int}")]
+        public IActionResult Patch(int id, [FromBody] JsonPatchDocument<User> patchBusOperator)
+        {
+            return Ok(_busOperatorRepository.PatchBusOperator(id, patchBusOperator));
         }
     }
 }

@@ -9,6 +9,7 @@ using FastXBookingSample.Models;
 using FastXBookingSample.Repository;
 using FastXBookingSample.DTO;
 using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace FastXBookingSample.Controllers
 {
@@ -71,6 +72,12 @@ namespace FastXBookingSample.Controllers
         public async Task<ActionResult<List<AmenityDto>>> GetAmenitiesByBusId(int busid)
         {
             return Ok(_mapper.Map<List<AmenityDto>>(_amenityRepository.GetAllAmenitiesByBusId(busid)));
+        }
+
+        [HttpPatch("{id:int}")]
+        public IActionResult Patch(int id, [FromBody] JsonPatchDocument<Amenity> amenityPatch)
+        {
+            return Ok(_amenityRepository.PatchAmentity(id, amenityPatch));
         }
     }
 }

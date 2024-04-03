@@ -1,4 +1,5 @@
 ﻿using FastXBookingSample.Models;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace FastXBookingSample.Repository
 {
@@ -35,6 +36,17 @@ namespace FastXBookingSample.Repository
             _context.Users.Update(user);
 
             return _context.SaveChanges() > 0 ? "Updated Succesfully" : "Updation Failed";
+        }
+
+        public string PatchBusOperator(int id, JsonPatchDocument<User> patchBusOperator)
+        {
+            if (!IsOperatorExists(id))
+                return "Invalid Id";
+            var busOperator = _context.Users.FirstOrDefault(x => x.UserId == id);
+            patchBusOperator.ApplyTo(busOperator);
+            _context.Update(busOperator);
+
+            return _context.SaveChanges() > 0? "Updated Successfully": "Updation failed" ;
         }
 
         public string PostBusOperator(User user)

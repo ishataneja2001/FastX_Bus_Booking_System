@@ -1,4 +1,5 @@
 ﻿using FastXBookingSample.Models;
+using Microsoft.AspNetCore.JsonPatch;
 using System.Reflection.Metadata.Ecma335;
 
 namespace FastXBookingSample.Repository
@@ -33,6 +34,17 @@ namespace FastXBookingSample.Repository
         public bool IsAmenityExists(int id)
         {
             return _context.Amenities.Any(x => x.AmenityId == id);
+        }
+
+        public string PatchAmentity(int id, JsonPatchDocument<Amenity> amenityPatch)
+        {
+            if (!IsAmenityExists(id))
+                return "Invalid Id";
+            var admentity = _context.Amenities.FirstOrDefault(x=>x.AmenityId==id);
+            amenityPatch.ApplyTo(admentity);
+            _context.Update(admentity);
+
+            return _context.SaveChanges() > 0 ? "Updated Successfully" : "Updation Failed";
         }
 
         public string PostAmenity(Amenity amenity)

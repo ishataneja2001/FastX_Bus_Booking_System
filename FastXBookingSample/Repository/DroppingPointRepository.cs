@@ -1,4 +1,5 @@
 ﻿using FastXBookingSample.Models;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace FastXBookingSample.Repository
 {
@@ -27,6 +28,17 @@ namespace FastXBookingSample.Repository
         public List<DroppingPoint> GetDroppingPointsByBusId(int busid)
         {
             return _context.DroppingPoints.Where(x=>x.BusId==busid).ToList();
+        }
+
+        public string PatchDroppingPoint(int id, JsonPatchDocument<DroppingPoint> patchDroppingPoint)
+        {
+            if (!DroppingPointExists(id))
+                return "Invalid Id";
+            var droppingPoint = _context.DroppingPoints.FirstOrDefault(x => x.DroppingId == id);
+            patchDroppingPoint.ApplyTo(droppingPoint);
+            _context.Update(droppingPoint);
+
+            return _context.SaveChanges() > 0 ? "Updated Successfully" : "Updation Failed";
         }
 
         public string PostDroppingPoint(DroppingPoint droppingPoint)
