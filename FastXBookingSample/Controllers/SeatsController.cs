@@ -56,12 +56,12 @@ namespace FastXBookingSample.Controllers
         }
 
         // DELETE: api/Seats/5
-        [HttpDelete("{bookingid}")]
+        [HttpDelete("{seatId}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> DeleteSeatByBookingId(int bookingid)
+        public async Task<IActionResult> DeleteSeatByBookingId(int seatId)
         {
-            _seatRepository.DeleteSeatByBookingId(bookingid);
+            _seatRepository.DeleteSeatBySeatId(seatId);
             return NoContent();
         }
     }
