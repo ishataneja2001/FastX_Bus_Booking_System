@@ -9,6 +9,7 @@ using FastXBookingSample.Models;
 using FastXBookingSample.Repository;
 using FastXBookingSample.DTO;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FastXBookingSample.Controllers
 {
@@ -27,6 +28,7 @@ namespace FastXBookingSample.Controllers
 
         // GET: api/Seats
         [HttpGet]
+        [Authorize(Roles = "Bus Operator,Admin,User")]
         [ProducesResponseType(200, Type = typeof(List<SeatDto>))]
         [ProducesResponseType(400)]
         public async Task<ActionResult<IEnumerable<SeatDto>>> GetSeatsByBookingId(int bookingId)
@@ -35,6 +37,7 @@ namespace FastXBookingSample.Controllers
         }
 
         [HttpGet("GetSeatsByUserId")]
+        [Authorize(Roles = "User")]
         [ProducesResponseType(200, Type = typeof(List<SeatDto>))]
         [ProducesResponseType(400)]
         public async Task<ActionResult<IEnumerable<SeatDto>>> GetSeatsByUserId(int userId)
@@ -47,6 +50,7 @@ namespace FastXBookingSample.Controllers
         // POST: api/Seats
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize(Roles = "User")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         public async Task<ActionResult<SeatDto>> PostSeat(SeatDto seatDto)
@@ -57,6 +61,7 @@ namespace FastXBookingSample.Controllers
 
         // DELETE: api/Seats/5
         [HttpDelete("{seatId}")]
+        [Authorize(Roles = "User")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         public async Task<IActionResult> DeleteSeatByBookingId(int seatId)
