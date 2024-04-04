@@ -10,11 +10,9 @@ using FastXBookingSample.Repository;
 using AutoMapper;
 using FastXBookingSample.DTO;
 using Microsoft.AspNetCore.JsonPatch;
-<<<<<<< HEAD
 using FastXBookingSample.Exceptions;
-=======
 using Microsoft.AspNetCore.Authorization;
->>>>>>> 36f6d31aa2c2cadaf071a38927f8aa56335cb1c7
+
 
 namespace FastXBookingSample.Controllers
 {
