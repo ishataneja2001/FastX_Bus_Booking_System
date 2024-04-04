@@ -59,7 +59,6 @@ namespace FastXBookingSample.Controllers
         // POST: api/BusOperator
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        [Authorize(Roles = "Bus Operator")]
         [ProducesResponseType(200, Type = typeof(string))]
         [ProducesResponseType(400)]
         public async Task<ActionResult<UserDto>> PostUser(UserDto userdto)

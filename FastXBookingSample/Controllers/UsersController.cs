@@ -29,7 +29,7 @@ namespace FastXBookingSample.Controllers
 
         // GET: api/Users
         [HttpGet]
-        [Authorize(Roles = "User,Admin")]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<UserDto>))]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
         {
