@@ -27,7 +27,7 @@ namespace FastXBookingSample.Controllers
             _adminRepository = adminRepository;
             _mapper = mapper;
             _logger = logger;
-            _logger = logger;
+
         }
 
         // GET: api/Admin
