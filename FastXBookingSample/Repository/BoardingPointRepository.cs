@@ -1,4 +1,5 @@
 ﻿using FastXBookingSample.Models;
+using FastXBookingSample.Exceptions;
 using Microsoft.AspNetCore.JsonPatch;
 
 namespace FastXBookingSample.Repository
@@ -19,23 +20,25 @@ namespace FastXBookingSample.Repository
         public string DeleteBoardingPoints(int id)
         {
             if (!BoardingPointExists(id))
-                return "Invalid id";
+                throw new BoardingPointNotFoundException();
             var bp = _context.BoardingPoints.FirstOrDefault(x => x.BoardingId == id);
             _context.BoardingPoints.Remove(bp);
             int s = _context.SaveChanges();
             return s > 0 ? "Succesfully Deleted" : "Deletion Failed";
+            
         }
 
 
         public List<BoardingPoint> GetBoardingPointsByBusId(int busid)
         {
             return _context.BoardingPoints.Where(x => x.BusId == busid).ToList();
+            
         }
 
         public string PatchBoardingPoint(int id, JsonPatchDocument<BoardingPoint> boardingPointPatch)
         {
             if (!BoardingPointExists(id))
-                return "Invalid Id";
+                throw new BoardingPointNotFoundException();
             var boardingpoint = _context.BoardingPoints.FirstOrDefault(x => x.BoardingId == id);
             boardingPointPatch.ApplyTo(boardingpoint);
             _context.Update(boardingpoint);
@@ -52,7 +55,9 @@ namespace FastXBookingSample.Repository
 
         public string UpdateBoardingPoints(int id, BoardingPoint boardingPoint)
         {
-            if (!BoardingPointExists(id)) return "Updation Failed";
+            if (!BoardingPointExists(id)) 
+                throw new BoardingPointNotFoundException();
+
             _context.BoardingPoints.Update(boardingPoint);
             int s = _context.SaveChanges();
             return s > 0 ? "Succesfully Updated" : "Updation Failed";

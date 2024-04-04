@@ -10,6 +10,7 @@ using FastXBookingSample.Repository;
 using FastXBookingSample.DTO;
 using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
+using FastXBookingSample.Exceptions;
 
 namespace FastXBookingSample.Controllers
 {
@@ -32,7 +33,16 @@ namespace FastXBookingSample.Controllers
         [ProducesResponseType(400)]
         public async Task<ActionResult<IEnumerable<RouteDto>>> GetRoutesByBusId(int id)
         {
-            return Ok(_mapper.Map<List<RouteDto>>(_routeRepository.GetRoutesByBusId(id)));
+            try
+            {
+                return Ok(_mapper.Map<List<RouteDto>>(_routeRepository.GetRoutesByBusId(id)));
+            }catch(RouteNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }catch(Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         
@@ -45,12 +55,23 @@ namespace FastXBookingSample.Controllers
         [ProducesResponseType(400)]
         public async Task<IActionResult> PutRoute(int id, RouteDto routedto)
         {
-            if (id != routedto.RouteId)
+            try
             {
-                return BadRequest();
-            }
+                if (id != routedto.RouteId)
+                {
+                    return BadRequest();
+                }
 
-           return Ok(_routeRepository.UpdateBusRoute(id,_mapper.Map<Models.Route>(routedto)));
+                return Ok(_routeRepository.UpdateBusRoute(id, _mapper.Map<Models.Route>(routedto)));
+            }
+            catch (RouteNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         // POST: api/Routes
@@ -60,7 +81,18 @@ namespace FastXBookingSample.Controllers
         [ProducesResponseType(400)]
         public async Task<ActionResult<RouteDto>> PostRoute(RouteDto routedto)
         {
-          return Ok(_routeRepository.PostBusRoute(_mapper.Map<Models.Route>(routedto)));
+            try
+            {
+                return Ok(_routeRepository.PostBusRoute(_mapper.Map<Models.Route>(routedto)));
+            }
+            catch (RouteNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         // DELETE: api/Routes/5
@@ -69,14 +101,36 @@ namespace FastXBookingSample.Controllers
         [ProducesResponseType(400)]
         public async Task<IActionResult> DeleteRoute(int id)
         {
-            return Ok(_routeRepository.DeleteBusRoute(id));
+            try
+            {
+                return Ok(_routeRepository.DeleteBusRoute(id));
+            }
+            catch (RouteNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         //PATCH
         [HttpPatch("{id:int}")]
         public IActionResult PatchRoute(int id, [FromBody] JsonPatchDocument<Models.Route> patchRoute)
         {
-            return Ok(_routeRepository.PatchRoute(id, patchRoute));
+            try
+            {
+                return Ok(_routeRepository.PatchRoute(id, patchRoute));
+            }
+            catch (RouteNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
     }
 }

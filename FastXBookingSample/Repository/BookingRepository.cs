@@ -1,4 +1,5 @@
 ﻿using FastXBookingSample.Models;
+using FastXBookingSample.Exceptions;
 using System;
 
 namespace FastXBookingSample.Repository
@@ -13,7 +14,7 @@ namespace FastXBookingSample.Repository
         public string DeleteBooking(int id)
         {
             if (!IsBookingExists(id))
-                return "Invalid Id";
+                throw new BookingNotFoundException();
             var booking = _context.Bookings.FirstOrDefault(x=>x.BookingId == id);
             _context.Bookings.Remove(booking);
             return _context.SaveChanges()>0?"Deleted Successfully":"Deletion Failed";
@@ -22,11 +23,13 @@ namespace FastXBookingSample.Repository
         public List<Booking> GetAllBookingsByBusId(int busId)
         {
             return _context.Bookings.Where(x=>busId== x.BusId).ToList();
+            
         }
 
         public List<Booking> GetAllBookingsByUserId(int userId)
         {
             return _context.Bookings.Where(x => userId == x.UserId).ToList();
+            
         }
 
         public bool IsBookingExists(int id)
@@ -41,7 +44,7 @@ namespace FastXBookingSample.Repository
             _context.Bookings.Add(booking);
             _context.SaveChanges();
             return booking;
-
+            throw new NoBookingAvailableException();
         }
 
         public bool IsUser(int userId)

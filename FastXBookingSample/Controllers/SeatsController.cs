@@ -9,6 +9,7 @@ using FastXBookingSample.Models;
 using FastXBookingSample.Repository;
 using FastXBookingSample.DTO;
 using AutoMapper;
+using FastXBookingSample.Exceptions;
 
 namespace FastXBookingSample.Controllers
 {
@@ -31,7 +32,20 @@ namespace FastXBookingSample.Controllers
         [ProducesResponseType(400)]
         public async Task<ActionResult<IEnumerable<SeatDto>>> GetSeatsByBookingId(int bookingId)
         {
-            return Ok(_mapper.Map<List<SeatDto>>(_seatRepository.GetSeatsByBookingId(bookingId)));
+            try
+            {
+                return Ok(_mapper.Map<List<SeatDto>>(_seatRepository.GetSeatsByBookingId(bookingId)));
+            }catch(NoSeatsAvailableException ex)
+            {
+                return NotFound(ex.Message);
+            }catch(NoBookingAvailableException ex)
+            {
+                return NotFound(ex.Message);
+            }catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+
+            }
         }
 
         [HttpGet("GetSeatsByUserId")]
@@ -39,7 +53,23 @@ namespace FastXBookingSample.Controllers
         [ProducesResponseType(400)]
         public async Task<ActionResult<IEnumerable<SeatDto>>> GetSeatsByUserId(int userId)
         {
-            return Ok(_mapper.Map<List<SeatDto>>(_seatRepository.GetSeatsByUserId(userId)));
+            try
+            {
+                return Ok(_mapper.Map<List<SeatDto>>(_seatRepository.GetSeatsByUserId(userId)));
+            }
+            catch (NoSeatsAvailableException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (UserNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+
+            }
         }
 
 
@@ -51,8 +81,20 @@ namespace FastXBookingSample.Controllers
         [ProducesResponseType(400)]
         public async Task<ActionResult<SeatDto>> PostSeat(SeatDto seatDto)
         {
-            _seatRepository.PostSeatByBookingId(_mapper.Map<Seat>(seatDto));
-            return NoContent();
+            try
+            {
+                _seatRepository.PostSeatByBookingId(_mapper.Map<Seat>(seatDto));
+                return NoContent();
+            }
+            catch (NoSeatsAvailableException ex)
+            {
+                return NotFound(ex.Message);
+            }          
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+
+            }
         }
 
         // DELETE: api/Seats/5
@@ -61,8 +103,21 @@ namespace FastXBookingSample.Controllers
         [ProducesResponseType(400)]
         public async Task<IActionResult> DeleteSeatByBookingId(int seatId)
         {
-            _seatRepository.DeleteSeatBySeatId(seatId);
-            return NoContent();
+            try
+            {
+                _seatRepository.DeleteSeatBySeatId(seatId);
+                return NoContent();
+            }
+            catch (NoSeatsAvailableException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+
+            }
         }
     }
 }

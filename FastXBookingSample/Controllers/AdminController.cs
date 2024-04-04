@@ -10,6 +10,7 @@ using FastXBookingSample.Repository;
 using AutoMapper;
 using FastXBookingSample.DTO;
 using Microsoft.AspNetCore.JsonPatch;
+using FastXBookingSample.Exceptions;
 
 namespace FastXBookingSample.Controllers
 {
@@ -19,11 +20,14 @@ namespace FastXBookingSample.Controllers
     {
         private readonly IAdminRepository _adminRepository;
         private readonly IMapper _mapper;
+        private readonly ILogger<AdminController> _logger;
 
-        public AdminController(IAdminRepository adminRepository, IMapper mapper)
+        public AdminController(IAdminRepository adminRepository, IMapper mapper, ILogger<AdminController> logger)
         {
             _adminRepository = adminRepository;
             _mapper = mapper;
+            _logger = logger;
+            _logger = logger;
         }
 
         // GET: api/Admin
@@ -41,11 +45,28 @@ namespace FastXBookingSample.Controllers
         {
             if (id != userdto.UserId)
             {
-                return BadRequest();
+                return BadRequest("User ID in the route does not match the UserID in the request body.");
             }
-            User user = _mapper.Map<User>(userdto);
-            user.Role = "Admin";
-            return Ok(_adminRepository.ModifyAdminDetails(id, user));
+            try
+            {
+                User user = _mapper.Map<User>(userdto);
+                user.Role = "Admin";
+                return Ok(_adminRepository.ModifyAdminDetails(id, user));
+
+            }
+            catch(AdminNotFoundException ex)
+            {
+                _logger.LogWarning(ex.Message);
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(500);
+
+            }
+             
+            
         }
 
 
@@ -54,24 +75,61 @@ namespace FastXBookingSample.Controllers
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(UserDto userdto)
         {
-            User user = _mapper.Map<User>(userdto);
-            user.Role = "Admin";
-            return Ok(_adminRepository.PostAdmin(user));
+            try
+            {
+                User user = _mapper.Map<User>(userdto);
+                user.Role = "Admin";
+                return Ok(_adminRepository.PostAdmin(user));
+            }catch(AdminNotFoundException ex)
+            {
+                _logger.LogError(ex.Message);
+                return NotFound(ex.Message);
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError($"{ex.Message}");
+                return NotFound(ex.Message);
+            }
+            
         }
 
         // DELETE: api/Admin/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
-
-            return Ok(_adminRepository.DeleteAdmin(id));
+            try
+            {
+                return Ok(_adminRepository.DeleteAdmin(id));
+            }catch (AdminNotFoundException ex)
+            {
+                _logger.LogError(ex.Message);
+                return NotFound(ex.Message);
+            }catch(Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return NotFound(ex.Message);
+            }
+            
         }
-
-        
+       
         [HttpPatch("{id:int}")]
         public IActionResult Patch(int id, [FromBody] JsonPatchDocument<User> adminPatch)
         {
-            return Ok(_adminRepository.PatchAdmin(id, adminPatch));
+            try
+            {
+                return Ok(_adminRepository.PatchAdmin(id, adminPatch));
+            }
+            catch(AdminNotFoundException ex)
+            {
+                _logger.LogError(ex.Message);
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return NotFound(ex.Message);
+            }
+
         }
     }
 }

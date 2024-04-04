@@ -1,4 +1,5 @@
 ﻿using FastXBookingSample.Models;
+using FastXBookingSample.Exceptions;
 using Microsoft.AspNetCore.JsonPatch;
 
 namespace FastXBookingSample.Repository
@@ -14,10 +15,12 @@ namespace FastXBookingSample.Repository
         public string DeleteDroppingPoints(int id)
         {
             if (!DroppingPointExists(id))
-                return "Invalid Id";
+                throw new DroppingPointNotFoundException();
             var dp=_context.DroppingPoints.FirstOrDefault(x=>x.DroppingId==id);
             _context.DroppingPoints.Remove(dp);
             return _context.SaveChanges()>0?"Deleted Successfullty":"Deletion Failed";
+
+            
         }
 
         public bool DroppingPointExists(int id)
@@ -28,17 +31,20 @@ namespace FastXBookingSample.Repository
         public List<DroppingPoint> GetDroppingPointsByBusId(int busid)
         {
             return _context.DroppingPoints.Where(x=>x.BusId==busid).ToList();
+            
         }
 
         public string PatchDroppingPoint(int id, JsonPatchDocument<DroppingPoint> patchDroppingPoint)
         {
             if (!DroppingPointExists(id))
-                return "Invalid Id";
+                throw new DroppingPointNotFoundException();
             var droppingPoint = _context.DroppingPoints.FirstOrDefault(x => x.DroppingId == id);
             patchDroppingPoint.ApplyTo(droppingPoint);
             _context.Update(droppingPoint);
 
             return _context.SaveChanges() > 0 ? "Updated Successfully" : "Updation Failed";
+
+            throw new DroppingPointNotFoundException();
         }
 
         public string PostDroppingPoint(DroppingPoint droppingPoint)
@@ -50,9 +56,11 @@ namespace FastXBookingSample.Repository
         public string UpdateDroppingPoints(int id, DroppingPoint droppingPoint)
         {
             if (!DroppingPointExists(id))
-                return "Invalid Id";
+                throw new DroppingPointNotFoundException();
             _context.DroppingPoints.Update(droppingPoint);
             return _context.SaveChanges() > 0 ? "Updated Successfullty" : "Updation Failed";
+
+            
         }
     }
 }

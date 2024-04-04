@@ -10,6 +10,7 @@ using FastXBookingSample.Repository;
 using FastXBookingSample.DTO;
 using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
+using FastXBookingSample.Exceptions;
 
 namespace FastXBookingSample.Controllers
 {
@@ -30,7 +31,14 @@ namespace FastXBookingSample.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AmenityDto>>> GetAmenities()
         {
-            return Ok(_mapper.Map<List<AmenityDto>>(_amenityRepository.GetAllAmenities()));
+            try
+            {
+                return Ok(_mapper.Map<List<AmenityDto>>(_amenityRepository.GetAllAmenities()));
+            }catch(AmenityNotFoundException ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
+            }
+            
         }
 
 
@@ -41,11 +49,21 @@ namespace FastXBookingSample.Controllers
         [ProducesResponseType(400)]
         public async Task<IActionResult> PutAmenity(int id, AmenityDto amenitydto)
         {
-            if (id != amenitydto.AmenityId)
+            try
             {
-                return BadRequest();
+                if (id != amenitydto.AmenityId)
+                {
+                    return BadRequest();
+                }
+                return Ok(_amenityRepository.UpdateAmenity(id, _mapper.Map<Amenity>(amenitydto)));
+            }catch(AmenityNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }catch(Exception ex)
+            {
+                return NotFound(ex.Message);
             }
-            return Ok(_amenityRepository.UpdateAmenity(id, _mapper.Map<Amenity>(amenitydto)));
+            
         }
 
         // POST: api/Amenities
@@ -55,7 +73,19 @@ namespace FastXBookingSample.Controllers
         [ProducesResponseType(400)]
         public async Task<ActionResult<AmenityDto>> PostAmenity(AmenityDto amenitydto)
         {
-            return Ok(_amenityRepository.PostAmenity(_mapper.Map<Amenity>(amenitydto)));
+            try
+            {
+                return Ok(_amenityRepository.PostAmenity(_mapper.Map<Amenity>(amenitydto)));
+
+            }
+            catch(AmenityNotFoundException ex) 
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         // DELETE: api/Amenities/5
@@ -64,20 +94,50 @@ namespace FastXBookingSample.Controllers
         [ProducesResponseType(400)]
         public async Task<IActionResult> DeleteAmenity(int id)
         {
-            return Ok(_amenityRepository.DeleteAmenity(id));
+            try
+            {
+                return Ok(_amenityRepository.DeleteAmenity(id));
+
+            }catch(AmenityNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }catch(Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
 
         [HttpGet("GetAmenitiesByBusId/{busid}")]
         public async Task<ActionResult<List<AmenityDto>>> GetAmenitiesByBusId(int busid)
         {
-            return Ok(_mapper.Map<List<AmenityDto>>(_amenityRepository.GetAllAmenitiesByBusId(busid)));
+            try
+            {
+                return Ok(_mapper.Map<List<AmenityDto>>(_amenityRepository.GetAllAmenitiesByBusId(busid)));
+
+            }catch(AmenityNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }catch(Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpPatch("{id:int}")]
         public IActionResult Patch(int id, [FromBody] JsonPatchDocument<Amenity> amenityPatch)
         {
-            return Ok(_amenityRepository.PatchAmentity(id, amenityPatch));
+            try
+            {
+                return Ok(_amenityRepository.PatchAmentity(id, amenityPatch));
+
+            }catch (AmenityNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }catch(Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
     }
 }

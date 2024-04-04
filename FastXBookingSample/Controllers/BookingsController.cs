@@ -9,6 +9,7 @@ using FastXBookingSample.Models;
 using FastXBookingSample.Repository;
 using AutoMapper;
 using FastXBookingSample.DTO;
+using FastXBookingSample.Exceptions;
 
 namespace FastXBookingSample.Controllers
 {
@@ -31,7 +32,18 @@ namespace FastXBookingSample.Controllers
         [ProducesResponseType(400)]
         public async Task<ActionResult<IEnumerable<BookingDto>>> GetBookingsByBusId(int busid)
         {
-          return Ok(_mapper.Map<List<BookingDto>>(_bookingRepository.GetAllBookingsByBusId(busid)));
+            try
+            {
+                return Ok(_mapper.Map<List<BookingDto>>(_bookingRepository.GetAllBookingsByBusId(busid)));
+
+            }
+            catch (NoBookingAvailableException ex)
+            {
+                return NotFound(ex.Message); 
+            }catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
 
