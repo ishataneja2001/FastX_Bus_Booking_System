@@ -1,5 +1,6 @@
 ﻿using FastXBookingSample.DTO;
 using FastXBookingSample.Models;
+using FastXBookingSample.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -56,6 +57,7 @@ namespace FastXBookingSample.Controllers
                 else
                 {
                     return BadRequest("Invalid credentials");
+                    //throw new InvalidUserException();
                 }
             }
             else

@@ -13,7 +13,6 @@ using Microsoft.AspNetCore.JsonPatch;
 using FastXBookingSample.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 
-
 namespace FastXBookingSample.Controllers
 {
     [Route("api/[controller]")]
@@ -37,7 +36,17 @@ namespace FastXBookingSample.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
         {
-            return Ok(_mapper.Map<List<UserDto>>(_adminRepository.GetAllAdmin()));
+            try
+            {
+                return Ok(_mapper.Map<List<UserDto>>(_adminRepository.GetAllAdmin()));
+            }
+            catch(AdminNotFoundException ex) 
+            {
+                return NotFound(ex.Message);
+            }catch(Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
 
