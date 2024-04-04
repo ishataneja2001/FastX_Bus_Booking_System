@@ -9,7 +9,11 @@ using FastXBookingSample.Models;
 using FastXBookingSample.Repository;
 using AutoMapper;
 using FastXBookingSample.DTO;
+<<<<<<< HEAD
 using FastXBookingSample.Exceptions;
+=======
+using Microsoft.AspNetCore.Authorization;
+>>>>>>> 36f6d31aa2c2cadaf071a38927f8aa56335cb1c7
 
 namespace FastXBookingSample.Controllers
 {
@@ -28,6 +32,7 @@ namespace FastXBookingSample.Controllers
 
         // GET: api/Bookings
         [HttpGet]
+        [Authorize(Roles = "Bus Operator,User")]
         [ProducesResponseType(200, Type = typeof(List<BookingDto>))]
         [ProducesResponseType(400)]
         public async Task<ActionResult<IEnumerable<BookingDto>>> GetBookingsByBusId(int busid)
@@ -51,6 +56,7 @@ namespace FastXBookingSample.Controllers
         // POST: api/Bookings
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize(Roles = "User")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         public async Task<ActionResult<BookingDto>> PostBooking(BookingDto bookingdto)
@@ -60,6 +66,7 @@ namespace FastXBookingSample.Controllers
 
         // DELETE: api/Bookings/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> DeleteBooking(int id)
         {
             return Ok(_bookingRepository.DeleteBooking(id));

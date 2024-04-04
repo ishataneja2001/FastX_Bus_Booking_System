@@ -3,6 +3,7 @@ using FastXBookingSample.DTO;
 using FastXBookingSample.Exceptions;
 using FastXBookingSample.Models;
 using FastXBookingSample.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +12,7 @@ namespace FastXBookingSample.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Bus Operator")]
     public class DroppingPointsController : ControllerBase
     {
         private readonly IDroppingPointRepository _droppingPointRepository;

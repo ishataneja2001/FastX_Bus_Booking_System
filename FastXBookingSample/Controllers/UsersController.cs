@@ -10,7 +10,11 @@ using FastXBookingSample.Repository;
 using FastXBookingSample.DTO;
 using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
+<<<<<<< HEAD
 using FastXBookingSample.Exceptions;
+=======
+using Microsoft.AspNetCore.Authorization;
+>>>>>>> 36f6d31aa2c2cadaf071a38927f8aa56335cb1c7
 
 namespace FastXBookingSample.Controllers
 {
@@ -29,6 +33,7 @@ namespace FastXBookingSample.Controllers
 
         // GET: api/Users
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<UserDto>))]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
         {
@@ -49,6 +54,7 @@ namespace FastXBookingSample.Controllers
         // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize(Roles = "User")]
         [ProducesResponseType(200, Type = typeof(string))]
         [ProducesResponseType(400)]
         public async Task<IActionResult> PutUser(int id, UserDto userdto)
@@ -99,6 +105,7 @@ namespace FastXBookingSample.Controllers
 
         // DELETE: api/Users/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "User,Admin")]
         [ProducesResponseType(200, Type = typeof(string))]
         [ProducesResponseType(400)]
         public async Task<IActionResult> DeleteUser(int id)
@@ -119,6 +126,7 @@ namespace FastXBookingSample.Controllers
 
         //PATCH
         [HttpPatch("{id:int}")]
+        [Authorize(Roles = "User")]
         public IActionResult Patch(int id, [FromBody] JsonPatchDocument<User> patchuser)
         {
             try

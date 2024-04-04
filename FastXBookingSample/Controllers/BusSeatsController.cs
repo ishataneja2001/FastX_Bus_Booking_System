@@ -9,7 +9,11 @@ using FastXBookingSample.Models;
 using FastXBookingSample.Repository;
 using AutoMapper;
 using FastXBookingSample.DTO;
+<<<<<<< HEAD
 using FastXBookingSample.Exceptions;
+=======
+using Microsoft.AspNetCore.Authorization;
+>>>>>>> 36f6d31aa2c2cadaf071a38927f8aa56335cb1c7
 
 namespace FastXBookingSample.Controllers
 {
@@ -30,6 +34,7 @@ namespace FastXBookingSample.Controllers
 
         // GET: api/BusSeats/5
         [HttpGet("{busid}")]
+        [Authorize(Roles = "Bus Operator,Admin,User")]
         [ProducesResponseType(200, Type = typeof(List<BusSeatDto>))]
         [ProducesResponseType(400)]
         public async Task<ActionResult<List<BusSeatDto>>> GetBusSeat(int busid)

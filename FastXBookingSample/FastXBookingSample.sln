@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34511.84
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FastXBookingSample", "FastXBookingSample.csproj", "{D36C3F35-10D1-4CC4-A42F-2412110F3E0C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FastXBookingSample", "FastXBookingSample.csproj", "{D36C3F35-10D1-4CC4-A42F-2412110F3E0C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FastXBookingTest", "..\FastXBookingTest\FastXBookingTest.csproj", "{EC12FB2B-0388-4099-9546-95C1A99910A3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{D36C3F35-10D1-4CC4-A42F-2412110F3E0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D36C3F35-10D1-4CC4-A42F-2412110F3E0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D36C3F35-10D1-4CC4-A42F-2412110F3E0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC12FB2B-0388-4099-9546-95C1A99910A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC12FB2B-0388-4099-9546-95C1A99910A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC12FB2B-0388-4099-9546-95C1A99910A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC12FB2B-0388-4099-9546-95C1A99910A3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

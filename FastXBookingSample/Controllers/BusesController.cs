@@ -10,7 +10,11 @@ using FastXBookingSample.Repository;
 using FastXBookingSample.DTO;
 using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
+<<<<<<< HEAD
 using FastXBookingSample.Exceptions;
+=======
+using Microsoft.AspNetCore.Authorization;
+>>>>>>> 36f6d31aa2c2cadaf071a38927f8aa56335cb1c7
 
 namespace FastXBookingSample.Controllers
 {
@@ -33,6 +37,7 @@ namespace FastXBookingSample.Controllers
 
         // GET: api/Buses
         [HttpGet]
+        [Authorize(Roles = "Bus Operator,Admin")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Bus>))]
         public async Task<ActionResult<IEnumerable<Bus>>> Getbuses()
         {
@@ -56,6 +61,7 @@ namespace FastXBookingSample.Controllers
 
         // GET: api/Buses/5
         [HttpGet("{id}")]
+        [Authorize(Roles = "Bus Operator,Admin")]
         [ProducesResponseType(200,Type = typeof(Bus))]
         public async Task<ActionResult<Bus>> GetBus(int id)
         {
@@ -81,6 +87,7 @@ namespace FastXBookingSample.Controllers
         // PUT: api/Buses/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize(Roles = "Bus Operator,Admin")]
         [ProducesResponseType(200,Type=typeof(String))]
         [ProducesResponseType(400)]
         public async Task<IActionResult> PutBus(int id, BusDto busdto)
@@ -120,6 +127,7 @@ namespace FastXBookingSample.Controllers
         // POST: api/Buses
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize(Roles = "Bus Operator")]
         [ProducesResponseType(200 ,Type=typeof(string))]
         [ProducesResponseType(400)]
         public async Task<ActionResult<Bus>> PostBus(BusDto busdto)
@@ -148,6 +156,7 @@ namespace FastXBookingSample.Controllers
 
         // DELETE: api/Buses/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Bus Operator,Admin")]
         [ProducesResponseType(200, Type = typeof(string))]
         [ProducesResponseType(400)]
         public async Task<IActionResult> DeleteBus(int id)
@@ -172,6 +181,7 @@ namespace FastXBookingSample.Controllers
         }
 
         [HttpGet("GetBusByDetails")]
+        [Authorize(Roles = "Bus Operator,User,Admin")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Bus>))]
         public async Task<ActionResult<IEnumerable<Bus>>> GetBusByDetails([FromQuery] string origin, [FromQuery] string destination, [FromQuery] DateOnly date)
         {
@@ -194,6 +204,7 @@ namespace FastXBookingSample.Controllers
 
 
         [HttpPost("PostBusAmenities")]
+        [Authorize(Roles = "Bus Operator")]
         [ProducesResponseType(200, Type = typeof(string))]
         [ProducesResponseType(400)]
         public async Task<ActionResult<BusAmenity>> PostBusAmenity(int busid,int amenityid)
@@ -214,6 +225,7 @@ namespace FastXBookingSample.Controllers
 
         //Patch
         [HttpPatch("{id:int}")]
+        [Authorize(Roles = "Bus Operator")]
         public IActionResult Patch(int id, [FromBody] JsonPatchDocument<Bus> patchBus)
         {
             try
