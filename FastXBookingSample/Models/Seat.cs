@@ -11,6 +11,9 @@ namespace FastXBookingSample.Models
         public int Amount { get; set; }
         public string CardDetails { get; set; } = null!;
         public DateTime BookingDateTime { get; set; }
+        public string PassengerName { get; set; } = null!;
+        public string? Gender { get; set; }
+        public int Age { get; set; }
 
         public virtual Booking? Booking { get; set; }
     }

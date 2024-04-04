@@ -9,11 +9,13 @@ using FastXBookingSample.Models;
 using FastXBookingSample.Repository;
 using AutoMapper;
 using FastXBookingSample.DTO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FastXBookingSample.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Bus Operator,User,Admin")]
     public class BookingHistoriesController : ControllerBase
     {
         private readonly IBookingHistoryRepository _bookingHistoryRepository;

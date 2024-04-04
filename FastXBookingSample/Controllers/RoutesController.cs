@@ -10,11 +10,13 @@ using FastXBookingSample.Repository;
 using FastXBookingSample.DTO;
 using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FastXBookingSample.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Bus Operator")]
     public class RoutesController : ControllerBase
     {
         private readonly IRouteRepository _routeRepository;
