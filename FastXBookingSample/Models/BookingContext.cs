@@ -105,6 +105,14 @@ namespace FastXBookingSample.Models
                     .HasMaxLength(20)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Gender)
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.PassengerName)
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Seats)
                     .HasMaxLength(20)
                     .IsUnicode(false);
@@ -212,6 +220,14 @@ namespace FastXBookingSample.Models
                 entity.Property(e => e.BookingDateTime).HasColumnType("datetime");
 
                 entity.Property(e => e.CardDetails)
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Gender)
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.PassengerName)
                     .HasMaxLength(20)
                     .IsUnicode(false);
 

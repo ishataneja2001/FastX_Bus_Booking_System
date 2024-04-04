@@ -11,6 +11,9 @@
         public string Seats { get; set; } = null!;
         public bool IsCancelled { get; set; }
         public DateTime BookingDateTime { get; set; }
+        public string PassengerName { get; set; } = null!;
+        public string? Gender { get; set; }
+        public int Age { get; set; }
 
     }
 }

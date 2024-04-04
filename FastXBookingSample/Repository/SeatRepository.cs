@@ -67,7 +67,9 @@ namespace FastXBookingSample.Repository
                 Seats = Convert.ToString(seat.SeatNumber),
                 IsCancelled = false,
                 BookingDateTime = seat.BookingDateTime,
-
+                PassengerName = seat.PassengerName,
+                Age = seat.Age,
+                Gender = seat.Gender,
             }) ;
             busseat.IsBooked = true;
             _context.BusSeats.Update(busseat);
