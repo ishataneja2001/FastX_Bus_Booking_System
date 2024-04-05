@@ -1,4 +1,5 @@
 ﻿using FastXBookingSample.Models;
+using FastXBookingSample.Exceptions;
 using Microsoft.AspNetCore.JsonPatch;
 using System.Reflection.Metadata.Ecma335;
 
@@ -15,20 +16,23 @@ namespace FastXBookingSample.Repository
         public string DeleteAmenity(int id)
         {
             if (!IsAmenityExists(id))
-                return "Invalid Id";
+                throw new AmenityNotFoundException();
             var amenity = _context.Amenities.FirstOrDefault(a => a.AmenityId == id);
             _context.Amenities.Remove(amenity);
             return _context.SaveChanges()>0?"Deleted Successfully":"Deletion Failed";
+            
         }
 
         public List<Amenity> GetAllAmenities()
         {
             return _context.Amenities.ToList();
+            
         }
 
         public List<Amenity> GetAllAmenitiesByBusId(int id)
         {
             return _context.Amenities.Where(x => _context.BusAmenities.Any(ba => ba.BusId == id && ba.AmenityId == x.AmenityId)).ToList();
+            
         }
 
         public bool IsAmenityExists(int id)
@@ -39,12 +43,13 @@ namespace FastXBookingSample.Repository
         public string PatchAmentity(int id, JsonPatchDocument<Amenity> amenityPatch)
         {
             if (!IsAmenityExists(id))
-                return "Invalid Id";
+                throw new AmenityNotFoundException();
             var admentity = _context.Amenities.FirstOrDefault(x=>x.AmenityId==id);
             amenityPatch.ApplyTo(admentity);
             _context.Update(admentity);
 
             return _context.SaveChanges() > 0 ? "Updated Successfully" : "Updation Failed";
+            
         }
 
         public string PostAmenity(Amenity amenity)
@@ -58,6 +63,7 @@ namespace FastXBookingSample.Repository
         {
             _context.Amenities.Update(amenity);
             return _context.SaveChanges() > 0 ? "Updated Successfully" : "Updation Failed";
+           
 
         }
     }

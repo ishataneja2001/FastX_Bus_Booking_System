@@ -9,7 +9,9 @@ using FastXBookingSample.Models;
 using FastXBookingSample.Repository;
 using AutoMapper;
 using FastXBookingSample.DTO;
+using FastXBookingSample.Exceptions;
 using Microsoft.AspNetCore.Authorization;
+
 
 namespace FastXBookingSample.Controllers
 {
@@ -31,7 +33,17 @@ namespace FastXBookingSample.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<List<BookingHistoryDto>>>> GetBookingHistories()
         {
-            return Ok(_mapper.Map<List<BookingHistoryDto>>(_bookingHistoryRepository.GetAll()));
+            try
+            {
+                return Ok(_mapper.Map<List<BookingHistoryDto>>(_bookingHistoryRepository.GetAll()));
+
+            }catch(NoBookingAvailableException ex)
+            {
+                return NotFound(ex.Message);
+            }catch(Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         

@@ -10,7 +10,9 @@ using FastXBookingSample.Repository;
 using AutoMapper;
 using FastXBookingSample.DTO;
 using Microsoft.AspNetCore.JsonPatch;
+using FastXBookingSample.Exceptions;
 using Microsoft.AspNetCore.Authorization;
+
 
 namespace FastXBookingSample.Controllers
 {
@@ -37,9 +39,18 @@ namespace FastXBookingSample.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<BoardingPointDto>>> GetBoardingPoints(int busid)
         {
-            if (!_busRepository.BusExists(busid))
-                return BadRequest(ModelState);
-            return Ok(_mapper.Map<List<BoardingPointDto>>(_boardingPointRepository.GetBoardingPointsByBusId(busid)));
+            try
+            {
+                if (!_busRepository.BusExists(busid))
+                    return BadRequest(ModelState);
+                return Ok(_mapper.Map<List<BoardingPointDto>>(_boardingPointRepository.GetBoardingPointsByBusId(busid)));
+            }catch(BoardingPointNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }catch(Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
 
@@ -53,12 +64,21 @@ namespace FastXBookingSample.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         public async Task<IActionResult> PutBoardingPoint(int id, BoardingPointDto boardingPointdto)
         {
-            if (id != boardingPointdto.BoardingId)
+            try
             {
-                return BadRequest();
-            }
+                if (id != boardingPointdto.BoardingId)
+                {
+                    return BadRequest();
+                }
 
-            return Ok(_boardingPointRepository.UpdateBoardingPoints(id,_mapper.Map<BoardingPoint>(boardingPointdto)));
+                return Ok(_boardingPointRepository.UpdateBoardingPoints(id, _mapper.Map<BoardingPoint>(boardingPointdto)));
+            }catch (BoardingPointNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
 
@@ -70,7 +90,19 @@ namespace FastXBookingSample.Controllers
         [ProducesResponseType(200, Type = typeof(string))]
         public async Task<ActionResult<BoardingPointDto>> PostBoardingPoint(BoardingPointDto boardingPointdto)
         {
-            return Ok(_boardingPointRepository.PostBoardingPoint(_mapper.Map<BoardingPoint>(boardingPointdto)));
+            try
+            {
+                return Ok(_boardingPointRepository.PostBoardingPoint(_mapper.Map<BoardingPoint>(boardingPointdto)));
+
+            }
+            catch (BoardingPointNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
 
@@ -83,16 +115,39 @@ namespace FastXBookingSample.Controllers
         [ProducesResponseType(400)]
         public async Task<IActionResult> DeleteBoardingPoint(int id)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-            return Ok(_boardingPointRepository.DeleteBoardingPoints(id));
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+                return Ok(_boardingPointRepository.DeleteBoardingPoints(id));
+            }
+            catch (BoardingPointNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         //Patch
         [HttpPatch("{id:int}")]
         public IActionResult Patch(int id, [FromBody] JsonPatchDocument<BoardingPoint> boardingPointPatch)
         {
-            return Ok(_boardingPointRepository.PatchBoardingPoint(id, boardingPointPatch));
+            try
+            {
+                return Ok(_boardingPointRepository.PatchBoardingPoint(id, boardingPointPatch));
+
+            }
+            catch (BoardingPointNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
     }
 }

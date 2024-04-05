@@ -1,4 +1,5 @@
 ﻿using FastXBookingSample.Models;
+using FastXBookingSample.Exceptions;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
@@ -25,15 +26,16 @@ namespace FastXBookingSample.Repository
         public string DeleteBus(int id)
         {
             if (_context.Buses == null)
-                return "Bus Not Found";
+                throw new BusNotFoundException();
             Bus bus = _context.Buses.FirstOrDefault(x=>x.BusId == id);
-            if (bus == null) 
-                return "Bus Not Found";
+            if (bus == null)
+                throw new BusNotFoundException();
             _context.Buses.Remove(bus);
             int s = _context.SaveChanges();
             if (s > 0) 
                 return "Bus Successfully Deleted";
             return "Bus Not Deleted";
+            
         }
 
         public List<Bus> GetAll()
@@ -63,12 +65,14 @@ namespace FastXBookingSample.Repository
             if (s > 0)
                 return "Bus Details Updated";
             return "Bus Details Not Updated";
+       
         }
 
 
         public bool BusExists(int id)
         {
             return (_context.Buses?.Any(e => e.BusId == id)).GetValueOrDefault();
+            
         }
 
         public bool RoleExists(int id)
@@ -89,17 +93,19 @@ namespace FastXBookingSample.Repository
             };
             _context.BusAmenities.Add(busAmenity);
             return _context.SaveChanges()>0?"Added Successfully":"Addition Failed";
+         
         }
 
         public string PatchBus(int id, JsonPatchDocument<Bus> patchBus)
         {
             if(!BusExists(id))
-            return "Invalid Id";
+                throw new BusNotFoundException();
             var bus = _context.Buses.FirstOrDefault(x => x.BusId == id);
             patchBus.ApplyTo(bus);
             _context.Update(bus);
 
             return _context.SaveChanges() > 0 ? "Updated Sucessfully" : "Updation Failed ";
+            
         }
     }
 }

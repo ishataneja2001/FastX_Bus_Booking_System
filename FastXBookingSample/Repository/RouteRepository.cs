@@ -1,4 +1,6 @@
 ﻿using FastXBookingSample.Models;
+using FastXBookingSample.Exceptions;
+
 using Microsoft.AspNetCore.JsonPatch;
 
 namespace FastXBookingSample.Repository
@@ -14,6 +16,8 @@ namespace FastXBookingSample.Repository
         public List<Models.Route> GetRoutesByBusId(int busid)
         {
             return _context.Routes.Where(x=>x.BusId == busid).ToList();
+
+            
         }
 
         public string PostBusRoute(Models.Route route)
@@ -24,19 +28,23 @@ namespace FastXBookingSample.Repository
 
         public string UpdateBusRoute(int id, Models.Route route)
         {
-            if (!IsRouteExists(id)) 
-                return "Invalid Id";
+            if (!IsRouteExists(id))
+                throw new RouteNotFoundException();
             _context.Routes.Update(route);
             return _context.SaveChanges() > 0 ? "Updated Successfully" : "Updation Failed";
+
+            
         }
 
         public string DeleteBusRoute(int id)
         {
-            if (!IsRouteExists(id)) 
-                return "Invalid Id";
+            if (!IsRouteExists(id))
+                throw new RouteNotFoundException();
             var route = _context.Routes.FirstOrDefault(x=>x.RouteId == id);
             _context.Routes.Remove(route);
             return _context.SaveChanges() > 0 ? "Deleted Successfully" : "Deletion Failed";
+
+            
 
         }
 
