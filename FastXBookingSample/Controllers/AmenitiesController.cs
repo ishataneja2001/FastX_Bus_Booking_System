@@ -130,12 +130,10 @@ namespace FastXBookingSample.Controllers
         [HttpPatch("{id:int}")]
         public IActionResult Patch(int id, [FromBody] JsonPatchDocument<Amenity> amenityPatch)
         {
-<<<<<<< HEAD
-            return Ok(_amenityRepository.PatchAmenity(id, amenityPatch));
-=======
+ 
             try
             {
-                return Ok(_amenityRepository.PatchAmentity(id, amenityPatch));
+                return Ok(_amenityRepository.PatchAmenity(id, amenityPatch));
 
             }catch (AmenityNotFoundException ex)
             {
@@ -144,7 +142,7 @@ namespace FastXBookingSample.Controllers
             {
                 return NotFound(ex.Message);
             }
->>>>>>> 3a2283b693d8c6b70e8004699dee126b4d002311
+
         }
     }
 }
