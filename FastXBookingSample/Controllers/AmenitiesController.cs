@@ -79,7 +79,7 @@ namespace FastXBookingSample.Controllers
         [HttpPatch("{id:int}")]
         public IActionResult Patch(int id, [FromBody] JsonPatchDocument<Amenity> amenityPatch)
         {
-            return Ok(_amenityRepository.PatchAmentity(id, amenityPatch));
+            return Ok(_amenityRepository.PatchAmenity(id, amenityPatch));
         }
     }
 }
