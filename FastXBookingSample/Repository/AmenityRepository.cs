@@ -40,7 +40,7 @@ namespace FastXBookingSample.Repository
             return _context.Amenities.Any(x => x.AmenityId == id);
         }
 
-        public string PatchAmentity(int id, JsonPatchDocument<Amenity> amenityPatch)
+        public string PatchAmenity(int id, JsonPatchDocument<Amenity> amenityPatch)
         {
             if (!IsAmenityExists(id))
                 throw new AmenityNotFoundException();

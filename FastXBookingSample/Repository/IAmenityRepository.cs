@@ -12,6 +12,6 @@ namespace FastXBookingSample.Repository
         string UpdateAmenity(int id, Amenity amenity);
         string DeleteAmenity(int id);
         bool IsAmenityExists(int id);
-        string PatchAmentity(int id, JsonPatchDocument<Amenity> patchEntity);
+        string PatchAmenity(int id, JsonPatchDocument<Amenity> patchEntity);
     }
 }
