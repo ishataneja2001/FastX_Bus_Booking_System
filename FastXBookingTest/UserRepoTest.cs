@@ -5,7 +5,7 @@ using Moq;
 namespace FastXBookingTest
 {
     [TestFixture]
-    public class Tests
+    public class UserRepoTest
     {
         private Mock<IUserRepository> _mockuserRepository;
 
@@ -42,5 +42,35 @@ namespace FastXBookingTest
             Assert.AreEqual(users[1].Name,"Sample2");
             Assert.AreEqual(users[1].Email,"sample2@gmail.com");
         }
+
+
+        [Test]
+        public async Task TestForDeleteUser()
+        {
+            _mockuserRepository.Setup(r => r.DeleteUser(It.IsAny<int>())).Returns("Deleted Successfully");
+            string output = await Task.Run(() => _mockuserRepository.Object.DeleteUser(2));
+            Assert.AreEqual(output, "Deleted Successfully");
+        }
+
+
+        [Test]
+        public async Task TestForPostUser()
+        {
+            User user = new User();
+            _mockuserRepository.Setup(r => r.PostUser(user)).Returns("Added Successfully");
+            string output = await Task.Run(() => _mockuserRepository.Object.PostUser(user));
+            Assert.AreEqual(output, "Added Successfully");
+        }
+
+
+        [Test]
+        public async Task TestForUpdatingUser()
+        {
+            User user = new User();
+            _mockuserRepository.Setup(r => r.ModifyUserDetails(It.IsAny<int>(),user)).Returns("Updated Succesfully");
+            string output = await Task.Run(() => _mockuserRepository.Object.ModifyUserDetails(It.IsAny<int>(), user));
+            Assert.AreEqual(output, "Updated Succesfully");
+        }
+
     }
 }
