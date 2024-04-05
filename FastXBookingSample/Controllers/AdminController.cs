@@ -10,6 +10,7 @@ using FastXBookingSample.Repository;
 using AutoMapper;
 using FastXBookingSample.DTO;
 using Microsoft.AspNetCore.JsonPatch;
+using FastXBookingSample.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 
 namespace FastXBookingSample.Controllers
@@ -24,7 +25,8 @@ namespace FastXBookingSample.Controllers
         public AdminController(IAdminRepository adminRepository, IMapper mapper)
         {
             _adminRepository = adminRepository;
-            _mapper = mapper;
+            _mapper = mapper;           
+
         }
 
         // GET: api/Admin
@@ -32,7 +34,17 @@ namespace FastXBookingSample.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
         {
-            return Ok(_mapper.Map<List<UserDto>>(_adminRepository.GetAllAdmin()));
+            try
+            {
+                return Ok(_mapper.Map<List<UserDto>>(_adminRepository.GetAllAdmin()));
+            }
+            catch(AdminNotFoundException ex) 
+            {
+                return NotFound(ex.Message);
+            }catch(Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
 
@@ -44,11 +56,26 @@ namespace FastXBookingSample.Controllers
         {
             if (id != userdto.UserId)
             {
-                return BadRequest();
+                return BadRequest("User ID in the route does not match the UserID in the request body.");
             }
-            User user = _mapper.Map<User>(userdto);
-            user.Role = "Admin";
-            return Ok(_adminRepository.ModifyAdminDetails(id, user));
+            try
+            {
+                User user = _mapper.Map<User>(userdto);
+                user.Role = "Admin";
+                return Ok(_adminRepository.ModifyAdminDetails(id, user));
+
+            }
+            catch(AdminNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500);
+
+            }
+             
+            
         }
 
 
@@ -58,9 +85,20 @@ namespace FastXBookingSample.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<User>> PostUser(UserDto userdto)
         {
-            User user = _mapper.Map<User>(userdto);
-            user.Role = "Admin";
-            return Ok(_adminRepository.PostAdmin(user));
+            try
+            {
+                User user = _mapper.Map<User>(userdto);
+                user.Role = "Admin";
+                return Ok(_adminRepository.PostAdmin(user));
+            }catch(AdminNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch(Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+            
         }
 
         // DELETE: api/Admin/5
@@ -68,16 +106,36 @@ namespace FastXBookingSample.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteUser(int id)
         {
-
-            return Ok(_adminRepository.DeleteAdmin(id));
+            try
+            {
+                return Ok(_adminRepository.DeleteAdmin(id));
+            }catch (AdminNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }catch(Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+            
         }
-
-        
+       
         [HttpPatch("{id:int}")]
         [Authorize(Roles = "Admin")]
         public IActionResult Patch(int id, [FromBody] JsonPatchDocument<User> adminPatch)
         {
-            return Ok(_adminRepository.PatchAdmin(id, adminPatch));
+            try
+            {
+                return Ok(_adminRepository.PatchAdmin(id, adminPatch));
+            }
+            catch(AdminNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+
         }
     }
 }

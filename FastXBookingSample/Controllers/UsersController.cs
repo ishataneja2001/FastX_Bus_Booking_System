@@ -10,6 +10,7 @@ using FastXBookingSample.Repository;
 using FastXBookingSample.DTO;
 using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
+using FastXBookingSample.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 
 namespace FastXBookingSample.Controllers
@@ -33,8 +34,16 @@ namespace FastXBookingSample.Controllers
         [ProducesResponseType(200, Type = typeof(IEnumerable<UserDto>))]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
         {
-          
-            return Ok(_mapper.Map<List<UserDto>>(_userRepository.GetAllUsers()));
+            try
+            {
+                return Ok(_mapper.Map<List<UserDto>>(_userRepository.GetAllUsers()));
+            }catch(UserNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }catch(Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
 
@@ -47,13 +56,24 @@ namespace FastXBookingSample.Controllers
         [ProducesResponseType(400)]
         public async Task<IActionResult> PutUser(int id, UserDto userdto)
         {
-            if (id != userdto.UserId)
+            try
             {
-                return BadRequest();
+                if (id != userdto.UserId)
+                {
+                    return BadRequest();
+                }
+                User user = _mapper.Map<User>(userdto);
+                user.Role = "User";
+                return Ok(_userRepository.ModifyUserDetails(id, user));
             }
-            User user = _mapper.Map<User>(userdto);
-            user.Role = "User";
-            return Ok(_userRepository.ModifyUserDetails(id,user));
+            catch (UserNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
 
@@ -64,9 +84,20 @@ namespace FastXBookingSample.Controllers
         [ProducesResponseType(400)]
         public async Task<ActionResult<UserDto>> PostUser(UserDto userdto)
         {
-            User user = _mapper.Map<User>(userdto);
-            user.Role = "User";
-            return Ok(_userRepository.PostUser(user));
+            try
+            {
+                User user = _mapper.Map<User>(userdto);
+                user.Role = "User";
+                return Ok(_userRepository.PostUser(user));
+            }
+            catch (UserNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         // DELETE: api/Users/5
@@ -76,7 +107,18 @@ namespace FastXBookingSample.Controllers
         [ProducesResponseType(400)]
         public async Task<IActionResult> DeleteUser(int id)
         {
-            return Ok(_userRepository.DeleteUser(id));
+            try
+            {
+                return Ok(_userRepository.DeleteUser(id));
+            }
+            catch (UserNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         //PATCH
@@ -84,7 +126,18 @@ namespace FastXBookingSample.Controllers
         [Authorize(Roles = "User")]
         public IActionResult Patch(int id, [FromBody] JsonPatchDocument<User> patchuser)
         {
-            return Ok(_userRepository.PatchUser(id, patchuser));
+            try
+            {
+                return Ok(_userRepository.PatchUser(id, patchuser));
+            }
+            catch (UserNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
     }
 }

@@ -10,6 +10,7 @@ using FastXBookingSample.Repository;
 using FastXBookingSample.DTO;
 using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
+using FastXBookingSample.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 
 namespace FastXBookingSample.Controllers
@@ -37,12 +38,21 @@ namespace FastXBookingSample.Controllers
         [ProducesResponseType(200, Type = typeof(IEnumerable<Bus>))]
         public async Task<ActionResult<IEnumerable<Bus>>> Getbuses()
         {
-          var buses = _mapper.Map<List<BusDto>>(_busrepository.GetAll());
-          if (buses == null)
-          {
-              return NotFound();
-          }
-            return Ok(buses);
+            try
+            {
+                var buses = _mapper.Map<List<BusDto>>(_busrepository.GetAll());
+                if (buses == null)
+                {
+                    return NotFound();
+                }
+                return Ok(buses);
+            }catch (NoBusAvailableException ex)
+            {
+                return NotFound(ex.Message);
+            }catch(Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
 
@@ -52,12 +62,23 @@ namespace FastXBookingSample.Controllers
         [ProducesResponseType(200,Type = typeof(Bus))]
         public async Task<ActionResult<Bus>> GetBus(int id)
         {
-            var bus = _mapper.Map<BusDto>(_busrepository.GetBusById(id));
-          if (bus == null)
-          {
-              return NotFound();
-          }
-            return Ok(bus);
+            try
+            {
+                var bus = _mapper.Map<BusDto>(_busrepository.GetBusById(id));
+                if (bus == null)
+                {
+                    return NotFound();
+                }
+                return Ok(bus);
+            }
+            catch(NoBusAvailableException ex) 
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         // PUT: api/Buses/5
@@ -68,25 +89,36 @@ namespace FastXBookingSample.Controllers
         [ProducesResponseType(400)]
         public async Task<IActionResult> PutBus(int id, BusDto busdto)
         {
-            if (id != busdto.BusId)
+            try
             {
-                return BadRequest();
+                if (id != busdto.BusId)
+                {
+                    return BadRequest();
+                }
+                if (!_busrepository.BusExists(id))
+                    return NotFound();
+                Bus existingBus = await _busrepository.GetBusById(id);
+                if (existingBus.NoOfSeats != busdto.NoOfSeats)
+                {
+                    _busSeatRepository.DeleteSeatsByBusId(busdto.BusId);
+                    _busSeatRepository.AddSeatByBusId(busdto.BusId, busdto.NoOfSeats);
+                }
+                _context.Entry(existingBus).State = EntityState.Detached;
+
+                var bus = _mapper.Map<Bus>(busdto);
+
+
+
+                return Ok(_busrepository.UpdateBus(id, bus));
             }
-            if (!_busrepository.BusExists(id))
-                return NotFound();
-            Bus existingBus = await _busrepository.GetBusById(id);
-            if ( existingBus.NoOfSeats!= busdto.NoOfSeats)
+            catch (NoBusAvailableException ex)
             {
-                _busSeatRepository.DeleteSeatsByBusId(busdto.BusId);
-                _busSeatRepository.AddSeatByBusId(busdto.BusId, busdto.NoOfSeats);
+                return NotFound(ex.Message);
             }
-            _context.Entry(existingBus).State = EntityState.Detached;
-
-            var bus = _mapper.Map<Bus>(busdto);
-
-            
-            
-            return Ok(_busrepository.UpdateBus(id,bus));
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         // POST: api/Buses
@@ -97,15 +129,26 @@ namespace FastXBookingSample.Controllers
         [ProducesResponseType(400)]
         public async Task<ActionResult<Bus>> PostBus(BusDto busdto)
         {
-            if (busdto == null)
-                return BadRequest(ModelState);
-            if(!_busrepository.RoleExists(busdto.BusOperator))
-                return BadRequest(ModelState);
-            var bus = _mapper.Map<Bus>(busdto);
-            string message = _busrepository.CreateBus(bus);
-            _busSeatRepository.AddSeatByBusId(bus.BusId, bus.NoOfSeats);
+            try
+            {
+                if (busdto == null)
+                    return BadRequest(ModelState);
+                if (!_busrepository.RoleExists(busdto.BusOperator))
+                    return BadRequest(ModelState);
+                var bus = _mapper.Map<Bus>(busdto);
+                string message = _busrepository.CreateBus(bus);
+                _busSeatRepository.AddSeatByBusId(bus.BusId, bus.NoOfSeats);
 
-            return Ok(message);
+                return Ok(message);
+            }
+            catch (NoBusAvailableException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         // DELETE: api/Buses/5
@@ -115,12 +158,23 @@ namespace FastXBookingSample.Controllers
         [ProducesResponseType(400)]
         public async Task<IActionResult> DeleteBus(int id)
         {
-            if (!_busrepository.BusExists(id))
-                return NotFound();
-            _busSeatRepository.DeleteSeatsByBusId(id);
-            string message = _busrepository.DeleteBus(id);
-            
-            return Ok(message);
+            try
+            {
+                if (!_busrepository.BusExists(id))
+                    return NotFound();
+                _busSeatRepository.DeleteSeatsByBusId(id);
+                string message = _busrepository.DeleteBus(id);
+
+                return Ok(message);
+            }
+            catch (NoBusAvailableException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpGet("GetBusByDetails")]
@@ -128,10 +182,21 @@ namespace FastXBookingSample.Controllers
         [ProducesResponseType(200, Type = typeof(IEnumerable<Bus>))]
         public async Task<ActionResult<IEnumerable<Bus>>> GetBusByDetails([FromQuery] string origin, [FromQuery] string destination, [FromQuery] DateOnly date)
         {
-            var buses = _mapper.Map<List<BusDto>>(_busrepository.GetBusByDetails(origin, destination, date));
-            if(buses==null)
-                return BadRequest(ModelState);
-            return Ok(buses);
+            try
+            {
+                var buses = _mapper.Map<List<BusDto>>(_busrepository.GetBusByDetails(origin, destination, date));
+                if (buses == null)
+                    return BadRequest(ModelState);
+                return Ok(buses);
+            }
+            catch (NoBusAvailableException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
 
@@ -141,7 +206,18 @@ namespace FastXBookingSample.Controllers
         [ProducesResponseType(400)]
         public async Task<ActionResult<BusAmenity>> PostBusAmenity(int busid,int amenityid)
         {
-            return Ok(_busrepository.AddBusAmenity(busid, amenityid));
+            try
+            {
+                return Ok(_busrepository.AddBusAmenity(busid, amenityid));
+
+            }catch (NoBusAvailableException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         //Patch
@@ -149,7 +225,19 @@ namespace FastXBookingSample.Controllers
         [Authorize(Roles = "Bus Operator")]
         public IActionResult Patch(int id, [FromBody] JsonPatchDocument<Bus> patchBus)
         {
-            return Ok(_busrepository.PatchBus(id, patchBus));
+            try
+            {
+                return Ok(_busrepository.PatchBus(id, patchBus));
+
+            }
+            catch (NoBusAvailableException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
     }
 }

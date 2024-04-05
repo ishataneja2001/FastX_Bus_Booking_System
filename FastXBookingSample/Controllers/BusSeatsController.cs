@@ -9,6 +9,7 @@ using FastXBookingSample.Models;
 using FastXBookingSample.Repository;
 using AutoMapper;
 using FastXBookingSample.DTO;
+using FastXBookingSample.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 
 namespace FastXBookingSample.Controllers
@@ -35,7 +36,21 @@ namespace FastXBookingSample.Controllers
         [ProducesResponseType(400)]
         public async Task<ActionResult<List<BusSeatDto>>> GetBusSeat(int busid)
         {
-            return Ok(_mapper.Map<List<BusSeatDto>>(_busSeatRepository.GetSeatsByBusId(busid)));
+            try
+            {
+                return Ok(_mapper.Map<List<BusSeatDto>>(_busSeatRepository.GetSeatsByBusId(busid)));
+            }
+            catch(BusNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (NoBusAvailableException ex)
+            {
+                return NotFound(ex.Message);
+            }catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
     }

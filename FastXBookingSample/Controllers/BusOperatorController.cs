@@ -10,6 +10,7 @@ using FastXBookingSample.Repository;
 using AutoMapper;
 using FastXBookingSample.DTO;
 using Microsoft.AspNetCore.JsonPatch;
+using FastXBookingSample.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 
 namespace FastXBookingSample.Controllers
@@ -34,7 +35,19 @@ namespace FastXBookingSample.Controllers
         [ProducesResponseType(400)]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetBusOperators()
         {
-            return Ok(_mapper.Map<List<UserDto>>(_busOperatorRepository.GetAllBusOperators()));
+            try
+            {
+                return Ok(_mapper.Map<List<UserDto>>(_busOperatorRepository.GetAllBusOperators()));
+
+            }
+            catch (BusOperatorNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch(Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
 
@@ -47,13 +60,24 @@ namespace FastXBookingSample.Controllers
         [ProducesResponseType(400)]
         public async Task<IActionResult> PutUser(int id, UserDto userdto)
         {
-            if (id != userdto.UserId)
+            try
             {
-                return BadRequest();
+                if (id != userdto.UserId)
+                {
+                    return BadRequest();
+                }
+                User user = _mapper.Map<User>(userdto);
+                user.Role = "Bus Operator";
+                return Ok(_busOperatorRepository.ModifyBusOperatorDetails(id, user));
             }
-            User user = _mapper.Map<User>(userdto);
-            user.Role = "Bus Operator";
-            return Ok(_busOperatorRepository.ModifyBusOperatorDetails(id, user));
+            catch (BusOperatorNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         // POST: api/BusOperator
@@ -63,9 +87,20 @@ namespace FastXBookingSample.Controllers
         [ProducesResponseType(400)]
         public async Task<ActionResult<UserDto>> PostUser(UserDto userdto)
         {
-            User user = _mapper.Map<User>(userdto);
-            user.Role = "Bus Operator";
-            return Ok(_busOperatorRepository.PostBusOperator(user));
+            try
+            {
+                User user = _mapper.Map<User>(userdto);
+                user.Role = "Bus Operator";
+                return Ok(_busOperatorRepository.PostBusOperator(user));
+            }
+            catch (BusOperatorNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         // DELETE: api/BusOperator/5
@@ -75,7 +110,18 @@ namespace FastXBookingSample.Controllers
         [ProducesResponseType(400)]
         public async Task<IActionResult> DeleteUser(int id)
         {
-            return Ok(_busOperatorRepository.DeleteBusOperator(id));
+            try
+            {
+                return Ok(_busOperatorRepository.DeleteBusOperator(id));
+            }
+            catch (BusOperatorNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         //PATCH
@@ -83,7 +129,18 @@ namespace FastXBookingSample.Controllers
         [Authorize(Roles = "Bus Operator")]
         public IActionResult Patch(int id, [FromBody] JsonPatchDocument<User> patchBusOperator)
         {
-            return Ok(_busOperatorRepository.PatchBusOperator(id, patchBusOperator));
+            try
+            {
+                return Ok(_busOperatorRepository.PatchBusOperator(id, patchBusOperator));
+            }
+            catch (BusOperatorNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
     }
 }
