@@ -39,11 +39,8 @@ namespace FastXBookingSample.Controllers
             {
                 return Ok(_mapper.Map<List<BookingHistoryDto>>(_bookingHistoryRepository.GetAll()));
 
-            }catch(NoBookingAvailableException ex)
-            {
-                _logger.LogError(ex.Message);
-                return NotFound(ex.Message);
-            }catch(Exception ex)
+            }
+            catch(Exception ex)
             {
                 _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
