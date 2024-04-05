@@ -54,18 +54,27 @@ namespace FastXBookingSample.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> PutUser(int id, UserDto userdto)
         {
-            if (id != userdto.UserId)
-            {
-                return BadRequest("User ID in the route does not match the UserID in the request body.");
-            }
             try
             {
+                if (id != userdto.UserId)
+                {
+                    return BadRequest("User ID in the route does not match the UserID in the request body.");
+                }
+            
                 User user = _mapper.Map<User>(userdto);
                 user.Role = "Admin";
                 return Ok(_adminRepository.ModifyAdminDetails(id, user));
 
             }
-            catch(AdminNotFoundException ex)
+            catch (InvalidUsersPasswordException ex)
+            {
+                return StatusCode(406, ex.Message);
+            }
+            catch (InvalidUsersEmailException ex)
+            {
+                return StatusCode(406, ex.Message);
+            }
+            catch (AdminNotFoundException ex)
             {
                 return NotFound(ex.Message);
             }
@@ -90,7 +99,16 @@ namespace FastXBookingSample.Controllers
                 User user = _mapper.Map<User>(userdto);
                 user.Role = "Admin";
                 return Ok(_adminRepository.PostAdmin(user));
-            }catch(AdminNotFoundException ex)
+            }
+            catch (InvalidUsersPasswordException ex)
+            {
+                return StatusCode(406, ex.Message);
+            }
+            catch (InvalidUsersEmailException ex)
+            {
+                return StatusCode(406, ex.Message);
+            }
+            catch (AdminNotFoundException ex)
             {
                 return NotFound(ex.Message);
             }

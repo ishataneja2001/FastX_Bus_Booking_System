@@ -3,6 +3,7 @@ using FastXBookingSample.Models;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.Text.RegularExpressions;
 
 namespace FastXBookingSample.Repository
 {
@@ -29,6 +30,18 @@ namespace FastXBookingSample.Repository
             
         }
 
+        public static bool IsEmailValid(string email)
+        {          
+            string emailPattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
+            return Regex.IsMatch(email, emailPattern);
+        }
+
+        public static bool IsPasswordValid(string password)
+        {           
+            string passwordPattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$";
+            return Regex.IsMatch(password, passwordPattern);
+        }
+
         public bool IsAdminExists(int id)
         {
             return _context.Users.Any(x => x.UserId == id && x.Role == "Admin");
@@ -37,6 +50,10 @@ namespace FastXBookingSample.Repository
 
         public string ModifyAdminDetails(int id, User user)
         {
+            if (!IsEmailValid(user.Email))
+                throw new InvalidUsersEmailException();
+            if (!IsPasswordValid(user.Password))
+                throw new InvalidUsersPasswordException();
             if (!IsAdminExists(id))
                 throw new AdminNotFoundException();
             _context.Users.Update(user);
@@ -47,6 +64,7 @@ namespace FastXBookingSample.Repository
 
         public string PatchAdmin(int id, JsonPatchDocument<User> adminPatch)
         {
+            
             if (!IsAdminExists(id))
                 throw new AdminNotFoundException();
             var admin = _context.Users.FirstOrDefault(x=>x.UserId == id);
@@ -59,6 +77,10 @@ namespace FastXBookingSample.Repository
 
         public string PostAdmin(User user)
         {
+            if (!IsEmailValid(user.Email))
+                throw new InvalidUsersEmailException();
+            if (!IsPasswordValid(user.Password))
+                throw new InvalidUsersPasswordException();
             _context.Users.Add(user);
 
             return _context.SaveChanges() > 0 ? "Added Succesfully" : "Addition Failed";

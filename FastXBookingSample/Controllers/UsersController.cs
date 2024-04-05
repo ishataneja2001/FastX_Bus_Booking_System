@@ -66,6 +66,14 @@ namespace FastXBookingSample.Controllers
                 user.Role = "User";
                 return Ok(_userRepository.ModifyUserDetails(id, user));
             }
+            catch (InvalidUsersPasswordException ex)
+            {
+                return StatusCode(406, ex.Message);
+            }
+            catch (InvalidUsersEmailException ex)
+            {
+                return StatusCode(406, ex.Message);
+            }
             catch (UserNotFoundException ex)
             {
                 return NotFound(ex.Message);
@@ -89,6 +97,14 @@ namespace FastXBookingSample.Controllers
                 User user = _mapper.Map<User>(userdto);
                 user.Role = "User";
                 return Ok(_userRepository.PostUser(user));
+            }
+            catch (InvalidUsersPasswordException ex)
+            {
+                return StatusCode(406, ex.Message);
+            }
+            catch (InvalidUsersEmailException ex)
+            {
+                return StatusCode(406, ex.Message);
             }
             catch (UserNotFoundException ex)
             {
