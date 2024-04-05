@@ -7,10 +7,12 @@ namespace FastXBookingSample.Repository
     public class DroppingPointRepository : IDroppingPointRepository
     {
         private readonly BookingContext _context;
+        private readonly BusRepository _busRepository;
 
-        public DroppingPointRepository(BookingContext context)
+        public DroppingPointRepository(BookingContext context, BusRepository busRepository)
         {
             _context = context;
+            _busRepository = busRepository;
         }
         public string DeleteDroppingPoints(int id)
         {
@@ -30,6 +32,8 @@ namespace FastXBookingSample.Repository
 
         public List<DroppingPoint> GetDroppingPointsByBusId(int busid)
         {
+            if(!_busRepository.BusExists(busid))
+                throw new BusNotFoundException();
             return _context.DroppingPoints.Where(x=>x.BusId==busid).ToList();
             
         }

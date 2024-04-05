@@ -18,12 +18,14 @@ namespace FastXBookingSample.Controllers
         private readonly IDroppingPointRepository _droppingPointRepository;
         private readonly IBusRepository _busRepository;
         private readonly IMapper _mapper;
+        private readonly ILogger<DroppingPointsController> _logger;
 
-        public DroppingPointsController(IDroppingPointRepository droppingPointRepository, IBusRepository busRepository, IMapper mapper)
+        public DroppingPointsController(IDroppingPointRepository droppingPointRepository, IBusRepository busRepository, IMapper mapper,ILogger<DroppingPointsController> logger)
         {
             _droppingPointRepository = droppingPointRepository;
             _busRepository = busRepository;
             _mapper = mapper;
+            _logger = logger;
         }
 
 
@@ -38,11 +40,13 @@ namespace FastXBookingSample.Controllers
                 if (!_busRepository.BusExists(busid))
                     return BadRequest(ModelState);
                 return Ok(_mapper.Map<List<DroppingPointDto>>(_droppingPointRepository.GetDroppingPointsByBusId(busid)));
-            }catch (DroppingPointNotFoundException ex)
+            }catch (BusNotFoundException ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }catch(Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
         }
@@ -69,10 +73,12 @@ namespace FastXBookingSample.Controllers
             }
             catch (DroppingPointNotFoundException ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
         }
@@ -90,12 +96,10 @@ namespace FastXBookingSample.Controllers
             {
                 return Ok(_droppingPointRepository.PostDroppingPoint(_mapper.Map<DroppingPoint>(droppingPointDto)));
             }
-            catch (DroppingPointNotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
+           
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
         }
@@ -118,10 +122,12 @@ namespace FastXBookingSample.Controllers
             }
             catch (DroppingPointNotFoundException ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
         }
@@ -136,10 +142,12 @@ namespace FastXBookingSample.Controllers
             }
             catch (DroppingPointNotFoundException ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
         }

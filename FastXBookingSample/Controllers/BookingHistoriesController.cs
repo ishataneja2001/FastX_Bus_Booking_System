@@ -22,11 +22,13 @@ namespace FastXBookingSample.Controllers
     {
         private readonly IBookingHistoryRepository _bookingHistoryRepository;
         private readonly IMapper _mapper;
+        private readonly ILogger<BoardingPointsController> _logger;
 
-        public BookingHistoriesController(IBookingHistoryRepository bookingHistoryRepository,IMapper mapper)
+        public BookingHistoriesController(IBookingHistoryRepository bookingHistoryRepository,IMapper mapper, ILogger<BoardingPointsController> logger)
         {
             _bookingHistoryRepository = bookingHistoryRepository;
             _mapper = mapper;
+            _logger = logger;
         }
 
         // GET: api/BookingHistories
@@ -39,9 +41,11 @@ namespace FastXBookingSample.Controllers
 
             }catch(NoBookingAvailableException ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }catch(Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
         }

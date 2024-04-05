@@ -22,11 +22,13 @@ namespace FastXBookingSample.Controllers
     {
         private readonly IRouteRepository _routeRepository;
         private readonly IMapper _mapper;
+        private readonly ILogger<RoutesController> _logger;
 
-        public RoutesController(IRouteRepository routeRepository,IMapper mapper)
+        public RoutesController(IRouteRepository routeRepository,IMapper mapper, ILogger<RoutesController> logger)
         {
             _routeRepository = routeRepository;
             _mapper = mapper;
+            _logger = logger;
         }
 
         // GET: api/Routes
@@ -38,11 +40,13 @@ namespace FastXBookingSample.Controllers
             try
             {
                 return Ok(_mapper.Map<List<RouteDto>>(_routeRepository.GetRoutesByBusId(id)));
-            }catch(RouteNotFoundException ex)
+            }catch(BusNotFoundException ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }catch(Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
         }
@@ -68,10 +72,12 @@ namespace FastXBookingSample.Controllers
             }
             catch (RouteNotFoundException ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
         }
@@ -89,10 +95,12 @@ namespace FastXBookingSample.Controllers
             }
             catch (RouteNotFoundException ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
         }
@@ -109,10 +117,12 @@ namespace FastXBookingSample.Controllers
             }
             catch (RouteNotFoundException ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
         }
@@ -127,10 +137,12 @@ namespace FastXBookingSample.Controllers
             }
             catch (RouteNotFoundException ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
         }

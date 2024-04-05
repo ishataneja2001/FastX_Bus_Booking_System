@@ -23,11 +23,13 @@ namespace FastXBookingSample.Controllers
     {
         private readonly IAmenityRepository _amenityRepository;
         private readonly IMapper _mapper;
+        private readonly ILogger<AmenitiesController> _logger;
 
-        public AmenitiesController(IAmenityRepository amenityRepository,IMapper mapper)
+        public AmenitiesController(IAmenityRepository amenityRepository,IMapper mapper, ILogger<AmenitiesController> logger)
         {
             _amenityRepository = amenityRepository;
             _mapper = mapper;
+            _logger = logger;
         }
 
         // GET: api/Amenities
@@ -37,8 +39,9 @@ namespace FastXBookingSample.Controllers
             try
             {
                 return Ok(_mapper.Map<List<AmenityDto>>(_amenityRepository.GetAllAmenities()));
-            }catch(AmenityNotFoundException ex)
+            }catch(Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
             }
             
@@ -61,9 +64,11 @@ namespace FastXBookingSample.Controllers
                 return Ok(_amenityRepository.UpdateAmenity(id, _mapper.Map<Amenity>(amenitydto)));
             }catch(AmenityNotFoundException ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }catch(Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
             
@@ -83,10 +88,12 @@ namespace FastXBookingSample.Controllers
             }
             catch(AmenityNotFoundException ex) 
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
         }
@@ -103,9 +110,11 @@ namespace FastXBookingSample.Controllers
 
             }catch(AmenityNotFoundException ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }catch(Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
         }
@@ -120,9 +129,11 @@ namespace FastXBookingSample.Controllers
 
             }catch(AmenityNotFoundException ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }catch(Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
         }
@@ -137,9 +148,11 @@ namespace FastXBookingSample.Controllers
 
             }catch (AmenityNotFoundException ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }catch(Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
 

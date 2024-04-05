@@ -3,6 +3,7 @@ using FastXBookingSample.Exceptions;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace FastXBookingSample.Repository
 {
@@ -46,7 +47,14 @@ namespace FastXBookingSample.Repository
 
         public List<Bus> GetBusByDetails(string origin, string destination, DateOnly date)
         {
-            List<Bus> buses = _context.Buses.Where(x => x.Origin == origin && x.Destination == destination && x.DepartureDate.ToShortDateString() == date.ToString())   .ToList();
+            DateTime startDate = date.ToDateTime(TimeOnly.Parse("12:00 PM"));
+            DateTime endDate = startDate.AddDays(1);
+            List<Bus> buses = _context.Buses
+                    .Where(x => x.Origin == origin &&
+                                x.Destination == destination &&
+                                x.DepartureDate >= startDate &&
+                                x.DepartureDate < endDate)
+                    .ToList();
             return buses;
         }
 

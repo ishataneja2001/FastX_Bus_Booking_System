@@ -21,12 +21,13 @@ namespace FastXBookingSample.Controllers
     {
         private readonly IAdminRepository _adminRepository;
         private readonly IMapper _mapper;
+        private readonly ILogger<AdminController> _logger;
 
-        public AdminController(IAdminRepository adminRepository, IMapper mapper)
+        public AdminController(IAdminRepository adminRepository, IMapper mapper, ILogger<AdminController> logger)
         {
             _adminRepository = adminRepository;
-            _mapper = mapper;           
-
+            _mapper = mapper;
+            _logger = logger;
         }
 
         // GET: api/Admin
@@ -38,11 +39,9 @@ namespace FastXBookingSample.Controllers
             {
                 return Ok(_mapper.Map<List<UserDto>>(_adminRepository.GetAllAdmin()));
             }
-            catch(AdminNotFoundException ex) 
+            catch(Exception ex)
             {
-                return NotFound(ex.Message);
-            }catch(Exception ex)
-            {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
         }
@@ -67,10 +66,12 @@ namespace FastXBookingSample.Controllers
             }
             catch(AdminNotFoundException ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return StatusCode(500);
 
             }
@@ -92,10 +93,12 @@ namespace FastXBookingSample.Controllers
                 return Ok(_adminRepository.PostAdmin(user));
             }catch(AdminNotFoundException ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
             catch(Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
             
@@ -111,9 +114,11 @@ namespace FastXBookingSample.Controllers
                 return Ok(_adminRepository.DeleteAdmin(id));
             }catch (AdminNotFoundException ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }catch(Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
             
@@ -129,10 +134,12 @@ namespace FastXBookingSample.Controllers
             }
             catch(AdminNotFoundException ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
 

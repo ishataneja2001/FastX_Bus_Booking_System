@@ -21,11 +21,13 @@ namespace FastXBookingSample.Controllers
     {
         private readonly IBusOperatorRepository _busOperatorRepository;
         private readonly IMapper _mapper;
+        private readonly ILogger<BusOperatorController> _logger;
 
-        public BusOperatorController(IBusOperatorRepository busOperatorRepository, IMapper mapper)
+        public BusOperatorController(IBusOperatorRepository busOperatorRepository, IMapper mapper, ILogger<BusOperatorController> logger)
         {
             _busOperatorRepository = busOperatorRepository;
             _mapper = mapper;
+            _logger = logger;
         }
 
         // GET: api/BusOperator
@@ -40,12 +42,9 @@ namespace FastXBookingSample.Controllers
                 return Ok(_mapper.Map<List<UserDto>>(_busOperatorRepository.GetAllBusOperators()));
 
             }
-            catch (BusOperatorNotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
             catch(Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
         }
@@ -72,10 +71,12 @@ namespace FastXBookingSample.Controllers
             }
             catch (BusOperatorNotFoundException ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
         }
@@ -95,10 +96,12 @@ namespace FastXBookingSample.Controllers
             }
             catch (BusOperatorNotFoundException ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
         }
@@ -116,10 +119,12 @@ namespace FastXBookingSample.Controllers
             }
             catch (BusOperatorNotFoundException ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
         }
@@ -135,10 +140,12 @@ namespace FastXBookingSample.Controllers
             }
             catch (BusOperatorNotFoundException ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
         }

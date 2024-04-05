@@ -1,14 +1,17 @@
-﻿using FastXBookingSample.Models;
+﻿using FastXBookingSample.Exceptions;
+using FastXBookingSample.Models;
 
 namespace FastXBookingSample.Repository
 {
     public class BusSeatRepository : IBusSeatRepository
     {
         private readonly BookingContext _context;
+        private readonly IBusRepository _busRepository;
 
-        public BusSeatRepository(BookingContext context)
+        public BusSeatRepository(BookingContext context, IBusRepository busRepository)
         {
             _context = context;
+            _busRepository = busRepository;
         }
 
         public void AddSeatByBusId(int busid,int seats)
@@ -34,6 +37,8 @@ namespace FastXBookingSample.Repository
 
         public List<BusSeat> GetSeatsByBusId(int busid)
         {
+            if (!_busRepository.BusExists(busid))
+                throw new BusNotFoundException();
             return _context.BusSeats.Where(x=>x.BusId == busid).ToList();
         }
     }

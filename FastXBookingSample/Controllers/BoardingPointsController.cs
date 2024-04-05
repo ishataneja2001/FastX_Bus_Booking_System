@@ -24,12 +24,14 @@ namespace FastXBookingSample.Controllers
         private readonly IBoardingPointRepository _boardingPointRepository;
         private readonly IBusRepository _busRepository;
         private readonly IMapper _mapper;
+        private readonly ILogger<BoardingPointsController> _logger;
 
-        public BoardingPointsController(IBoardingPointRepository boardingPointRepository, IBusRepository busRepository,IMapper mapper)
+        public BoardingPointsController(IBoardingPointRepository boardingPointRepository, IBusRepository busRepository,IMapper mapper, ILogger<BoardingPointsController> logger)
         {
             _boardingPointRepository = boardingPointRepository;
             _busRepository = busRepository;
             _mapper = mapper;
+            _logger = logger;
         }
 
 
@@ -46,9 +48,11 @@ namespace FastXBookingSample.Controllers
                 return Ok(_mapper.Map<List<BoardingPointDto>>(_boardingPointRepository.GetBoardingPointsByBusId(busid)));
             }catch(BoardingPointNotFoundException ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }catch(Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
         }
@@ -74,9 +78,11 @@ namespace FastXBookingSample.Controllers
                 return Ok(_boardingPointRepository.UpdateBoardingPoints(id, _mapper.Map<BoardingPoint>(boardingPointdto)));
             }catch (BoardingPointNotFoundException ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
         }
@@ -97,10 +103,12 @@ namespace FastXBookingSample.Controllers
             }
             catch (BoardingPointNotFoundException ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
         }
@@ -123,10 +131,12 @@ namespace FastXBookingSample.Controllers
             }
             catch (BoardingPointNotFoundException ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
         }
@@ -142,10 +152,12 @@ namespace FastXBookingSample.Controllers
             }
             catch (BoardingPointNotFoundException ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
         }

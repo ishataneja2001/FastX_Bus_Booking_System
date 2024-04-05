@@ -64,6 +64,7 @@ namespace FastXBookingSample
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             builder.Services.AddDbContext<BookingContext>(options => options.UseSqlServer(builder.Configuration["ConnectionStrings:myconnection"]));
             builder.Services.AddControllers().AddNewtonsoftJson();
+            builder.Logging.AddLog4Net();
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
