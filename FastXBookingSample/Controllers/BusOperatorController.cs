@@ -70,6 +70,14 @@ namespace FastXBookingSample.Controllers
                 user.Role = "Bus Operator";
                 return Ok(_busOperatorRepository.ModifyBusOperatorDetails(id, user));
             }
+            catch (InvalidUsersPasswordException ex)
+            {
+                return StatusCode(406, ex.Message);
+            }
+            catch (InvalidUsersEmailException ex)
+            {
+                return StatusCode(406, ex.Message);
+            }
             catch (BusOperatorNotFoundException ex)
             {
                 return NotFound(ex.Message);
@@ -92,6 +100,14 @@ namespace FastXBookingSample.Controllers
                 User user = _mapper.Map<User>(userdto);
                 user.Role = "Bus Operator";
                 return Ok(_busOperatorRepository.PostBusOperator(user));
+            }
+            catch (InvalidUsersPasswordException ex)
+            {
+                return StatusCode(406, ex.Message);
+            }
+            catch (InvalidUsersEmailException ex)
+            {
+                return StatusCode(406,ex.Message);
             }
             catch (BusOperatorNotFoundException ex)
             {
