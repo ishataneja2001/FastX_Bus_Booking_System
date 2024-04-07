@@ -27,6 +27,8 @@ namespace FastXBookingSample.Repository
 
         public string DeleteBus(int id)
         {
+            if(!BusExists(id))
+                throw new BusNotFoundException();
             if (_context.Buses == null)
                 throw new BusNotFoundException();
             Bus bus = _context.Buses.FirstOrDefault(x=>x.BusId == id);
@@ -61,6 +63,8 @@ namespace FastXBookingSample.Repository
 
         public Bus GetBusById(int id)
         {
+            if (!BusExists(id))
+                throw new BusNotFoundException();
             Bus bus = _context.Buses.FirstOrDefault(x => x.BusId == id);
             return bus;
         }
@@ -68,6 +72,8 @@ namespace FastXBookingSample.Repository
 
         public string UpdateBus(int id, Bus bus)
         {
+            if (!BusExists(id))
+                throw new BusNotFoundException();
             _context.Entry(bus).State = EntityState.Modified;
             int s = _context.SaveChanges();
             if (s > 0)
@@ -92,6 +98,8 @@ namespace FastXBookingSample.Repository
 
         public string AddBusAmenity(int busid, int amenityid)
         {
+            if (!_busRepository.BusExists(busId))
+                throw new BusNotFoundException();
             var bus = _context.Buses.FirstOrDefault(e => e.BusId == busid);
             var amenity = _context.Amenities.FirstOrDefault(x => x.AmenityId == amenityid);
             BusAmenity busAmenity = new BusAmenity()

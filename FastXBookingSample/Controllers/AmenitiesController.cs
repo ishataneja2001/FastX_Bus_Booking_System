@@ -127,7 +127,7 @@ namespace FastXBookingSample.Controllers
             {
                 return Ok(_mapper.Map<List<AmenityDto>>(_amenityRepository.GetAllAmenitiesByBusId(busid)));
 
-            }catch(AmenityNotFoundException ex)
+            }catch(BusNotFoundException ex)
             {
                 _logger.LogError(ex.Message);
                 return NotFound(ex.Message);

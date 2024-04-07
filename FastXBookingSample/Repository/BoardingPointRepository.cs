@@ -8,9 +8,11 @@ namespace FastXBookingSample.Repository
     public class BoardingPointRepository:IBoardingPointRepository
     {
         private readonly BookingContext _context;
-        public BoardingPointRepository(BookingContext context)
+        private readonly IBusRepository _busRepository;
+        public BoardingPointRepository(BookingContext context, IBusRepository busRepository)
         {
             _context = context;
+            _busRepository = busRepository;
         }
 
         public bool BoardingPointExists(int id)
@@ -32,6 +34,8 @@ namespace FastXBookingSample.Repository
 
         public List<BoardingPoint> GetBoardingPointsByBusId(int busid)
         {
+            if(!_busRepository.BusExists(busid))
+                throw new BusNotFoundException();
             return _context.BoardingPoints.Where(x => x.BusId == busid).ToList();
             
         }
