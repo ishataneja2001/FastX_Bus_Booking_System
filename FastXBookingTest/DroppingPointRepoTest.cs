@@ -1,5 +1,5 @@
-﻿using FastXBookingSample.Models;
-using FastXBookingSample.Repository;
+﻿using FastXBookingSample.Interface;
+using FastXBookingSample.Models;
 using Microsoft.AspNetCore.JsonPatch;
 using Moq;
 using System;

@@ -1,5 +1,5 @@
-﻿using FastXBookingSample.Models;
-using FastXBookingSample.Repository;
+﻿using FastXBookingSample.Interface;
+using FastXBookingSample.Models;
 using Moq;
 using System;
 using System.Collections.Generic;
