@@ -20,11 +20,13 @@ namespace FastXBookingSample.Controllers
     {
         private readonly ISeatRepository _seatRepository;
         private readonly IMapper _mapper;
+        private readonly ILogger<SeatsController> _logger;
 
-        public SeatsController(ISeatRepository seatRepository,IMapper mapper)
+        public SeatsController(ISeatRepository seatRepository,IMapper mapper, ILogger<SeatsController> logger)
         {
             _seatRepository = seatRepository;
             _mapper = mapper;
+            _logger = logger;
         }
 
         // GET: api/Seats
@@ -37,14 +39,9 @@ namespace FastXBookingSample.Controllers
             try
             {
                 return Ok(_mapper.Map<List<SeatDto>>(_seatRepository.GetSeatsByBookingId(bookingId)));
-            }catch(NoSeatsAvailableException ex)
-            {
-                return NotFound(ex.Message);
-            }catch(NoBookingAvailableException ex)
-            {
-                return NotFound(ex.Message);
             }catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
 
             }
@@ -60,16 +57,9 @@ namespace FastXBookingSample.Controllers
             {
                 return Ok(_mapper.Map<List<SeatDto>>(_seatRepository.GetSeatsByUserId(userId)));
             }
-            catch (NoSeatsAvailableException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (UserNotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
 
             }
@@ -89,13 +79,10 @@ namespace FastXBookingSample.Controllers
             {
                 _seatRepository.PostSeatByBookingId(_mapper.Map<Seat>(seatDto));
                 return NoContent();
-            }
-            catch (NoSeatsAvailableException ex)
-            {
-                return NotFound(ex.Message);
-            }          
+            }        
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
 
             }
@@ -113,13 +100,10 @@ namespace FastXBookingSample.Controllers
                 _seatRepository.DeleteSeatBySeatId(seatId);
                 return NoContent();
             }
-            catch (NoSeatsAvailableException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            
+        
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
 
             }

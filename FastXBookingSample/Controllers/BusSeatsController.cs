@@ -20,11 +20,13 @@ namespace FastXBookingSample.Controllers
     {
         private readonly IBusSeatRepository _busSeatRepository;
         private readonly IMapper _mapper;
+        private readonly ILogger<BusSeatsController> _logger;
 
-        public BusSeatsController(IBusSeatRepository busSeatRepository,IMapper mapper)
+        public BusSeatsController(IBusSeatRepository busSeatRepository,IMapper mapper,ILogger<BusSeatsController> logger)
         {
             _busSeatRepository = busSeatRepository;
             _mapper = mapper;
+            _logger = logger;
         }
 
        
@@ -42,13 +44,12 @@ namespace FastXBookingSample.Controllers
             }
             catch(BusNotFoundException ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
-            catch (NoBusAvailableException ex)
+            catch (Exception ex)
             {
-                return NotFound(ex.Message);
-            }catch (Exception ex)
-            {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
         }

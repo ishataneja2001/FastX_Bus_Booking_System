@@ -21,11 +21,13 @@ namespace FastXBookingSample.Controllers
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
+        private readonly ILogger<UsersController> _logger;
 
-        public UsersController(IUserRepository userRepository,IMapper mapper)
+        public UsersController(IUserRepository userRepository,IMapper mapper, ILogger<UsersController> logger)
         {
             _userRepository = userRepository;
             _mapper = mapper;
+            _logger = logger;
         }
 
         // GET: api/Users
@@ -37,11 +39,10 @@ namespace FastXBookingSample.Controllers
             try
             {
                 return Ok(_mapper.Map<List<UserDto>>(_userRepository.GetAllUsers()));
-            }catch(UserNotFoundException ex)
+            }
+            catch(Exception ex)
             {
-                return NotFound(ex.Message);
-            }catch(Exception ex)
-            {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
         }
@@ -80,6 +81,7 @@ namespace FastXBookingSample.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
         }
@@ -108,10 +110,12 @@ namespace FastXBookingSample.Controllers
             }
             catch (UserNotFoundException ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
         }
@@ -129,10 +133,12 @@ namespace FastXBookingSample.Controllers
             }
             catch (UserNotFoundException ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
         }
@@ -148,10 +154,12 @@ namespace FastXBookingSample.Controllers
             }
             catch (UserNotFoundException ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
         }

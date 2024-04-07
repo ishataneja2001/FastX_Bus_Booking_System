@@ -8,13 +8,17 @@ namespace FastXBookingSample.Repository
     public class RouteRepository : IRouteRepository
     {
         private readonly BookingContext _context;
+        private readonly IBusRepository _busRepository;
 
-        public RouteRepository(BookingContext context)
+        public RouteRepository(BookingContext context, IBusRepository busRepository)
         {
             _context = context;
+            _busRepository = busRepository;
         }
         public List<Models.Route> GetRoutesByBusId(int busid)
         {
+            if(!_busRepository.BusExists(busid))
+                throw new BusNotFoundException();
             return _context.Routes.Where(x=>x.BusId == busid).ToList();
 
             

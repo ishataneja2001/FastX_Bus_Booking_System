@@ -21,11 +21,13 @@ namespace FastXBookingSample.Controllers
     {
         private readonly IBookingRepository _bookingRepository;
         private readonly IMapper _mapper;
+        private readonly ILogger<BookingsController> _logger;
 
-        public BookingsController(BookingContext context, IBookingRepository bookingRepository,IMapper mapper)
+        public BookingsController(BookingContext context, IBookingRepository bookingRepository,IMapper mapper, ILogger<BookingsController> logger)
         {
             _bookingRepository = bookingRepository;
             _mapper = mapper;
+            _logger = logger;
         }
 
         // GET: api/Bookings
@@ -40,11 +42,9 @@ namespace FastXBookingSample.Controllers
                 return Ok(_mapper.Map<List<BookingDto>>(_bookingRepository.GetAllBookingsByBusId(busid)));
 
             }
-            catch (NoBookingAvailableException ex)
+            catch (Exception ex)
             {
-                return NotFound(ex.Message); 
-            }catch (Exception ex)
-            {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
         }
@@ -67,7 +67,20 @@ namespace FastXBookingSample.Controllers
         [Authorize(Roles = "User")]
         public async Task<IActionResult> DeleteBooking(int id)
         {
-            return Ok(_bookingRepository.DeleteBooking(id));
+            try
+            {
+                return Ok(_bookingRepository.DeleteBooking(id));
+            }
+            catch(BookingNotFoundException ex)
+            {
+                _logger.LogError(ex.Message);
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return NotFound(ex.Message);
+            }
         }
 
     }

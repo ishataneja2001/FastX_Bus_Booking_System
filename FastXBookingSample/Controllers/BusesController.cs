@@ -23,13 +23,15 @@ namespace FastXBookingSample.Controllers
         private readonly IMapper _mapper;
         private readonly IBusSeatRepository _busSeatRepository;
         private readonly BookingContext _context;
+        private readonly ILogger<BusesController> _logger;
 
-        public BusesController(IBusRepository busrepository,IMapper mapper, IBusSeatRepository busSeatRepository,BookingContext context)
+        public BusesController(IBusRepository busrepository,IMapper mapper, IBusSeatRepository busSeatRepository,BookingContext context,ILogger<BusesController> logger)
         {
             _busrepository = busrepository;
             _mapper = mapper;
             _busSeatRepository = busSeatRepository;
             _context = context;
+            _logger = logger;
         }
 
         // GET: api/Buses
@@ -48,9 +50,11 @@ namespace FastXBookingSample.Controllers
                 return Ok(buses);
             }catch (NoBusAvailableException ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }catch(Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
         }
@@ -73,10 +77,12 @@ namespace FastXBookingSample.Controllers
             }
             catch(NoBusAvailableException ex) 
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
         }
@@ -113,10 +119,12 @@ namespace FastXBookingSample.Controllers
             }
             catch (NoBusAvailableException ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
         }
@@ -143,10 +151,12 @@ namespace FastXBookingSample.Controllers
             }
             catch (NoBusAvailableException ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
         }
@@ -169,10 +179,12 @@ namespace FastXBookingSample.Controllers
             }
             catch (NoBusAvailableException ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
         }
@@ -180,21 +192,24 @@ namespace FastXBookingSample.Controllers
         [HttpGet("GetBusByDetails")]
         [Authorize(Roles = "Bus Operator,User,Admin")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Bus>))]
-        public async Task<ActionResult<IEnumerable<Bus>>> GetBusByDetails([FromQuery] string origin, [FromQuery] string destination, [FromQuery] DateOnly date)
+        public async Task<ActionResult<IEnumerable<Bus>>> GetBusByDetails([FromQuery] string origin, [FromQuery] string destination, [FromQuery] string date)
         {
             try
             {
-                var buses = _mapper.Map<List<BusDto>>(_busrepository.GetBusByDetails(origin, destination, date));
+                DateOnly dateOnly = DateOnly.Parse(date);
+                var buses = _mapper.Map<List<BusDto>>(_busrepository.GetBusByDetails(origin, destination, dateOnly));
                 if (buses == null)
                     return BadRequest(ModelState);
                 return Ok(buses);
             }
             catch (NoBusAvailableException ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
         }
