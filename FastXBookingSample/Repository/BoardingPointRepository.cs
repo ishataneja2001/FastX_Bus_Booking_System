@@ -1,6 +1,7 @@
 ﻿using FastXBookingSample.Models;
 using FastXBookingSample.Exceptions;
 using Microsoft.AspNetCore.JsonPatch;
+using FastXBookingSample.Interface;
 
 namespace FastXBookingSample.Repository
 {

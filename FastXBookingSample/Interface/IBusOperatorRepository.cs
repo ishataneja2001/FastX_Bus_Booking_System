@@ -1,7 +1,7 @@
 ﻿using FastXBookingSample.Models;
 using Microsoft.AspNetCore.JsonPatch;
 
-namespace FastXBookingSample.Repository
+namespace FastXBookingSample.Interface
 {
     public interface IBusOperatorRepository
     {

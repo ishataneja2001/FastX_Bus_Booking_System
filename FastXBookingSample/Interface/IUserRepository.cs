@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.JsonPatch;
 using System.Drawing;
 
-namespace FastXBookingSample.Repository
+namespace FastXBookingSample.Interface
 {
     public interface IUserRepository
     {

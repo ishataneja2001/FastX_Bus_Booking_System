@@ -1,7 +1,7 @@
 ﻿using FastXBookingSample.Models;
 using Microsoft.AspNetCore.JsonPatch;
 
-namespace FastXBookingSample.Repository
+namespace FastXBookingSample.Interface
 {
     public interface IDroppingPointRepository
     {
@@ -11,6 +11,6 @@ namespace FastXBookingSample.Repository
         string PostDroppingPoint(DroppingPoint droppingPoint);
         bool DroppingPointExists(int id);
 
-        string PatchDroppingPoint(int id , JsonPatchDocument<DroppingPoint> patchDroppingPoint);
+        string PatchDroppingPoint(int id, JsonPatchDocument<DroppingPoint> patchDroppingPoint);
     }
 }

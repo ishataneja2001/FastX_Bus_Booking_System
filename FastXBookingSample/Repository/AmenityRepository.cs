@@ -2,6 +2,7 @@
 using FastXBookingSample.Exceptions;
 using Microsoft.AspNetCore.JsonPatch;
 using System.Reflection.Metadata.Ecma335;
+using FastXBookingSample.Interface;
 
 namespace FastXBookingSample.Repository
 {

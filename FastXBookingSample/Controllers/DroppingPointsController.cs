@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using FastXBookingSample.DTO;
 using FastXBookingSample.Exceptions;
+using FastXBookingSample.Interface;
 using FastXBookingSample.Models;
-using FastXBookingSample.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;

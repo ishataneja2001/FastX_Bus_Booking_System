@@ -1,5 +1,6 @@
 using AutoMapper;
 using FastXBookingSample.Helper;
+using FastXBookingSample.Interface;
 using FastXBookingSample.Models;
 using FastXBookingSample.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

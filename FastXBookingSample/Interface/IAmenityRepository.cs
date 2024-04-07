@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.JsonPatch;
 using System.Runtime.Intrinsics.Arm;
 
-namespace FastXBookingSample.Repository
+namespace FastXBookingSample.Interface
 {
     public interface IAmenityRepository
     {
