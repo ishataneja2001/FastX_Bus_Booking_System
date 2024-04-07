@@ -1,7 +1,7 @@
 ﻿using FastXBookingSample.Models;
 using Microsoft.AspNetCore.JsonPatch;
 
-namespace FastXBookingSample.Repository
+namespace FastXBookingSample.Interface
 {
     public interface IBusRepository
     {
@@ -15,6 +15,6 @@ namespace FastXBookingSample.Repository
         bool RoleExists(int id);
 
         string AddBusAmenity(int busid, int amenityid);
-        string PatchBus(int id , JsonPatchDocument<Bus> patchBus);
+        string PatchBus(int id, JsonPatchDocument<Bus> patchBus);
     }
 }

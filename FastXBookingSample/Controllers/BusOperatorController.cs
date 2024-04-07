@@ -6,12 +6,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FastXBookingSample.Models;
-using FastXBookingSample.Repository;
 using AutoMapper;
 using FastXBookingSample.DTO;
 using Microsoft.AspNetCore.JsonPatch;
 using FastXBookingSample.Exceptions;
 using Microsoft.AspNetCore.Authorization;
+using FastXBookingSample.Interface;
 
 namespace FastXBookingSample.Controllers
 {

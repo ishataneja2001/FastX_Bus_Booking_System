@@ -1,6 +1,6 @@
 ﻿using FastXBookingSample.Models;
 
-namespace FastXBookingSample.Repository
+namespace FastXBookingSample.Interface
 {
     public interface IBookingHistoryRepository
     {

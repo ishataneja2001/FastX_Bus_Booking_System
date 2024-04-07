@@ -1,4 +1,5 @@
 ﻿using FastXBookingSample.Exceptions;
+using FastXBookingSample.Interface;
 using FastXBookingSample.Models;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;

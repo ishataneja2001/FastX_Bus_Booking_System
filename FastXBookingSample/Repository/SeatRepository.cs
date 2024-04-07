@@ -1,4 +1,5 @@
-﻿using FastXBookingSample.Models;
+﻿using FastXBookingSample.Interface;
+using FastXBookingSample.Models;
 using Microsoft.CodeAnalysis.Operations;
 using Microsoft.EntityFrameworkCore;
 

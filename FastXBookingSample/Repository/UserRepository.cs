@@ -2,6 +2,7 @@
 using FastXBookingSample.Exceptions;
 using Microsoft.AspNetCore.JsonPatch;
 using System.Text.RegularExpressions;
+using FastXBookingSample.Interface;
 
 namespace FastXBookingSample.Repository
 {

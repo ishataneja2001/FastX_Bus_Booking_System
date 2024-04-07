@@ -1,4 +1,5 @@
 ﻿using FastXBookingSample.Exceptions;
+using FastXBookingSample.Interface;
 using FastXBookingSample.Models;
 
 namespace FastXBookingSample.Repository
