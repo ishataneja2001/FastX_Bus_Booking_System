@@ -58,11 +58,10 @@ namespace FastXBookingSample.Repository
             return buses;
         }
 
-        public async Task<Bus> GetBusById(int id)
+        public Bus GetBusById(int id)
         {
-            // Use asynchronous LINQ method to query the database
-            Bus bus = await _context.Buses.FirstOrDefaultAsync(x => x.BusId == id);
-            return bus; // Return the retrieved Bus entity
+            Bus bus = _context.Buses.FirstOrDefault(x => x.BusId == id);
+            return bus;
         }
 
 

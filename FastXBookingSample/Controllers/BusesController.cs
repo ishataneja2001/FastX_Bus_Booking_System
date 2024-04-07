@@ -70,9 +70,7 @@ namespace FastXBookingSample.Controllers
             {
                 var bus = _mapper.Map<BusDto>(_busrepository.GetBusById(id));
                 if (bus == null)
-                {
-                    return NotFound();
-                }
+                { return NotFound(); }
                 return Ok(bus);
             }
             catch(NoBusAvailableException ex) 
@@ -103,7 +101,7 @@ namespace FastXBookingSample.Controllers
                 }
                 if (!_busrepository.BusExists(id))
                     return NotFound();
-                Bus existingBus = await _busrepository.GetBusById(id);
+                Bus existingBus = _busrepository.GetBusById(id);
                 if (existingBus.NoOfSeats != busdto.NoOfSeats)
                 {
                     _busSeatRepository.DeleteSeatsByBusId(busdto.BusId);

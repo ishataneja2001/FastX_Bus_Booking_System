@@ -7,9 +7,9 @@ namespace FastXBookingSample.Repository
     public class DroppingPointRepository : IDroppingPointRepository
     {
         private readonly BookingContext _context;
-        private readonly BusRepository _busRepository;
+        private readonly IBusRepository _busRepository;
 
-        public DroppingPointRepository(BookingContext context, BusRepository busRepository)
+        public DroppingPointRepository(BookingContext context, IBusRepository busRepository)
         {
             _context = context;
             _busRepository = busRepository;
