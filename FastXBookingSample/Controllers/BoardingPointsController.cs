@@ -43,10 +43,8 @@ namespace FastXBookingSample.Controllers
         {
             try
             {
-                if (!_busRepository.BusExists(busid))
-                    return BadRequest(ModelState);
                 return Ok(_mapper.Map<List<BoardingPointDto>>(_boardingPointRepository.GetBoardingPointsByBusId(busid)));
-            }catch(BoardingPointNotFoundException ex)
+            }catch(BusNotFoundException ex)
             {
                 _logger.LogError(ex.Message);
                 return NotFound(ex.Message);

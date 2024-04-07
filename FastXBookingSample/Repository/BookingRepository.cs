@@ -8,9 +8,13 @@ namespace FastXBookingSample.Repository
     public class BookingRepository : IBookingRepository
     {
         private readonly BookingContext _context;
-        public BookingRepository(BookingContext context)
+        private readonly IBusRepository _busRepository;
+        private readonly IUserRepository _userRepository;
+        public BookingRepository(BookingContext context, IBusRepository busRepository, IUserRepository userRepository)
         {
             _context = context;
+            _busRepository = busRepository;
+            _userRepository = userRepository;
         }
         public string DeleteBooking(int id)
         {
@@ -23,12 +27,16 @@ namespace FastXBookingSample.Repository
 
         public List<Booking> GetAllBookingsByBusId(int busId)
         {
+            if(!_busRepository.BusExists(busId))
+                throw new BusNotFoundException();
             return _context.Bookings.Where(x=>busId== x.BusId).ToList();
             
         }
 
         public List<Booking> GetAllBookingsByUserId(int userId)
         {
+            if (!_userRepository.IsUserExists(userId))
+                throw new UserNotFoundException();
             return _context.Bookings.Where(x => userId == x.UserId).ToList();
             
         }
@@ -40,8 +48,8 @@ namespace FastXBookingSample.Repository
 
         public Booking PostBooking(Booking booking)
         {
-            //if (!IsUser(Convert.ToInt32(booking.UserId)))
-                //return "Not a User";
+            if (!IsUser(Convert.ToInt32(booking.UserId)))
+                throw new UserNotFoundException();
             _context.Bookings.Add(booking);
             _context.SaveChanges();
             return booking;
