@@ -67,6 +67,11 @@ namespace FastXBookingSample
             builder.Services.AddControllers().AddNewtonsoftJson();
             builder.Logging.AddLog4Net();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddControllersWithViews()
+        .AddNewtonsoftJson(options =>
+        {
+            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+        });
 
             var app = builder.Build();
 
