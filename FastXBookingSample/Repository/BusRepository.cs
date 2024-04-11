@@ -98,7 +98,7 @@ namespace FastXBookingSample.Repository
 
         public string AddBusAmenity(int busid, int amenityid)
         {
-            if (!_busRepository.BusExists(busId))
+            if (!BusExists(busid))
                 throw new BusNotFoundException();
             var bus = _context.Buses.FirstOrDefault(e => e.BusId == busid);
             var amenity = _context.Amenities.FirstOrDefault(x => x.AmenityId == amenityid);
