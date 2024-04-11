@@ -53,7 +53,6 @@ namespace FastXBookingSample.Repository
             _context.Bookings.Add(booking);
             _context.SaveChanges();
             return booking;
-            throw new NoBookingAvailableException();
         }
 
         public bool IsUser(int userId)
