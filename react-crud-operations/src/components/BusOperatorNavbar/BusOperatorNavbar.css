@@ -1,0 +1,59 @@
+/* BusOperatorNavbar.css */
+
+/* Navbar background color */
+.navbar.bg-dark {
+  background-color: rgb(105, 110, 176) !important; /* Blue background color */
+}
+
+/* Navbar links styling */
+.navbar a.navbar-brand,
+.navbar a.nav-link,
+.navbar button.nav-link {
+  color: #140808 !important; /* White text color */
+}
+
+/* Bold font weight for all navbar links */
+.navbar .navbar-nav .nav-link {
+  font-weight: bold;
+}
+
+/* Margin for navbar-nav */
+.navbar-nav {
+  margin-right: 20px;
+}
+
+/* Styling for logout button */
+.logout-btn {
+  display: flex;
+  align-items: center;
+  color: rgb(6, 174, 208); /* Text color for the button */
+  cursor: pointer;
+}
+
+/* Styling for logout image */
+.logout-image {
+  max-width: 30px;
+  height: auto;
+  margin-right: 5px; /* Add right margin to separate from text */
+  background-color: white; /* White background color for the image */
+  padding: 0; /* Reset padding to zero */
+}
+
+/* Hover effect for navbar links */
+.navbar a.navbar-brand:hover,
+.navbar a.nav-link:hover,
+.navbar button.nav-link:hover {
+  color: #ffc107 !important; /* Change text color on hover */
+}
+
+/* Hover effect for specific links */
+.navbar .navbar-nav .nav-item.booking-history a.nav-link:hover,
+.navbar .navbar-nav .nav-item.fast a.nav-link:hover,
+.navbar .navbar-nav .nav-item.login a.nav-link:hover {
+  color: #ffc107 !important; /* Change text color on hover */
+}
+
+/* Hover effect for the logout button */
+.logout-btn:hover {
+  background-color: #0056b3; /* Change background color on hover */
+}
