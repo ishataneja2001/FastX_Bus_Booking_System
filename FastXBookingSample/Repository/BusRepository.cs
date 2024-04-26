@@ -16,13 +16,13 @@ namespace FastXBookingSample.Repository
             _context = context;
         }
 
-        public string CreateBus(Bus bus)
+        public Bus CreateBus(Bus bus)
         {
             _context.Buses.Add(bus);
             int s=_context.SaveChanges();
             if (s > 0)
-                return "Succussfully Added";
-            else return "Not Added";
+                return bus;
+            else return new Bus();
         }
 
         public string DeleteBus(int id)
@@ -53,10 +53,13 @@ namespace FastXBookingSample.Repository
             DateTime startDate = date.ToDateTime(TimeOnly.Parse("12:00 PM"));
             DateTime endDate = startDate.AddDays(1);
             List<Bus> buses = _context.Buses
-                    .Where(x => x.Origin == origin &&
-                                x.Destination == destination &&
-                                x.DepartureDate >= startDate &&
-                                x.DepartureDate < endDate)
+                     .Where(x => x.Origin == origin &&
+                x.Destination == destination &&
+                x.DepartureDate >= startDate &&
+                x.DepartureDate < endDate)
+                .Include(b => b.BusAmenities)
+                       .ThenInclude(ba => ba.Amenity)
+                    .Include(b => b.BusSeats) 
                     .ToList();
             return buses;
         }
@@ -122,6 +125,15 @@ namespace FastXBookingSample.Repository
 
             return _context.SaveChanges() > 0 ? "Updated Sucessfully" : "Updation Failed ";
             
+        }
+
+        public List<Bus> GetBusByBusOperator(int busOperatorId)
+        {
+            return _context.Buses
+                       .Include(b => b.BusAmenities)
+                           .ThenInclude(ba => ba.Amenity)
+                       .Where(b => b.BusOperator == busOperatorId)
+                       .ToList();
         }
     }
 }

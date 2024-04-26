@@ -6,7 +6,7 @@ namespace FastXBookingSample.Interface
     {
         List<Seat> GetSeatsByBookingId(int bookingId);
         List<Seat> GetSeatsByUserId(int userId);
-        void PostSeatByBookingId(Seat seat);
+        string PostSeatByBookingId(Seat seat);
         void DeleteSeatBySeatId(int seatId);
         bool IsBookingExists(int id);
 

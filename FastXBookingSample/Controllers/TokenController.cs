@@ -55,7 +55,7 @@ namespace FastXBookingSample.Controllers
                 }
                 else
                 {
-                    return BadRequest("Invalid credentials");
+                    return StatusCode(401, "Invalid Credentials");
                 }
             }
             else

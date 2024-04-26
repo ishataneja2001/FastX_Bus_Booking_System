@@ -18,7 +18,7 @@ namespace FastXBookingSample.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Bus Operator")]
+    [Authorize(Roles = "Bus Operator,User")]
     public class AmenitiesController : ControllerBase
     {
         private readonly IAmenityRepository _amenityRepository;

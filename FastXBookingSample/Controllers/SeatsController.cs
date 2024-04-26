@@ -77,8 +77,8 @@ namespace FastXBookingSample.Controllers
         {
             try
             {
-                _seatRepository.PostSeatByBookingId(_mapper.Map<Seat>(seatDto));
-                return NoContent();
+                return Ok(_seatRepository.PostSeatByBookingId(_mapper.Map<Seat>(seatDto)));
+                
             }        
             catch (Exception ex)
             {

@@ -106,12 +106,18 @@ namespace FastXBookingSample.Controllers
             }
             catch (InvalidUsersEmailException ex)
             {
+                _logger.LogError(ex.Message);
                 return StatusCode(406, ex.Message);
             }
             catch (UserNotFoundException ex)
             {
                 _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
+            }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(409,ex.Message);
             }
             catch (Exception ex)
             {

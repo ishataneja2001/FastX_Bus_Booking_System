@@ -37,7 +37,7 @@ namespace FastXBookingSample.Controllers
         {
             try
             {
-                return Ok(_mapper.Map<List<BookingHistoryDto>>(_bookingHistoryRepository.GetAll()));
+                return Ok((_bookingHistoryRepository.GetAll()));
 
             }
             catch(Exception ex)
@@ -47,6 +47,52 @@ namespace FastXBookingSample.Controllers
             }
         }
 
-        
+
+        [HttpGet("getAllBookingsByUserId/{userId}")]
+        public async Task<ActionResult<IEnumerable<List<BookingHistoryDto>>>> GetAllBookingsByUserId(int userId)
+        {
+            try
+            {
+                return Ok((_bookingHistoryRepository.GetAllBookingsByUserId(userId)));
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return NotFound(ex.Message);
+            }
+        }
+
+        [HttpGet("getCancelledBookingsByUserId/{userId}")]
+        public async Task<ActionResult<IEnumerable<List<BookingHistoryDto>>>> GetCancelledBookingsByUserId(int userId)
+        {
+            try
+            {
+                return Ok((_bookingHistoryRepository.GetCancelledBookingsByUserId(userId)));
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return NotFound(ex.Message);
+            }
+        }
+
+        [HttpGet("getAllBookingsByBusId/{busId}")]
+        public async Task<ActionResult<IEnumerable<List<BookingHistoryDto>>>> GetAllBookingsByBus(int busId)
+        {
+            try
+            {
+                return Ok((_bookingHistoryRepository.GetAllBookingsByBus(busId)));
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return NotFound(ex.Message);
+            }
+        }
+
+
     }
 }
