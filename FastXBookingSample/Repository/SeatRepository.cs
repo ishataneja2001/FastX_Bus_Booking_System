@@ -21,7 +21,7 @@ namespace FastXBookingSample.Repository
             BusSeat busseat = _context.BusSeats.FirstOrDefault(x => x.SeatNo == seat.SeatNumber && x.BusId==(_context.Bookings.FirstOrDefault(x=>x.BookingId==seat.BookingId).BusId));
             busseat.IsBooked = false;
 
-            BookingHistory bookingHistory = _context.BookingHistories.FirstOrDefault(x => x.BookingId == seat.BookingId && x.Seats==Convert.ToString(seat.SeatNumber));
+            BookingHistory bookingHistory = _context.BookingHistories.FirstOrDefault(x => x.BookingId == seat.BookingId && x.Seats==Convert.ToString(seat.SeatNumber) && x.BookingDateTime==seat.BookingDateTime);
             bookingHistory.IsCancelled = true;
             _context.BookingHistories.Update(bookingHistory);
 
