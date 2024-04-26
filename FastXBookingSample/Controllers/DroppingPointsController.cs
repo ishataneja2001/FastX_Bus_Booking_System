@@ -12,7 +12,7 @@ namespace FastXBookingSample.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Bus Operator")]
+    [Authorize(Roles = "Bus Operator,User")]
     public class DroppingPointsController : ControllerBase
     {
         private readonly IDroppingPointRepository _droppingPointRepository;

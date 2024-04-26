@@ -142,7 +142,7 @@ namespace FastXBookingSample.Controllers
                 if (!_busrepository.RoleExists(busdto.BusOperator))
                     return BadRequest(ModelState);
                 var bus = _mapper.Map<Bus>(busdto);
-                string message = _busrepository.CreateBus(bus);
+                Bus message = _busrepository.CreateBus(bus);
                 _busSeatRepository.AddSeatByBusId(bus.BusId, bus.NoOfSeats);
 
                 return Ok(message);
@@ -195,7 +195,7 @@ namespace FastXBookingSample.Controllers
             try
             {
                 DateOnly dateOnly = DateOnly.Parse(date);
-                var buses = _mapper.Map<List<BusDto>>(_busrepository.GetBusByDetails(origin, destination, dateOnly));
+                var buses = (_busrepository.GetBusByDetails(origin, destination, dateOnly));
                 if (buses == null)
                     return BadRequest(ModelState);
                 return Ok(buses);
@@ -241,6 +241,24 @@ namespace FastXBookingSample.Controllers
             try
             {
                 return Ok(_busrepository.PatchBus(id, patchBus));
+
+            }
+            catch (NoBusAvailableException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+        [HttpGet("getBusByOperatorId")]
+        [Authorize(Roles ="Bus Operator")]
+        public IActionResult GetBusByBusOperatorId([FromQuery]int busOperatorId) {
+            try
+            {
+                return Ok(_busrepository.GetBusByBusOperator(busOperatorId));
 
             }
             catch (NoBusAvailableException ex)

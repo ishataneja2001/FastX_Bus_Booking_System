@@ -66,12 +66,22 @@ namespace FastXBookingSample
             builder.Services.AddDbContext<BookingContext>(options => options.UseSqlServer(builder.Configuration["ConnectionStrings:myconnection"]));
             builder.Services.AddControllers().AddNewtonsoftJson();
             builder.Logging.AddLog4Net();
+            builder.Services.AddHostedService<SeatCleanupService>();
             builder.Services.AddSwaggerGen();
             builder.Services.AddControllersWithViews()
         .AddNewtonsoftJson(options =>
         {
             options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
         });
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowSpecificOrigin", builder =>
+                {
+                    builder.WithOrigins("http://localhost:5173")
+                    .AllowAnyHeader()
+                           .AllowAnyMethod();
+                });
+            });
 
             var app = builder.Build();
 
@@ -83,6 +93,7 @@ namespace FastXBookingSample
             }
 
             app.UseHttpsRedirection();
+            app.UseCors("AllowSpecificOrigin");
             app.UseAuthentication();
             app.UseAuthorization();
 

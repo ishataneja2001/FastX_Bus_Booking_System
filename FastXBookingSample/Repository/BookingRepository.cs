@@ -2,6 +2,7 @@
 using FastXBookingSample.Exceptions;
 using System;
 using FastXBookingSample.Interface;
+using Microsoft.EntityFrameworkCore;
 
 namespace FastXBookingSample.Repository
 {
@@ -37,8 +38,14 @@ namespace FastXBookingSample.Repository
         {
             if (!_userRepository.IsUserExists(userId))
                 throw new UserNotFoundException();
-            return _context.Bookings.Where(x => userId == x.UserId).ToList();
-            
+            return _context.Bookings
+        .Include(b => b.Seats)  // Include related seats
+        .Include(b => b.Bus)
+        .Include(b => b.Boarding)
+        .Include(b => b.Dropping)
+        .Where(b => b.UserId == userId)
+        .ToList();
+
         }
 
         public bool IsBookingExists(int id)
@@ -50,6 +57,9 @@ namespace FastXBookingSample.Repository
         {
             if (!IsUser(Convert.ToInt32(booking.UserId)))
                 throw new UserNotFoundException();
+            Booking book = _context.Bookings.FirstOrDefault(x=>x.UserId == booking.UserId &&x.BusId == booking.BusId && x.BoardingId==booking.BoardingId && x.DroppingId==booking.DroppingId);
+            if(book != null)
+               return book;
             _context.Bookings.Add(booking);
             _context.SaveChanges();
             return booking;

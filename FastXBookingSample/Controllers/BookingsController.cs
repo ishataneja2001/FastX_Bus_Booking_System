@@ -31,7 +31,7 @@ namespace FastXBookingSample.Controllers
         }
 
         // GET: api/Bookings
-        [HttpGet]
+        [HttpGet("getBookingsByBusId")]
         [Authorize(Roles = "Bus Operator,User")]
         [ProducesResponseType(200, Type = typeof(List<BookingDto>))]
         [ProducesResponseType(400)]
@@ -49,8 +49,26 @@ namespace FastXBookingSample.Controllers
             }
         }
 
+        [HttpGet("getBookingsByUserId/{userId}")]
+        [Authorize(Roles = "Bus Operator,User")]
+        [ProducesResponseType(200, Type = typeof(List<BookingDto>))]
+        [ProducesResponseType(400)]
+        public async Task<ActionResult<IEnumerable<BookingDto>>> GetBookingsByUserId(int userId)
+        {
+            try
+            {
+                return Ok((_bookingRepository.GetAllBookingsByUserId(userId)));
 
- 
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return NotFound(ex.Message);
+            }
+        }
+
+
+
         // POST: api/Bookings
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
