@@ -15,6 +15,10 @@ import PaymentSuccess from './components/PaymentSuccess/PaymentSuccess'
 import BookingHistory from './components/BookingHistory/BookingHistory';
 import AddBus from './components/AddBus/AddBus'
 import BookingDetails from './components/BusDetails/BusBookingDetails';
+import BusOperatorDetails from './components/BusOperatorDetails/BusOperatorDetails'
+import UserDetails from './components/UserDetails/UserDetails'
+import UserBookings from './components/UserDetails/UserBookings'
+
 
 function App() {
   return (
@@ -26,7 +30,7 @@ function App() {
           <Route path="/login" element={<UserLogin />} />
           <Route path="/registerBusOperator" element={<RegisterBusOperator />} />
           <Route path="/fromAndTo" element={<FromAndTo />} />
-          <Route path="/busDetails" element={<BusDetails />} />
+          <Route path="/busDetails/:userId" element={<BusDetails />} />
           <Route path="/bus-list" element={<Bus />} />
           <Route path="/seating/:busId" element={<SeatingArrangement />} />
           <Route path="/payment" element={<Payment/>}/>
@@ -34,6 +38,9 @@ function App() {
           <Route path="/bookinghistory" element={<BookingHistory/>}/>
           <Route path="/addbus" element={<AddBus/>}/>
           <Route path="/booking-details/:busId" element={<BookingDetails />} />
+          <Route path="/busOperatorDetails" element={<BusOperatorDetails />} />
+          <Route path="/userDetails" element={<UserDetails />} />
+          <Route path="/userBookings/:userId" element={<UserBookings />} />
         </Routes>
       </BrowserRouter>
     </Provider>

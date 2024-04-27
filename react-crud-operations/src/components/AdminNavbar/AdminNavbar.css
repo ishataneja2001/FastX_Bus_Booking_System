@@ -1,7 +1,7 @@
 /* Navbar.css */
 
 .navbar {
-    background-color: #ad0e0e; /* Dark background color for the navbar */
+    background-color: #343a40; /* Dark background color for the navbar */
 }
 
 .navbar-toggler {
@@ -13,9 +13,7 @@
 }
 
 .navbar-nav {
-    margin-right: 2px; /* Add right margin to navbar-nav */
-    margin-top: 0%;
-    margin-bottom: 0%;
+    margin-right: 20px; /* Add right margin to navbar-nav */
 }
 
 .logout-btn {

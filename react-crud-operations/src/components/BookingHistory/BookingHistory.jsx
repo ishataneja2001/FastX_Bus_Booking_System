@@ -72,7 +72,8 @@ function BookingHistory() {
             seatNo: booking.seats,
             passengerName: booking.passengerName,
             gender: booking.gender,
-            age: booking.age
+            age: booking.age,
+            isCancelled: booking.isCancelled
         })
     )
         setCancelledBookings(transformedBooking);
@@ -99,7 +100,8 @@ function BookingHistory() {
             seatNo: booking.seats,
             passengerName: booking.passengerName,
             gender: booking.gender,
-            age: booking.age
+            age: booking.age,
+            isCancelled: booking.isCancelled
         })
     )
         setAllBookings(transformedAllBooking);

@@ -2,7 +2,7 @@
 
 /* Navbar background color */
 .navbar.bg-dark {
-  background-color: rgb(105, 110, 176) !important; /* Blue background color */
+  background-color:  #00c6a9 !important; 
 }
 
 /* Navbar links styling */
@@ -19,7 +19,7 @@
 
 /* Margin for navbar-nav */
 .navbar-nav {
-  margin-right: 20px;
+  margin-right: 900px;
 }
 
 /* Styling for logout button */
@@ -34,7 +34,7 @@
 .logout-image {
   max-width: 30px;
   height: auto;
-  margin-right: 5px; /* Add right margin to separate from text */
+  margin-right: 0px; /* Add right margin to separate from text */
   background-color: white; /* White background color for the image */
   padding: 0; /* Reset padding to zero */
 }

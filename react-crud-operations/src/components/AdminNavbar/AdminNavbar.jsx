@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import './Navbar.css';
+import './AdminNavbar.css';
 import LogoutImage from './logoutimage.png';
 import Logo from './logo.png'
 
@@ -16,7 +16,7 @@ function Navbar() {
     };
 
     return (
-        <nav className="navbar bg-dark navbar-expand-lg ">
+        <nav className="navbar bg-dark navbar-expand-lg bg-body-tertiary">
             <div className="container-fluid">
                 <button
                     className="navbar-toggler"
@@ -36,12 +36,12 @@ function Navbar() {
     <span style={{ lineHeight: '60px' }}>Fast X Booking</span>
 </Link>
                         <li className="nav-item booking-history">
-                            <Link to="/fromandto" className="nav-link">
-                            <span style={{ lineHeight: '60px' }}>Book a Bus</span></Link>
+                            <Link to="/busOperatorDetails" className="nav-link">
+                            <span style={{ lineHeight: '60px' }}>Bus Operator Details</span></Link>
                         </li>
                         <li className="nav-item booking-history">
-                            <Link to="/bookinghistory" className="nav-link">
-                            <span style={{ lineHeight: '60px' }}>Manage Bookings</span> </Link>
+                            <Link to="/userDetails" className="nav-link">
+                            <span style={{ lineHeight: '60px' }}>User Details</span> </Link>
                         </li>
                     </ul>
                     <div className="d-flex align-items-center">

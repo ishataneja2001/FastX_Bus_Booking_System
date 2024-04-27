@@ -254,7 +254,7 @@ namespace FastXBookingSample.Controllers
         }
 
         [HttpGet("getBusByOperatorId")]
-        [Authorize(Roles ="Bus Operator")]
+        [Authorize(Roles ="Bus Operator,Admin")]
         public IActionResult GetBusByBusOperatorId([FromQuery]int busOperatorId) {
             try
             {
