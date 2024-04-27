@@ -38,7 +38,7 @@ const Login = () => {
           
           setAuthToken(token); 
           setErrorMessage('');
-          navigate("/busdetails")
+          navigate(`/busdetails/${decodedToken.UserId}`)
         } 
         else if (decodedToken && decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']==='User') {
           
@@ -50,7 +50,7 @@ const Login = () => {
          
           setAuthToken(token); 
           setErrorMessage('');
-          navigate("/")
+          navigate("/busOperatorDetails")
         } 
         else {
           setErrorMessage('You are not authorized to access this Api.');

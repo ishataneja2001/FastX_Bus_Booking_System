@@ -14,7 +14,8 @@ function DetailsContainer({ booking }) {
     boardingTime,
     droppingTime,
     bookingTime,
-    departureDate
+    departureDate,
+    isCancelled
   } = booking;
 
   const parsedBookingTime = new Date(bookingTime);
@@ -83,6 +84,8 @@ function DetailsContainer({ booking }) {
             <div className="detailValue">{formattedBookingTime}</div>
             <div className="detailLabel">Departure Date:</div>
             <div className="detailValue">{formattedDepartureDate}</div>
+            <div className="detailLabel">Cancelled</div>
+            <div className="detailValue">{isCancelled?"Yes":"No"}</div>
           </div>
         </div>
       </div>

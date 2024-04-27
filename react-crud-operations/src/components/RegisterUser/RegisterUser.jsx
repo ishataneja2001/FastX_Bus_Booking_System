@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from 'axios'; 
 import './RegisterUser.css';
-import { Link, useNavigate } from "react-router-dom"; 
+import { Link, useNavigate ,useParams} from "react-router-dom"; 
 
 function RegisterUser() {
     const [name, setName] = useState("");
@@ -32,7 +32,7 @@ function RegisterUser() {
         }
     }
     catch(error){
-        if(error.response.status=409){
+        if(error.response.status==409){
             setErrorMessage('Account with this email already exists')
         }
         else if (error.response && error.response.data) {
