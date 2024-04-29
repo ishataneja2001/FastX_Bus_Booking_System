@@ -18,7 +18,7 @@
     cursor: pointer;
 }
 
-.content{
+.content1{
     width: 100%;
     position: absolute;
     color: white;
@@ -27,7 +27,7 @@
     text-align: center;
     
 }
-.content h1{
+.content1 h1{
     text-transform: capitalize;
     text-shadow: 5px 5px 5px black;   
     margin-top: 80px;

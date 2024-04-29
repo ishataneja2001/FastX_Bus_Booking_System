@@ -7,7 +7,6 @@ import Logo from './logo.png'
 function Navbar() {
     const [isLoggedIn, setIsLoggedIn] = useState(!!sessionStorage.getItem('authToken'));
     const navigate=useNavigate();
-    console.log(isLoggedIn)
     
     const handleLogout = () => {
         sessionStorage.removeItem('authToken');

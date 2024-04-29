@@ -450,13 +450,17 @@ html[dir='ltr'] .appendRight10 {
 } */
 
 /* Sidebar styles */
+/* Existing CSS styles */
+/* Your existing CSS styles here */
+
+/* New CSS styles */
 .sidebar {
     width: 250px;
     background-color: #fff;
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
-    float: left; /* Float the sidebar to the left */
+    float: left;
 }
 
 .sidebar h2 {
@@ -485,7 +489,6 @@ html[dir='ltr'] .appendRight10 {
     color: #555;
 }
 
-/* Checkbox custom styling */
 .sidebar input[type="checkbox"] + label:before {
     content: "";
     display: inline-block;
@@ -503,21 +506,51 @@ html[dir='ltr'] .appendRight10 {
     border-color: #007bff;
 }
 
-
-
-
-
-
 .amenities-dropdown-below {
     position: absolute;
-    top: 100%; /* Position the dropdown below the parent element */
+    top: 100%;
     left: 0;
-    background-color: #fff; /* Set your desired background color */
-    border: 1px solid #ccc; /* Set your desired border style and color */
-    padding: 10px; /* Adjust the padding as needed */
-    z-index: 1; /* Ensure the dropdown appears above other content */
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 10px;
+    z-index: 1;
     width: relative;
     border-radius: 25px;
+}
 
-    
-  }
+/* Your existing styles here */
+
+.sidebar {
+    width: 200px;
+    height: 100vh;
+    background-color: #00bdd6 ;
+    color: #fff;
+    box-sizing: border-box;
+    /* position: fixed; */
+    overflow-y: auto; /* Make the sidebar scrollable vertically */
+}
+
+.content {
+    flex: 1;
+    padding: 20px;
+    box-sizing: border-box;
+    margin-left: 200px;
+      text-align: justify;
+}
+
+.sidebar a {
+    display: block;
+    color: #fff;
+    text-decoration: none;
+    padding: 10px;
+    margin-bottom: 10px;
+    transition: background-color 0.3s;
+}
+
+/* Change background color on hover */
+.sidebar a:hover {
+    background-color: #2980b9;
+}
+
+
+  
