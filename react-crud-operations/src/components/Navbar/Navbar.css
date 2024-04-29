@@ -1,8 +1,21 @@
+
+
 /* Navbar.css */
 
-.navbar {
-    background-color: #ad0e0e; /* Dark background color for the navbar */
-}
+@media (max-width: 768px) {
+    /* Make the navbar toggler visible */
+    .navbar-toggler {
+      display: block !important;
+      color: rgb(255, 255, 255) !important;
+    }
+  
+    /* Hide the navbar brand on small screens */
+    .navbar-brand {
+      display: none !important;
+    }
+  }
+
+
 
 .navbar-toggler {
     border: none; /* Remove border from the toggler button */
@@ -23,10 +36,39 @@
     align-items: center; /* Align items vertically centered */
     color: white; /* Text color for the button */
     cursor: pointer; /* Set cursor to pointer on hover */
+    background: none;
+    border: none;
+    cursor: pointer;
 }
 
 .logout-image {
     max-width: 30px; /* Adjust maximum width of the image */
     height: auto; /* Maintain aspect ratio */
     margin-right: 5px; /* Add right margin to separate from text */
+    width: 30px;
+    height: 30px;
+    border-radius: 10%;
+    transition: transform 0.3s ease;
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
+
+}
+.nav-link{
+    border-radius: 10%;
+    color: white; /* Set text color to white */
+    margin: 0px 10px 0px 10px;
+    
+}
+
+
+.logout-image:hover {
+    transform: scale(1.1);
+}
+
+.d-inline-block {
+    border-radius: 15%; /* Add border radius to make it circular */
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1); /* Add box shadow for depth */
+}
+ 
+.nav-item{
+    color: black !important; 
 }

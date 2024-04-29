@@ -2,14 +2,14 @@
 
 /* Navbar background color */
 .navbar.bg-dark {
-  background-color:  #00c6a9 !important; 
+  background-color: #01bcd5 !important; /* Blue background color */
 }
 
 /* Navbar links styling */
 .navbar a.navbar-brand,
 .navbar a.nav-link,
 .navbar button.nav-link {
-  color: #140808 !important; /* White text color */
+  color: #ffffff !important; /* White text color */
 }
 
 /* Bold font weight for all navbar links */
@@ -43,17 +43,17 @@
 .navbar a.navbar-brand:hover,
 .navbar a.nav-link:hover,
 .navbar button.nav-link:hover {
-  color: #ffc107 !important; /* Change text color on hover */
+  color: #fec89a !important; /* Change text color on hover */
 }
 
 /* Hover effect for specific links */
 .navbar .navbar-nav .nav-item.booking-history a.nav-link:hover,
 .navbar .navbar-nav .nav-item.fast a.nav-link:hover,
 .navbar .navbar-nav .nav-item.login a.nav-link:hover {
-  color: #ffc107 !important; /* Change text color on hover */
+  color: #fec89a !important; /* Change text color on hover */
 }
 
 /* Hover effect for the logout button */
 .logout-btn:hover {
-  background-color: #0056b3; /* Change background color on hover */
+  background-color: #ffffff; /* Change background color on hover */
 }

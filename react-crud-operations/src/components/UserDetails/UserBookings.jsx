@@ -1,22 +1,22 @@
-import CancelledDetailsContainer from '../CancelledDetailsContainer/CancelledDetailsContainer';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import './UserDetails.css';
+//import './UserDetails.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import './UserBookings.css'
 import AdminNavbar from '../AdminNavbar/AdminNavbar';
+import DetailsContainer from '../DetailsContainer/DetailsContainer';
 
 function UserBookings() {
   const [allBookings, setAllBookings] = useState([]);
   const { userId } = useParams();
   const navigate = useNavigate(); // Initialize the navigate function
+  const role = sessionStorage.getItem('role')
 
   useEffect(() => {
     const token = sessionStorage.getItem('authToken');
-    if (!token) {
-      navigate('/login');
-      return;
-    }
+    if(!(token && role=='Admin')){
+      navigate('/login')
+  }
 
     const fetchDetails = async () => {
       try {
@@ -58,15 +58,15 @@ function UserBookings() {
     <>
       <AdminNavbar />
       <div>
-        <h4>All Bookings</h4>
+        <h4 className="allBooking">All Bookings</h4>
         {allBookings.length === 0 ? (
           <p>No bookings</p>
         ) : (
-          <div className="busListingContainer">
-            <div className="busCardContainer">
+          <div className="DetailsContainer.busListingContainer">
+            <div className="DetailsContainer.busCardContainer">
               {allBookings.map((booking) => (
-                <div key={booking.bookingId} className="historyBusCard">
-                  <CancelledDetailsContainer booking={booking} />
+                <div key={booking.bookingId} className="DetailsContainer.historyBusCard">
+                  <DetailsContainer booking={booking} />
                 </div>
               ))}
             </div>

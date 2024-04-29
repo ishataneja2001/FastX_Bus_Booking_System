@@ -33,9 +33,14 @@ function AddBus() {
     const [amenities, setAmenities] = useState([]);
     const [selectedAmenities, setSelectedAmenities] = useState([]);
     const token=sessionStorage.getItem('authToken');
+    const role=sessionStorage.getItem('role')
 
 
     useEffect(() => {
+        console.log(role)
+        if(!(token && role=='Bus Operator')){
+            navigate('/login')
+        }
         const getAmenities =async () => {
             try{
                 const amenresponse = await axios.get(`https://localhost:7114/api/Amenities`,{
@@ -56,6 +61,49 @@ function AddBus() {
     
 
     const nextStep = async () => {
+        const bps=boardingPoints.split(",").map(point => point.trim());
+        const bpt=boardTimings.split(",").map(point => point.trim());
+        const dps=droppingPoints.split(",").map(point => point.trim());
+        const dpt=dropTimings.split(",").map(point => point.trim());
+        const route= busRoute.split(",").map(point => point.trim());
+
+        
+          
+        setBoardingPointss(bps)
+        setBoardTimingss(bpt)
+        setDroppingPointss(dps)
+        setDropTimingss(dpt)
+        setBusRoutes(route)
+        console.log(busRoutes.length)
+        console.log(route.length)
+        
+         if(boardingPointss.length!=boardTimingss.length){
+            window.alert("Boarding points and timings do not match")
+                return
+         }
+
+         if(droppingPointss.length!=dropTimingss.length){
+            window.alert("Dropping points and timings do not match")
+            return
+     }
+
+     if(busRoutes.length==0){
+        window.alert("Routes cannot be empty")
+        return
+    }
+
+    if (endTime < startTime || (endTime - startTime) / (1000 * 60 * 60) < 1) {
+        const newStartTime = new Date(startTime);
+        newStartTime.setHours(newStartTime.getHours() + 1);
+        const newStartTimeString = `${newStartTime.getHours().toString().padStart(2, '0')}:${newStartTime.getMinutes().toString().padStart(2, '0')}`;
+        
+        setStartTime(newStartTimeString);
+        
+        window.alert("End Time should be at least 1 hour greater than Start Time.");
+        return
+    }
+
+
         try{
             const response = await axios.post(`https://localhost:7114/api/Buses`,
                 {
@@ -86,21 +134,11 @@ function AddBus() {
         }
         console.log(busId)
         console.log(boardTimings)
-        const bps=boardingPoints.split(",").map(point => point.trim());
-        const bpt=boardTimings.split(",").map(point => point.trim());
-        const dps=droppingPoints.split(",").map(point => point.trim());
-        const dpt=dropTimings.split(",").map(point => point.trim());
-        const route= busRoute.split(",").map(point => point.trim());
+       
 
         console.log(route)
         console.log(bps)
-        
-        setBoardingPointss(bps)
-        setBoardTimingss(bpt)
-        setDroppingPointss(dps)
-        setDropTimingss(dpt)
-        setBusRoutes(route)
-        
+      
         setCurrentStep(currentStep + 1);
     };
 
@@ -138,6 +176,7 @@ function AddBus() {
             }
             else{
                 window.alert("Boarding points and timings do not match")
+                return
             }
 
             if(droppingPointss.length===dropTimingss.length){
@@ -162,6 +201,7 @@ function AddBus() {
             }
             else{
                 window.alert("Dropping points and timings do not match")
+                return
             }
 
 
@@ -186,6 +226,7 @@ function AddBus() {
             }
             else{
                 window.alert("Routes cannot be empty")
+                return
             }
             console.log(selectedAmenities)
             console.log(token)
@@ -199,7 +240,7 @@ function AddBus() {
                 }
             }
             window.alert("Successfully Created")
-            navigate("/busdetails")
+            navigate(`/busDetails/${busId}`)
             
         };
 

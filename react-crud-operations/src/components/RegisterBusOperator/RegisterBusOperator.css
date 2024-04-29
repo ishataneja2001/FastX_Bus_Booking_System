@@ -25,6 +25,7 @@ a, a:hover {
     width: 100%;
     height: auto;
     box-shadow: 0 0 40px 0 #0a0a0a;
+    border-radius: 10px;
 }
 
 .myform-area .form-area .form-content,
@@ -64,6 +65,7 @@ a, a:hover {
     position: relative;
     overflow: hidden;
     box-shadow: 0 0 40px 0 #e1e1e1;
+    border-radius: 10px;
 }
 
 .myform-area .form-area .form-input {
@@ -183,6 +185,9 @@ a, a:hover {
 .loginInfo {
     margin-left: 5px;
 }
+.signup-text a:hover {
+    text-decoration: underline;
+  }
 
 /* Tablet and Desktop Styles */
 @media only screen and (min-width: 601px) {

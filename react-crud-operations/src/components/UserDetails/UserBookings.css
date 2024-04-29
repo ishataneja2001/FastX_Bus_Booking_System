@@ -4,6 +4,15 @@
     font-family: 'Open Sans', sans-serif;
 } */
 
+.allBooking{
+    color: #fff;
+    margin-top: 5px;
+    margin-left: 10px;
+    border: solid black;
+    border-radius: 15%;
+    background-color: #3e729a;
+    contain: content;
+}
 .container-fluid status-container {
     background-color: #e74622;
     padding: 20px;

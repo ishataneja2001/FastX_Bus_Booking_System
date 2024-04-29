@@ -13,12 +13,18 @@
     height: 100%;
     object-fit: cover;
   }
-  
+  .image{
+    width: 100vw;
+    height: 100vh;
+    
+    
+    
+  }
   .fromAndTo{
     width: 1200px;
       margin: 0 auto;
       /* background: white; */
-      background:rgba(8, 163, 197, 0.2);
+      background:#8ecae6;
       border-radius: 10px;
       height: 250px;
       position: absolute;
@@ -26,7 +32,14 @@
       top: 126px;
       left: 0;
       right: 0;
-  
+      opacity: 0.5;
+
+  }
+  .fromAndTo:hover{
+    opacity: 1;
+  }
+  .iconStyle{
+    background: #8ecae6 ;
   }
   .a {
     display: flex;
@@ -72,13 +85,17 @@
     height: inherit;
     position: relative;
   }
-
+   
+  
   .inputStyle {
     margin-top: 1.5rem;
   }
   
   .inputStyleA {
-    height: 22px;
+    width: 150px;
+    align-items: center;
+  outline: none;
+   
     font-weight: 600;
     font-size: 18px;
     line-height: 22px;
@@ -118,12 +135,18 @@
   }
   
   .outerContainer {
-    position: relative;
+    
+    padding: 0.5rem;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
   }
   .btnStyle{
     display: flex;
     flex-direction: column;
     position: relative;
+    margin: 0 10px;
   }
   .destIcon {
     display: flex;
@@ -153,20 +176,31 @@
     width: 243px;
     padding: 40px;
     gap: 12px;
-    
-    background: rgb(29, 42, 84);
+    margin-top: 4px;
+    background: #4286f5;
     font-weight: 700;
     font-size: 20px;
     line-height: 24px;
     color: rgb(255, 255, 255);
     cursor: pointer;
     border: none;
-    border-radius: 0px 32px 32px 0px;
-    
+    border-radius: 32px 32px 32px 32px;
+    margin-left: 20px;
+    box-shadow: 4px 4px 8px #3e729a; 
+  }
+  .busBtn:hover {
+    background-color:  #3e729a;
   }
   
-  
-  
+  .c{
+    border-radius: 10px;
+    box-shadow: 2px 2px 4px #3e729a;
+    margin: 0 10px;
+  }
+  .c:hover{
+    background-color: #3e729a;
+  }
+
   
 
   
@@ -178,7 +212,9 @@
     }
   }
   
-  
+  .image{
+    display: flex;
+  }
   
   
   .card-gradient {
@@ -233,12 +269,14 @@
       padding: 20px;
       border-radius: 10px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      position: relative;
+      position:static;
       z-index: 2;
       top: 20px; 
     }
 
-    
+    .outerContainer{
+      text-align: center;
+    }
   
    
   
@@ -265,10 +303,14 @@
     }
   
     .busBtn {
-      width: 100%;
+      width: 80%;
       margin-top: 20px;
-      border-radius: 10px;
+      margin-right: 10px;
+      border-radius: 20px;
+      text-align: center;
+      
     }
+    
     .trending-offers {
         margin-top: 100px;
         margin-bottom: 20px;

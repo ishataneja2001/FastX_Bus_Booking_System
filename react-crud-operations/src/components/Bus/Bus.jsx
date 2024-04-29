@@ -8,12 +8,13 @@ import Navbar from '../Navbar/Navbar';
 
 function Bus() {
   const [amenities, setAmenities] = useState({});
+  const role = sessionStorage.getItem('role')
 
   useEffect(()=>{
     const token = sessionStorage.getItem('authToken')
-    if(!token){
-        navigate("/login");
-    }
+    if(!(token && role=='User')){
+      navigate('/login')
+  }
     const fetchAmenities=(busId)=>{
       try{
         const response = axios.get(`https://localhost:7114/api/Amenities/GetAmenitiesByBusId/${busId}`,{
