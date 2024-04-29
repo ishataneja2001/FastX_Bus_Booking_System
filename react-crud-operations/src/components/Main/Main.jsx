@@ -14,10 +14,10 @@ function Main(){
                     <source src={video1} type="video/mp4"/>
                 </video> */}
           <img src={hotel} alt="Hotel" className="banner-image" />
-            <div className="content">
+            <div className="content1">
                 <h1>Make Your Trip Much Better with FastX Bus Services</h1>
                 <div>
-                    <Link to="/fromandto">
+                    <Link to="/login">
                         <button type="button" className='buttonStyle1'>Book Your Bus</button>
                         </Link>
 

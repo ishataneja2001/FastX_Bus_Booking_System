@@ -13,36 +13,50 @@ function RegisterBusOperator() {
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
 
-    const BusOperaterDetails= async (event)=> {
-        event.preventDefault();
-    
+    const validatePhoneNumber = (phoneNumber) => {
+        const regex = /^[789]\d{9}$/;
+        return regex.test(phoneNumber);
+    };
 
-    try{
-        const response = await axios.post('https://localhost:7114/api/BusOperator',{
-            name: name,
-            email: email,
-            password: password,
-            address: address,
-            gender: gender,
-            contactNo: contactNumber
-        })
-        if(response.status==200){
-            window.alert("Registration successful!");
-            navigate("/login")
+    const validateGender = (gender) => {
+        return gender === "Male" || gender === "Female";
+    };
+    const BusOperaterDetails = async (event) => {
+        event.preventDefault();
+        if (!validatePhoneNumber(contactNumber)) {
+            setErrorMessage('Phone number should be 10 digits and should start with either 7, 8, or 9.');
+            return;
         }
-    }
-    catch(error){
-        if(error.response.status==409){
-            setErrorMessage('Account with this email already exists')
+
+        if (!validateGender(gender)) {
+            setErrorMessage('Gender should be either "Male" or "Female".');
+            return;
         }
-        else if (error.response && error.response.data) {
-            setErrorMessage(error.response.data);
-          } else {
-            console.log(error)
-            window.alert('An unexpected error occurred. Please try again.');
-          }
-    }
-    }
+        try {
+            const response = await axios.post('https://localhost:7114/api/BusOperator',{
+                name: name,
+                email: email,
+                password: password,
+                address: address,
+                gender: gender,
+                contactNo: contactNumber
+            });
+            if (response.status === 200) {
+                window.alert("Registration successful!");
+                navigate("/login");
+            }
+        } catch (error) {
+            if (error.response.status === 409) {
+                setErrorMessage('Account with this email already exists');
+            } else if (error.response && error.response.data) {
+                setErrorMessage(error.response.data);
+            } else {
+                console.log(error);
+                window.alert('An unexpected error occurred. Please try again.');
+            }
+        }
+    };
+
     return (
         <div className="container">
             <section className="myform-area">
@@ -67,37 +81,37 @@ function RegisterBusOperator() {
                                         </div>
 
                                         <div className="form-group">
-                                            <input className="registerInfo" type="password" name="password" autoComplete="off" value={password} onChange={(e) => setPassword(e.target.value)}  required />
+                                            <input className="registerInfo" type="password" name="password" autoComplete="off" value={password} onChange={(e) => setPassword(e.target.value)} required />
                                             <label>Password</label>
                                         </div>
 
                                         <div className="form-group">
-                                            <input className="registerInfo" type="phone" name="contactNumber" autoComplete="off" value={contactNumber} onChange={(e) => setContactNumber(e.target.value)}  required/>
+                                            <input className="registerInfo" type="text" name="contactNumber" autoComplete="off" value={contactNumber} onChange={(e) => setContactNumber(e.target.value)} required />
                                             <label>Contact Number</label>
                                         </div>
 
                                         <div className="form-group">
                                             <input className="registerInfo" type="text" name="gender" autoComplete="off" value={gender} onChange={(e) => setGender(e.target.value)} required />
-                                            <label>Gender</label>
+                                            <label>Gender (Male/Female)</label>
                                         </div>
+
                                         <div className="form-group">
                                             <input className="registerInfo" type="text" name="address" autoComplete="off" value={address} onChange={(e) => setAddress(e.target.value)} required />
                                             <label>Address</label>
                                         </div>
-                                        <br></br>
+                                        <br />
+
                                         {errorMessage && (
-                                                <div className="alert alert-danger">
+                                            <div className="alert alert-danger">
                                                 {errorMessage}
-                                                </div>
+                                            </div>
                                         )}
 
                                         <div className="myform-button">
                                             <button onClick={BusOperaterDetails} type="submit" className="myform-btn">Register</button>  
                                         </div>
                                         <div>
-                                            <small className="form-text text-muted signup-text">Already have an Account? <Link to="/login">Login</Link>
-                                            </small>
-                                            
+                                            <small className="form-text text-muted signup-text">Already have an Account? <Link to="/login">Login</Link></small>
                                         </div>
                                     </form>
                                 </div>
@@ -105,11 +119,9 @@ function RegisterBusOperator() {
                         </div>
                     </div>
                 </div>
-                
             </section>
         </div>
     );
 }
-
 
 export default RegisterBusOperator;

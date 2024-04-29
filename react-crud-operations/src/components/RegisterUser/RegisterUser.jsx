@@ -13,9 +13,29 @@ function RegisterUser() {
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
 
+    const validatePhoneNumber = (phoneNumber) => {
+        const regex = /^[789]\d{9}$/;
+        return regex.test(phoneNumber);
+    };
+
+
+    const validateGender = (gender) => {
+        return gender === "Male" || gender === "Female";
+    };
+    
+    
     const UserDetails= async (event)=> {
         event.preventDefault();
-    
+        if (!validatePhoneNumber(contactNumber)) {
+            setErrorMessage('Phone number should be 10 digits and should start with either 7, 8, or 9.');
+            return;
+        }
+
+        
+        if (!validateGender(gender)) {
+            setErrorMessage('Gender should be either "Male" or "Female".');
+            return;
+        }
 
     try{
         const response = await axios.post('https://localhost:7114/api/Users',{
@@ -79,7 +99,7 @@ function RegisterUser() {
 
                                         <div className="form-group">
                                             <input className="registerInfo" type="text" name="gender" autoComplete="off" value={gender} onChange={(e) => setGender(e.target.value)} required />
-                                            <label>Gender</label>
+                                            <label>Gender (Male/Female)</label>
                                         </div>
                                         <div className="form-group">
                                             <input className="registerInfo" type="text" name="address" autoComplete="off" value={address} onChange={(e) => setAddress(e.target.value)} required />

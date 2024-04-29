@@ -9,6 +9,12 @@ import Navbar from '../Navbar/Navbar';
 function Bus() {
   const [amenities, setAmenities] = useState({});
   const role = sessionStorage.getItem('role')
+  const [busTypeFilter, setBusTypeFilter] = useState([]);
+  const [filteredBuses, setFilteredBuses] = useState([]);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { buses } = location.state;
 
   useEffect(()=>{
     const token = sessionStorage.getItem('authToken')
@@ -29,10 +35,19 @@ function Bus() {
 
 }})
   
-  const location = useLocation();
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { buses } = location.state;
+
+useEffect(() => {
+  if (busTypeFilter.length > 0) {
+    const filtered = buses.filter(bus => busTypeFilter.includes(bus.busType));
+    setFilteredBuses(filtered);
+  } else {
+    // If no filter selected, reset to all buses
+    setFilteredBuses(buses);
+  }
+}, [busTypeFilter, buses]);
+
+
+
 
   function calculateDuration(startTime, endTime) {
     // Parse start time and end time strings into Date objects
@@ -65,11 +80,42 @@ function Bus() {
     navigate(`/seating/${busId}`);
   };
 
+
+  const handleBusTypeFilter = (type) => {
+    if (busTypeFilter.includes(type)) {
+      // Remove the type if already selected
+      setBusTypeFilter(prevFilter => prevFilter.filter(item => item !== type));
+    } else {
+      // Add the type if not selected
+      setBusTypeFilter(prevFilter => [...prevFilter, type]);
+     
+    }
+    console.log(busTypeFilter)
+  };
   
   return (
     <div>
       <Navbar/>
-  {buses.map((bus) => (
+      <div class="sidebar">
+      <p>Bus Type:</p> 
+      <div className="filter-options">
+        <ul>
+          <li>
+          <input type="checkbox" value="AC" onChange={() => handleBusTypeFilter('AC')} /> AC
+          </li>
+          <li>
+          <input type="checkbox" value="Non AC" onChange={() => handleBusTypeFilter('Non AC')} /> Non AC
+          </li>
+        <li>
+          <input type="checkbox" value="Sleeper" onChange={() => handleBusTypeFilter('Sleeper')} /> Sleeper
+          </li>
+       <li>
+          <input type="checkbox" value="Sleeper AC" onChange={() => handleBusTypeFilter('Sleeper AC')} /> Sleeper AC
+          </li>
+          </ul>
+      </div>
+      </div>
+  {filteredBuses.map((bus) => (
     <div key={bus.busId}>
       <div
         id="busList"

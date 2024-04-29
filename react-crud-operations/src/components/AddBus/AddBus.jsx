@@ -61,6 +61,11 @@ function AddBus() {
     
 
     const nextStep = async () => {
+        if (!busName || !busNumber || !busType || !noOfSeats || !origin || !destination || !startTime || !endTime || !fare || !departureDate || !boardingPoints || !boardTimings || !droppingPoints || !dropTimings || !busRoute) {
+            window.alert("Please fill in all fields.");
+            return;
+        }
+    
         const bps=boardingPoints.split(",").map(point => point.trim());
         const bpt=boardTimings.split(",").map(point => point.trim());
         const dps=droppingPoints.split(",").map(point => point.trim());
