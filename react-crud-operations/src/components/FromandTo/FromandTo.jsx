@@ -8,17 +8,17 @@ import Navbar from '../Navbar/Navbar';
 import wallpaper from '../../assets/wallpaper.jpg'; // Import the wallpaper image
 
 function FromAndTo() {
-    const cities = ['Hyderabad', 'Chennai', 'Bangalore', 'Mumbai', 'Delhi'];
+    const cities = ['Delhi', 'KKR', 'Bangalore', 'Mumbai', 'Chennai'];
     const sourceOptions = cities.map(city => (
         <option key={city} value={city}>{city}</option>
     ));
 
     const destinations = {
-        'Hyderabad': ['Chennai', 'Bangalore', 'Mumbai', 'Delhi'],
-        'Chennai': ['Hyderabad', 'Bangalore', 'Mumbai', 'Delhi'],
-        'Bangalore': ['Hyderabad', 'Chennai', 'Mumbai', 'Delhi'],
-        'Mumbai': ['Hyderabad', 'Chennai', 'Bangalore', 'Delhi'],
-        'Delhi': ['Hyderabad', 'Chennai', 'Bangalore', 'Mumbai']
+        'KKR': ['Manali', 'Bangalore', 'Mumbai', 'Delhi'],
+        'Manali': ['KKR', 'Bangalore', 'Mumbai', 'Delhi'],
+        'Bangalore': ['KKR', 'Manali', 'Mumbai', 'Delhi'],
+        'Mumbai': ['KKR', 'Manali', 'Bangalore', 'Delhi'],
+        'Delhi': ['KKR', 'Manali', 'Bangalore', 'Mumbai']
     };
 
     const token = sessionStorage.getItem('authToken');
@@ -114,7 +114,7 @@ function FromAndTo() {
                                 <div className={styles.iconStyle}>
                                     <i className="fa-solid fa-bus"></i>
                                     <div className={styles.outerinputStyle}>
-                                        <div className={styles.inputStyle}>
+                                        <div className={styles.inputStyle} style={{ marginTop: '-10px' }}>
                                             <label htmlFor="src">From</label>
                                             <select
                                                 id="src"
