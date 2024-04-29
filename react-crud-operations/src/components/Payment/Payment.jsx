@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
+//import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
+import './Payment.css'; // Import the CSS file for styling
 
 const Payment = () => {
   const [creditCardNumber, setCreditCardNumber] = useState('');
@@ -17,6 +19,14 @@ const Payment = () => {
   const userId = sessionStorage.getItem('userId')
   const busId = sessionStorage.getItem('busId')
   const navigate = useNavigate();
+  const role = sessionStorage.getItem('role')
+
+  
+useEffect(()=>{
+  if(!(token && role=='User')){
+      navigate('/login')
+  }
+},[])
 
   const handleCreditCardChange = (e) => {
     const { value } = e.target;
@@ -101,27 +111,35 @@ const Payment = () => {
 
   return (
     <>
-    <Navbar/>
-    <div  className="seatSelectionContainer">
+    <Navbar/><br/><br/>
+    <div className="seatSelectionContainer"> {/* Apply the container class */}
       <h2>Payment Details</h2>
-      <div>
-        <h3>Selected Seats:</h3>
-        <ul>
-          {selectedSeats.map((seatNo) => (
-            <li key={seatNo}>
-              Seat {seatNo} - Passenger Name: {passengerDetails[seatNo]?.name}, Gender: {passengerDetails[seatNo]?.gender}, Age: {passengerDetails[seatNo]?.age}
-            </li>
-          ))}
-        </ul>
-      </div>
-      {/* <div>
-        <h3>Boarding Point:</h3>
-        <p>{selectedBoardingPoint}</p>
-      </div>
-      <div>
-        <h3>Dropping Point:</h3>
-        <p>{selectedDroppingPoint}</p>
-      </div> */}
+      <div style={{ marginBottom: '20px' }}>
+  <h3 style={{ marginBottom: '15px', color: '#333', borderBottom: '2px solid #ccc', paddingBottom: '5px' }}>Selected Seats:</h3>
+  <ul style={{ listStyleType: 'none', padding: 0 ,backgroundColor: 'blue' }}>
+    {selectedSeats.map((seatNo) => (
+      <li key={seatNo} style={{ marginBottom: '15px', padding: '15px', borderRadius: '10px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)', backgroundColor: '#f5f5f5', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ display: 'flex' }}>
+          <div style={{ flex: 1, fontWeight: 'bold', color: '#333' }}>Seat {seatNo}:</div>
+          <div style={{ flex: 2, paddingLeft: '10px' }}>Passenger Name: {passengerDetails[seatNo]?.name}</div>
+        </div>
+        <div style={{ display: 'flex' }}>
+          <div style={{ flex: 1 }}></div>
+          <div style={{ flex: 2, paddingLeft: '10px' }}>Gender: {passengerDetails[seatNo]?.gender}</div>
+        </div>
+        <div style={{ display: 'flex' }}>
+          <div style={{ flex: 1 }}></div>
+          <div style={{ flex: 2, paddingLeft: '10px' }}>Age: {passengerDetails[seatNo]?.age}</div>
+        </div>
+      </li>
+    ))}
+  </ul>
+</div>
+
+
+
+
+
 
       {/* Credit card input */}
       <div>
@@ -133,7 +151,7 @@ const Payment = () => {
           value={creditCardNumber}
           onChange={handleCreditCardChange}
         />
-        {creditCardError && <p style={{ color: 'red' }}>{creditCardError}</p>}
+        {creditCardError && <p>{creditCardError}</p>}
       </div>
 
       {/* Submit button */}

@@ -20,3 +20,37 @@
 .bus-item-container:hover {
   background-color: #e6e6ff;
 }
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  overflow: hidden;
+}
+
+/* Style the table headers */
+.table th {
+  background-color: #343a40; 
+  color: white; 
+  text-align: left; 
+}
+/* Style the delete button */
+.btn-danger {
+  background-color: grey; 
+  color: white; 
+  border: none; 
+  padding: 6px 12px; 
+  border-radius: 4px; 
+  box-shadow: 1px 1px 2px black;
+}
+.btn-danger:hover {
+  background-color: red; /* Darker red on hover */
+}
+/* Style the link button */
+.btn-link {
+  color: #34ccd1; /* Blue text color */
+  text-decoration: none; /* Remove underline */
+  cursor: pointer; /* Add pointer cursor */
+}
+.btn-link:hover {
+  text-decoration: underline; /* Underline on hover */
+  color: rgb(24, 185, 137);
+}

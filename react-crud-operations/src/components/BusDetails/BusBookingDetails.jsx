@@ -1,8 +1,10 @@
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import CancelledDetailsContainer from '../CancelledDetailsContainer/CancelledDetailsContainer';
 import BusOperatorNavbar from '../BusOperatorNavbar/BusOperatorNavbar'
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import DetailsContainer from '../DetailsContainer/DetailsContainer';
+import './BusBookingDetails.css'
+
 
 function BookingDetails() {
   const [allBookings, setAllBookings] = useState([]);
@@ -10,13 +12,12 @@ function BookingDetails() {
   const navigate = useNavigate();
   const { busId } = useParams();
   const location = useLocation();
-
+  const role = sessionStorage.getItem('role')
   useEffect(() => {
     const fetchBusDetails = async () => {
-      if (!token) {
-        navigate('/login');
-        return;
-      }
+      if(!(token && role=='Bus Operator'|| role=='Admin')){
+        navigate('/login')
+    }
 
       try {
         const response = await axios.get(
@@ -64,36 +65,37 @@ function BookingDetails() {
 
   return (
     <>
-      <BusOperatorNavbar />
-      <div className="container-fluid status-container">
-        <ul className="nav nav-tabs statustabs">
-          <li className="nav-item tab-item">
-            <a className={`nav-link ${isActiveTab ? 'active' : ''}`}>
-              All Bookings
-            </a>
-          </li>
-        </ul>
+  <BusOperatorNavbar />
+  <div className="container-fluid status-container">
+    <ul className="nav nav-tabs statustabs">
+      <li className="nav-item tab-item">
+        <a className={`nav-link active`} href="#allBookingsTab">
+          All Bookings
+        </a>
+      </li>
+    </ul>
 
-        <div className="tab-content">
-          <div className={`tab-pane fade ${isActiveTab ? 'show active' : ''}`}>
-            <h4>All Bookings</h4>
-            {allBookings.length === 0 ? (
-              <p>No bookings</p>
-            ) : (
-              <div className="busListingContainer">
-                <div className="busCardContainer">
-                  {allBookings.map((booking) => (
-                    <div key={booking.bookingId} className="historyBusCard">
-                      <CancelledDetailsContainer booking={booking} />
-                    </div>
-                  ))}
+    <div className={`tab-content`}>
+      <div className={`tab-pane fade show active`} id="allBookingsTab">
+        <h4>All Bookings</h4>
+        {allBookings.length === 0 ? (
+          <p>No cancelled bookings</p>
+        ) : (
+          <div className="bookingBusListingContainer">
+            <div className="busCardContainer">
+              {allBookings.map((booking) => (
+                <div key={booking.bookingId} className="historyBusCard">
+                  <DetailsContainer booking={booking} />
                 </div>
-              </div>
-            )}
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
-    </>
+    </div>
+  </div>
+</>
+
   );
 }
 

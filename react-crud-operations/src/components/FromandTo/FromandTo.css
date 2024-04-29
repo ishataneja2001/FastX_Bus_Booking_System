@@ -1,0 +1,201 @@
+/* .fromAndTo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .ikHMPa {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .outerContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .btnStyle {
+    margin: 10px;
+  }
+  
+  .iconStyle,
+  .destIcon {
+    display: flex;
+    align-items: center;
+  }
+  
+  .inputStyle {
+    position: relative;
+  }
+  
+  .inputStyle select,
+  .inputStyle input[type="date"] {
+    width: 200px;
+    height: 40px;
+    padding: 0 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .inputStyle label {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: #777;
+    pointer-events: none;
+    transition: all 0.3s ease;
+  }
+  
+  .inputStyle select:focus + label,
+  .inputStyle input[type="date"]:focus + label,
+  .inputStyle select:not(:placeholder-shown) + label,
+  .inputStyle input[type="date"]:not(:placeholder-shown) + label {
+    top: 0;
+    left: 0;
+    font-size: 12px;
+    color: #333;
+  }
+  
+  .c {
+    margin-top: 20px;
+  }
+  
+  .busBtn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .busBtn:hover {
+    background-color: #0056b3;
+  }
+  
+  .CalendarContainer {
+    margin-top: 20px;
+  }
+   */
+
+   /* styles.module.css */
+
+/* Default styles */
+.fromAndTo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.ikHMPa {
+  display: flex;
+  align-items: center;
+}
+
+.outerContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.btnStyle {
+  display: flex;
+  align-items: center;
+}
+
+.iconStyle {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 10px;
+  margin-right: 10px;
+}
+
+.iconStyle i {
+  color: #007bff;
+}
+
+.outerinputStyle {
+  margin-top: 10px;
+}
+
+.inputStyle {
+  position: relative;
+}
+
+.inputStyleA {
+  width: 200px;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ced4da;
+  outline: none;
+}
+
+.inputStyle label {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 15px;
+  color: #6c757d;
+}
+
+.jVMfHp {
+  font-size: 24px;
+  margin: 0 10px;
+}
+
+.c {
+  margin: 0 10px;
+}
+
+.busBtn {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.busBtn:hover {
+  background-color: #0056b3;
+}
+
+/* Media queries for responsiveness */
+@media only screen and (max-width: 768px) {
+  .ikHMPa {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .iconStyle {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+  
+  .jVMfHp {
+    margin: 10px 0;
+  }
+}

@@ -1,46 +1,63 @@
-import React, { useState ,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from '../../caraousel.module.css';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useSelector, useDispatch } from 'react-redux'; // Importing useSelector and useDispatch from react-redux
-import { selectOrigin, selectDestination, selectTravelDate } from '../Redux/Actions'; // Corrected path
+import { useSelector, useDispatch } from 'react-redux';
+import { selectOrigin, selectDestination, selectTravelDate } from '../Redux/Actions';
 import Navbar from '../Navbar/Navbar';
-
-
-
+import wallpaper from '../../assets/wallpaper.jpg'; // Import the wallpaper image
 
 function FromAndTo() {
-    // const [origin,setOrigin] = useSelector('')
-    // const [destination,setDestination]=useSelector('')
-    // const [date,setdate] = useSelector(null)
-    const token = sessionStorage.getItem('authToken')   
-    // const navigate = useNavigate();
+    const cities = ['Hyderabad', 'Chennai', 'Bangalore', 'Mumbai', 'Delhi'];
+    const sourceOptions = cities.map(city => (
+        <option key={city} value={city}>{city}</option>
+    ));
 
-    useEffect(()=>{
-        const token = sessionStorage.getItem('authToken')
-        if(!token){
-            navigate("/login");
-        }
+    const destinations = {
+        'Hyderabad': ['Chennai', 'Bangalore', 'Mumbai', 'Delhi'],
+        'Chennai': ['Hyderabad', 'Bangalore', 'Mumbai', 'Delhi'],
+        'Bangalore': ['Hyderabad', 'Chennai', 'Mumbai', 'Delhi'],
+        'Mumbai': ['Hyderabad', 'Chennai', 'Bangalore', 'Delhi'],
+        'Delhi': ['Hyderabad', 'Chennai', 'Bangalore', 'Mumbai']
+    };
 
-    })
-
+    const token = sessionStorage.getItem('authToken');
     const navigate = useNavigate();
-    const dispatch = useDispatch(); // Initializing dispatch function
-    const Origin = useSelector(state => state.origin); // Example usage of useSelector
-    // console.log(Origin)
-    const Destination = useSelector(state => state.destination); // Example usage of useSelector
-    // console.log(Destination)
-    // const [TravelDate, setDate] = useState('');
-    const TravelDate = useSelector(state => state.travelDate); // Example usage of useSelector
-    // console.log(TravelDate)
-    // const today = new Date().toISOString().split('T')[0]; // Get today's date in the format yyyy-mm-dd
-    const currentDate = new Date();
-  currentDate.setDate(currentDate.getDate() + 1);
-  const today = currentDate.toISOString().slice(0, 16);
-  const [errors, setErrors] = useState({});
+    const dispatch = useDispatch();
 
+    const [minDate, setMinDate] = useState('');
+    useEffect(() => {
+        const token = sessionStorage.getItem('authToken');
+        const currentDate = new Date();
+        currentDate.setDate(currentDate.getDate() + 1);
+        const today = new Date();
+        const formattedToday = today.toISOString().split('T')[0];
+        setMinDate(formattedToday);
+    }, []);
 
-    const BusDetails = async ()=>{
+    const Origin = useSelector(state => state.origin);
+    const Destination = useSelector(state => state.destination);
+    const TravelDate = useSelector(state => state.travelDate);
+    const [errors, setErrors] = useState({});
+
+    const destinationOptions = destinations[Origin.origin] || [];
+
+    const handleOriginChange = (e) => {
+        setErrors(prevState => ({ ...prevState, origin: '' }));
+        dispatch(selectOrigin(e.target.value));
+    };
+
+    const handleDestinationChange = (e) => {
+        setErrors(prevState => ({ ...prevState, destination: '' }));
+        dispatch(selectDestination(e.target.value));
+    };
+
+    const handleTravelDateChange = (e) => {
+        setErrors(prevState => ({ ...prevState, travelDate: '' }));
+        dispatch(selectTravelDate(e.target.value));
+    };
+
+    const BusDetails = async () => {
         const errors = {};
         let isValid = true;
 
@@ -59,129 +76,106 @@ function FromAndTo() {
             isValid = false;
         }
 
-        if(isValid){
-        try{
-            const response = await axios.get(`https://localhost:7114/api/Buses/GetBusByDetails?origin=${Origin.origin}&destination=${Destination.destination}&date=${TravelDate.travelDate.split('T')[0]}`,{
-                headers: {
-                  Authorization: `Bearer ${token}`
+        if (isValid) {
+            try {
+                const response = await axios.get(`https://localhost:7114/api/Buses/GetBusByDetails?origin=${Origin.origin}&destination=${Destination.destination}&date=${TravelDate.travelDate.split('T')[0]}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                console.log(response.data)
+                if (response.data.length === 0) {
+                    alert("No buses available for the selected route and date.");
+                } else {
+                    navigate('/bus-list', { state: { buses: response.data } });
                 }
-              })
-              console.log(response.data)
-              if (response.data.length === 0) {
+            } catch (error) {
+                console.log(error)
                 alert("No buses available for the selected route and date.");
-            } else {
-                navigate('/bus-list', { state: { buses: response.data } });
-                // console.log(response.data);
             }
-        } catch (error) {
-            console.log(error)
-            // console.error('Error searching buses:', error);
-            alert("No buses available for the selected route and date.");
+        } else {
+            let errorMessage = 'Please correct the following errors:\n';
+            if (errors.origin) errorMessage += `- ${errors.origin}\n`;
+            if (errors.destination) errorMessage += `- ${errors.destination}\n`;
+            if (errors.travelDate) errorMessage += `- ${errors.travelDate}\n`;
+            alert(errorMessage);
         }
-    } else {
-        let errorMessage = 'Please correct the following errors:\n';
-        if (errors.origin) errorMessage += `- ${errors.origin}\n`;
-        if (errors.destination) errorMessage += `- ${errors.destination}\n`;
-        if (errors.travelDate) errorMessage += `- ${errors.travelDate}\n`;
-        alert(errorMessage);
-    }
-};
-
-const handleOriginChange = (e) => {
-    setErrors((prevState) => ({ ...prevState, origin: '' }));
-    dispatch(selectOrigin(e.target.value));
-};
-
-const handleDestinationChange = (e) => {
-    setErrors((prevState) => ({ ...prevState, destination: '' }));
-    dispatch(selectDestination(e.target.value));
-};
-
-const handleTravelDateChange = (e) => {
-    setErrors((prevState) => ({ ...prevState, travelDate: '' }));
-    dispatch(selectTravelDate(e.target.value));
-};
+    };
 
     return (
         <div>
-        <Navbar/>
-        {/* <Caraousel /> */}
-        <div className={styles.fromAndTo}>
-            <div className={styles.a}>
-                <div className={styles.ikHMPa}>
-                    <div>
+            <Navbar />
+            <img src={wallpaper} alt="wallpaper" className={styles.image} /> {/* Add the background image */}
+            <div className={styles.fromAndTo}>
+                <div className={styles.a}>
+                    <div className={styles.ikHMPa}>
                         <div className={styles.outerContainer}>
                             <div className={styles.btnStyle}>
                                 <div className={styles.iconStyle}>
-                                <i className="fa-solid fa-bus ${styles.newStyle}"></i>
-
+                                    <i className="fa-solid fa-bus"></i>
                                     <div className={styles.outerinputStyle}>
                                         <div className={styles.inputStyle}>
-                                            <input
-                                                id="src"
-                                                type="text"
-                                                placeholder="Source"
-                                                className={styles.inputStyleA}
-                                                // value={Origin.origin}
-                                                value={Origin.origin}
-
-                                                onChange={handleOriginChange} // Using handleOriginChange to update Origin
-                                            />
                                             <label htmlFor="src">From</label>
-                                            {/* {errors.origin && <p className={styles.errorMessage}>{errors.origin}</p>} */}
+                                            <select
+                                                id="src"
+                                                value={Origin.origin}
+                                                onChange={handleOriginChange}
+                                                className={styles.inputStyleA}
+                                            >
+                                                <option value="">Source</option>
+                                                {sourceOptions}
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    {/* <div className={styles.jVMfHp}>
-                        <i className={`${styles['fa-solid']} ${styles['fa-arrows-left-right']} ${styles.newStyle}`}></i>
-                    </div> */}
-                    <div className={styles.jVMfHp}>
-            <i className="fa-solid fa-arrows-left-right ${styles.newStyle}"></i>
-                    </div>
-                    <div className={styles.outerContainer}>
-                        <div role="button" className={styles.btnStyle}>
-                            <div className={styles.destIcon}>
-                            <i className="fa-solid fa-bus ${styles.newStyle}"></i>
-                                <div className={styles.outerinputStyle}>
-                                    <div className={`${styles['sc-htoDjs']} inputStyle`}>
-                                        <input
-                                            id="dest"
-                                            type="text"
-                                            placeholder="Destination"
-                                            className={styles.inputStyleA}
-                                            value={Destination.destination}
-                                            onChange={handleDestinationChange} // Using handleDestinationChange to update Destination
-                                        />
-                                        <label htmlFor="dest">To</label>
-                                        {/* {errors.destination && <p className={styles.errorMessage}>{errors.destination}</p>} */}
+                        <div className={styles.jVMfHp}>
+                            <i className="fa-solid fa-arrows-left-right"></i>
+                        </div>
+                        <div className={styles.outerContainer}>
+                            <div role="button" className={styles.btnStyle}>
+                                <div className={styles.iconStyle}>
+                                    <i className="fa-solid fa-bus"></i>
+                                    <div className={styles.outerinputStyle}>
+                                        <div className={styles.inputStyle} style={{ marginTop: '-10px' }}>
+                                            <label htmlFor="dest">To</label>
+                                            <select
+                                                id="dest"
+                                                value={Destination.destination}
+                                                onChange={handleDestinationChange}
+                                                className={styles.inputStyleA} // Apply the same class as the source dropdown
+                                            >
+                                                <option value="">Destination</option>
+                                                {destinationOptions.map(city => (
+                                                    <option key={city} value={city}>{city}</option>
+                                                ))}
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <div className={styles.outerContainer}>
+                            <input
+                                type="date"
+                                min={minDate}
+                                value={TravelDate.travelDate}
+                                onChange={handleTravelDateChange}
+                                className={styles.c}
+                            />
+                            <button id="search_button" className={styles.busBtn} onClick={BusDetails}>
+                                SEARCH BUSES
+                            </button>
+                        </div>
                     </div>
-                    <input type="datetime-local" min={today} className={styles.c} value={TravelDate.travelDate} onChange={handleTravelDateChange} />
-                    <div className={styles.CalendarContainer}></div>
-                    {/* {errors.travelDate && <p style={{ color: 'red' }}>{errors.travelDate}</p>} */}
-                    <button id="search_button" className={styles.busBtn} onClick={BusDetails}>
-                        SEARCH BUSES
-                    </button>
                 </div>
             </div>
+            {errors.origin && <h5 style={{ color: 'red' }}>{errors.origin}</h5>}
+            {errors.destination && <h5 style={{ color: 'red' }}>{errors.destination}</h5>}
+            {errors.travelDate && <h5 style={{ color: 'red' }}>{errors.travelDate}</h5>}
         </div>
-        {errors.origin && <h5 style={{ color: 'red' }}>{errors.origin}</h5>}
-
-        {errors.destination && <h5 style={{ color: 'red' }}>{errors.destination}</h5>}
-
-        {errors.travelDate && <h5 style={{ color: 'red' }}>{errors.travelDate}</h5>}
-
-    </div>
-    
-        
     );
 }
-
 
 export default FromAndTo;

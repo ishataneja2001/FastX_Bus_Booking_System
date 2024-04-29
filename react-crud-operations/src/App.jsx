@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Main from './components/Main/Main';
 import RegisterUser from './components/RegisterUser/RegisterUser';
-import UserLogin from './components/UserLogin/Login';
+import UserLogin from './components/Login/Login';
 import RegisterBusOperator from './components/RegisterBusOperator/RegisterBusOperator';
 import FromAndTo from './components/FromandTo/FromandTo';
 import BusDetails from './components/BusDetails/BusDetails';

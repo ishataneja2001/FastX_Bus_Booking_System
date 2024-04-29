@@ -47,7 +47,7 @@ function Navbar() {
                     <div className="d-flex align-items-center">
                         {isLoggedIn ? (
                             <button className="nav-link active logout-btn" onClick={handleLogout}>
-                                <img src={LogoutImage} alt="Logout" className="logout-image" />
+                                <img src={LogoutImage} alt="Logout" className="logout-image" /><span>Logout</span>
                             </button>
                         ) : (
                             <Link className="nav-link active" to="/login">Login</Link>

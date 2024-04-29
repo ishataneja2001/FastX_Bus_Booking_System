@@ -13,12 +13,13 @@ function DetailsContainer({ booking }) {
     bookingTime,
     departureDate,
     boardingTime,
-    droppingTime
+    droppingTime,
+    isCancelled
   } = booking;
 
   const parsedBookingTime = new Date(bookingTime);
   const parsedDepartureDate = new Date(departureDate);
-
+  
 
   const formattedBookingTime = isNaN(parsedBookingTime) ? 'Not specified' : parsedBookingTime.toLocaleString('en-US', {
     year: 'numeric',
@@ -58,10 +59,11 @@ function DetailsContainer({ booking }) {
           <div className="detailsRow">
             <div className="detailLabel">Bus Type:</div>
             <div className="detailValue">{busType}</div>
-          </div>
-          <div className="detailsRow">
             <div className="detailLabel">Seat Number:</div>
             <div className="detailValue">{seatNo}</div>
+          </div>
+          <div className="detailsRow">
+           
             <div className="detailLabel">Passenger Name:</div>
             <div className="detailValue">{passengerName}</div>
             <div className="detailLabel">Gender:</div>
@@ -82,6 +84,10 @@ function DetailsContainer({ booking }) {
             <div className="detailValue">{formattedBookingTime}</div>
             <div className="detailLabel">Departure Date:</div>
             <div className="detailValue">{formattedDepartureDate}</div>
+            
+                <div className="detail-label">Cancelled: </div>
+                <div className="detail-value">{isCancelled?"Yes":"No"}</div>
+           
           </div>
         </div>
       </div>

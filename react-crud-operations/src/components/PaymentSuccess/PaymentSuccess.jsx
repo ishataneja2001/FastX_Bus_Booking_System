@@ -12,7 +12,7 @@ function PaymentSuccess(){
     </div>
 
     <div className="paymentbutton-container">
-        <Link to="/">
+        <Link to="/fromAndTo">
         <button className="button id1">Go to Home Page</button>
 </Link>
 

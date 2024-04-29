@@ -7,6 +7,7 @@ import LogoutImage from '../Navbar/logoutimage.png';
 function BusOperatorNavbar() {
     const [isLoggedIn, setIsLoggedIn] = useState(!!sessionStorage.getItem('authToken')); // Initialize login state based on token presence
     const navigate = useNavigate();
+    const userId = sessionStorage.getItem('userId')
 
     const handleLogout = () => {
         sessionStorage.removeItem('authToken');
@@ -24,10 +25,10 @@ function BusOperatorNavbar() {
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav me-auto">
                         <li className="nav-item">
-                            <a className="nav-link active" aria-current="page" href="/">Home</a>
+                            <a className="nav-link active" aria-current="page" href={`/busDetails/${userId}`}>Home</a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link active" aria-current="page" href="/busDetails">View Buses</a>
+                            <a className="nav-link active" aria-current="page" href={`/busDetails/${userId}`}>View Buses</a>
                         </li>
                         <li className="nav-item">
                             <a className="nav-link" href="/addbus">Add Bus</a>
@@ -36,7 +37,7 @@ function BusOperatorNavbar() {
                     <div className="d-flex align-items-center">
                         {isLoggedIn ? (
                             <button className="nav-link active logout-btn" onClick={handleLogout}>
-                                <img src={LogoutImage} alt="Logout" className="logout-image" />
+                                <img src={LogoutImage} alt="Logout" className="logout-image" /><span>Logout</span>
                             </button>
                         ) : (
                             <Link className="nav-link active" to="/login">Login</Link>

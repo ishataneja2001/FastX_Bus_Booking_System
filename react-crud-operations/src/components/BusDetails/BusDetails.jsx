@@ -10,13 +10,13 @@ function BusDetails() {
   const token = sessionStorage.getItem('authToken');
   const navigate=useNavigate()
   const { userId } = useParams();
-  
+  const role = sessionStorage.getItem('role')
 
   useEffect(() => {
     const fetchBusDetails = async () => {
-      if(!token){
-        navigate("/login")
-      }
+      if(!(token && role=='Bus Operator'|| role=='Admin')){
+        navigate('/login')
+    }
       try {
         
         console.log(userId)

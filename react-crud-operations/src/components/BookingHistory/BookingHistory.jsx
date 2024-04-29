@@ -2,8 +2,8 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DetailsContainer from '../DetailsContainer/DetailsContainer';
-import CancelledDetailsContainer from '../CancelledDetailsContainer/CancelledDetailsContainer';
 import Navbar from '../Navbar/Navbar';
+import './BookingHistory.css';
 
 function BookingHistory() {
   const [bookingInfo, setBookingInfo] = useState([]);
@@ -13,12 +13,12 @@ function BookingHistory() {
   const userId = sessionStorage.getItem('userId');
   const token = sessionStorage.getItem('authToken');
   const navigate = useNavigate();
+  const role = sessionStorage.getItem('role')
 
   useEffect(() => {
-    if (!token) {
-      navigate('/login');
-      return;
-    }
+    if(!(token && (role=='Bus Operator' || role=='User'))){
+      navigate('/login')
+  }
 
     const fetchBookings = async () => {
       try {
@@ -111,7 +111,7 @@ function BookingHistory() {
     };
 
     fetchBookings();
-  }, [userId, token, navigate]);
+  }, [userId, token, navigate,role]);
 
   const handleTabChange = (tabId) => {
     setActiveTab(tabId); // Update active tab state
@@ -129,18 +129,20 @@ function BookingHistory() {
   
         console.log('Booking cancelled successfully.');
         alert('Booking cancelled successfully. Refund will be processed within 2 to 3 business days.');
+        window.location.reload(); 
       } catch (error) {
         console.error('Error cancelling booking:', error);
       }
     } else {
       console.log('Booking cancellation cancelled by user.');
     }
+    
   };
 
   return (
     <>
     <Navbar/>
-    <div className="container-fluid status-container">
+    <div className="DetailsContainer.container-fluid status-container">
       <ul className="nav nav-tabs statustabs">
         <li className="nav-item tab-item">
           <a className={`nav-link ${activeTab === 'tab1' ? 'active' : ''}`} onClick={() => handleTabChange('tab1')}>
@@ -184,11 +186,11 @@ function BookingHistory() {
           {cancelledBookings.length === 0 ? (
             <p>No cancelled bookings</p>
           ) : (
-            <div className="busListingContainer">
+            <div className="bookingBusListingContainer">
               <div className="busCardContainer">
                 {cancelledBookings.map((booking) => (
                   <div key={booking.bookingId} className="historyBusCard">
-                    <CancelledDetailsContainer booking={booking} />
+                    <DetailsContainer booking={booking} />
                   </div>
                 ))}
               </div>
@@ -198,18 +200,18 @@ function BookingHistory() {
         <div className={`tab-pane fade ${activeTab === 'tab3' ? 'show active' : ''}`}>
           <h4>All Bookings</h4>
           {allBookings.length === 0 ? (
-            <p>No bookings</p>
+            <p>No cancelled bookings</p>
           ) : (
-            <div className="busListingContainer">
+            <div className="bookingBusListingContainer">
               <div className="busCardContainer">
                 {allBookings.map((booking) => (
                   <div key={booking.bookingId} className="historyBusCard">
-                    <CancelledDetailsContainer booking={booking} />
+                    <DetailsContainer booking={booking} />
                   </div>
                 ))}
               </div>
             </div>
-          )}
+          )} 
         </div>
       </div>
     </div>

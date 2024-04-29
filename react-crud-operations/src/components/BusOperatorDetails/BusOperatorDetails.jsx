@@ -8,14 +8,14 @@ function BusOperatorDetails() {
   const [busDetails, setBusDetails] = useState([]);
   const token = sessionStorage.getItem('authToken');
   const navigate=useNavigate()
-
+  const role = sessionStorage.getItem('role')
   
 
   useEffect(() => {
     const fetchBusDetails = async () => {
-      if(!token){
-        navigate("/login")
-      }
+      if(!(token && role=='Admin')){
+        navigate('/login')
+    }
       try {
         const response = await axios.get(
           `https://localhost:7114/api/BusOperator`,

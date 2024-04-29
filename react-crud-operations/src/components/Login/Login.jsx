@@ -11,9 +11,29 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState(null);
   const [authToken, setAuthToken] = useState(null); 
+  const token = sessionStorage.getItem('authToken')
+  const role = sessionStorage.getItem('role')
+  const userId = sessionStorage.getItem('userId')
   const navigate=useNavigate();
+
+  useEffect(()=>{
+    if(token && role =='User'){
+      navigate('/fromAndTo')
+      return
+    }
+    else if(token && role =='Bus Operator'){
+      navigate('/busOperatorDetails')
+      return
+    }
+    else if(token && role =='Admin'){
+      navigate(`/busdetails/${userId}`)
+      return
+    }
+  })
   const loginFunc = async (event) => {
     event.preventDefault();
+    console.log(role)
+   
     if(username==''||password==''){
       setErrorMessage("Please fill the credentials")
       return
@@ -33,6 +53,7 @@ const Login = () => {
         sessionStorage.setItem('userId',decodedToken.UserId)
         sessionStorage.setItem('userName',decodedToken.Name)
         sessionStorage.setItem('email',decodedToken.Email)
+        sessionStorage.setItem('role',decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'])
         // console.log(decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'])
         if (decodedToken && decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']==='Bus Operator') {
           

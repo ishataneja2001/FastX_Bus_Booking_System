@@ -11,11 +11,23 @@
 
 
 
-        @media only screen and (max-width: 768px) {
-            .detailsbusListingContainer {
-                width: 100%;
-       }
-}
+        
+       
+
+
+@media screen and (max-width: 1024px) {
+    .detailsbusListingContainer {
+        width: 100% ;
+    }
+    
+  }
+  
+  /* For mobile devices */
+  @media screen and (max-width: 600px) {
+    .historyBusCard {
+      width: 100%; /* Display one card per row */
+    }
+  }
 
 
 .detailsbusListingContainer .detailsbusCard {
