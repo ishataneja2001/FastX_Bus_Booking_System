@@ -57,7 +57,7 @@ function AddBus() {
         };
     
         getAmenities();
-    }, []);
+    }, [busId]);
     
 
     const nextStep = async () => {
@@ -74,8 +74,7 @@ function AddBus() {
         setDroppingPointss(dps)
         setDropTimingss(dpt)
         setBusRoutes(route)
-        console.log(busRoutes.length)
-        console.log(route.length)
+        
         
          if(boardingPointss.length!=boardTimingss.length){
             window.alert("Boarding points and timings do not match")
@@ -85,51 +84,38 @@ function AddBus() {
          if(droppingPointss.length!=dropTimingss.length){
             window.alert("Dropping points and timings do not match")
             return
-     }
+        }
 
-     if(busRoutes.length==0){
-        window.alert("Routes cannot be empty")
-        return
-    }
+    
 
-    if (endTime < startTime || (endTime - startTime) / (1000 * 60 * 60) < 1) {
-        const newStartTime = new Date(startTime);
-        newStartTime.setHours(newStartTime.getHours() + 1);
-        const newStartTimeString = `${newStartTime.getHours().toString().padStart(2, '0')}:${newStartTime.getMinutes().toString().padStart(2, '0')}`;
-        
-        setStartTime(newStartTimeString);
-        
+    if (endTime <= startTime) {
         window.alert("End Time should be at least 1 hour greater than Start Time.");
         return
     }
 
 
-        try{
-            const response = await axios.post(`https://localhost:7114/api/Buses`,
-                {
-                    busName: busName,
-                    busType: busType,
-                    busNumber: busNumber,
-                    noOfSeats: noOfSeats,
-                    origin:origin,
-                    destination:destination,
-                    startTime:startTime,
-                    endTime:endTime,
-                    fare:fare,
-                    busOperator:sessionStorage.getItem('userId'),
-                    departureDate:departureDate
-                },
-              {
-                    headers: {
-                      Authorization: `Bearer ${token}`
-                    }
-              }
-             
-            )
-            console.log(response.data)
-            setBusId(response.data.busId)
-            
-        }catch(error){
+    try {
+        const response = await axios.post(`https://localhost:7114/api/Buses`, {
+            busName: busName,
+            busType: busType,
+            busNumber: busNumber,
+            noOfSeats: noOfSeats,
+            origin:origin,
+            destination:destination,
+            startTime:startTime,
+            endTime:endTime,
+            fare:fare,
+            busOperator:sessionStorage.getItem('userId'),
+            departureDate:departureDate
+        }, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        console.log("Response "+response.data.busId);
+        setBusId(response.data.busId);
+    }catch(error){
             console.error(error)
         }
         console.log(busId)
@@ -138,6 +124,7 @@ function AddBus() {
 
         console.log(route)
         console.log(bps)
+        
       
         setCurrentStep(currentStep + 1);
     };
@@ -150,86 +137,86 @@ function AddBus() {
     
         console.log(boardingPointss)
         console.log(droppingPointss)
-        console.log(busRoutes)
+        console.log("BusId"+busId)
 
-            if(boardingPointss.length===boardTimingss.length){
+        if(boardingPointss.length===boardTimingss.length){
+            try{
+            for(let i=0;i<boardingPointss.length;i++){
+                
+                    await axios.post(`https://localhost:7114/api/BoardingPoints`,
+                    {
+                        placeName:boardingPointss[i],
+                        timings:boardTimingss[i],
+                        busId:busId
+                    },
+                  {
+                        headers: {
+                          Authorization: `Bearer ${token}`
+                        }
+                  }
+                )
+                
+            }
+        }catch(error){
+            window.alert(error)
+        }
+        }
+        else{
+            window.alert("Boarding points and timings do not match")
+            return
+        }
+
+        if(droppingPointss.length===dropTimingss.length){
+            for(let i=0;i<droppingPointss.length;i++){
                 try{
-                for(let i=0;i<boardingPointss.length;i++){
-                    
-                        const response = await axios.post(`https://localhost:7114/api/BoardingPoints`,
-                        {
-                            placeName:boardingPointss[i],
-                            timings:boardTimingss[i],
-                            busId:busId
-                        },
-                      {
-                            headers: {
-                              Authorization: `Bearer ${token}`
-                            }
-                      }
-                    )
-                    
-                }
-            }catch(error){
-                window.alert(error)
-            }
-            }
-            else{
-                window.alert("Boarding points and timings do not match")
-                return
-            }
-
-            if(droppingPointss.length===dropTimingss.length){
-                for(let i=0;i<droppingPointss.length;i++){
-                    try{
-                        const response = await axios.post(`https://localhost:7114/api/DroppingPoints`,
-                        {
-                            placeName:droppingPointss[i],
-                            timings:dropTimingss[i],
-                            busId:busId
-                        },
-                      {
-                            headers: {
-                              Authorization: `Bearer ${token}`
-                            }
-                      }
-                    )
-                    }catch(error){
-                        window.alert(error)
-                    }
+                   await axios.post(`https://localhost:7114/api/DroppingPoints`,
+                    {
+                        placeName:droppingPointss[i],
+                        timings:dropTimingss[i],
+                        busId:busId
+                    },
+                  {
+                        headers: {
+                          Authorization: `Bearer ${token}`
+                        }
+                  }
+                )
+                }catch(error){
+                    window.alert(error)
                 }
             }
-            else{
-                window.alert("Dropping points and timings do not match")
-                return
-            }
+        }
+        else{
+            window.alert("Dropping points and timings do not match")
+            return
+        }
 
 
-            if(busRoutes.length>0){
-                for(let i=0;i<busRoutes.length;i++){
-                    try{
-                        const response = await axios.post(`https://localhost:7114/api/Routes`,
-                        {
-                            placeName:busRoutes[i],
-                            busId:busId
-                        },
-                      {
-                            headers: {
-                              Authorization: `Bearer ${token}`
-                            }
-                      }
-                    )
-                    }catch(error){
-                        window.alert(error)
-                    }
+        if(busRoutes.length>0){
+            for(let i=0;i<busRoutes.length;i++){
+                try{
+                   await axios.post(`https://localhost:7114/api/Routes`,
+                    {
+                        placeName:busRoutes[i],
+                        busId:busId
+                    },
+                  {
+                        headers: {
+                          Authorization: `Bearer ${token}`
+                        }
+                  }
+                )
+                }catch(error){
+                    window.alert(error)
                 }
             }
-            else{
-                window.alert("Routes cannot be empty")
-                return
-            }
-            console.log(selectedAmenities)
-            console.log(token)
+        }
+        else{
+            window.alert("Routes cannot be empty")
+            return
+        }
+
+          
             if (selectedAmenities.length > 0) {
                 for (let i = 0; i < selectedAmenities.length; i++) {
                     const response= await axios.post(`https://localhost:7114/api/Buses/PostBusAmenities?busid=${busId}&amenityid=${selectedAmenities[i]}`, {}, {
@@ -240,7 +227,7 @@ function AddBus() {
                 }
             }
             window.alert("Successfully Created")
-            navigate(`/busDetails/${busId}`)
+            navigate(`/busDetails/${sessionStorage.getItem('userId')}`)
             
         };
 

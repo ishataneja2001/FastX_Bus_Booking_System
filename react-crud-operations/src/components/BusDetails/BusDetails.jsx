@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-
+import AdminNavbar from '../AdminNavbar/AdminNavbar'
 import axios from 'axios';
 import './BusDetails.css';
 import { Link ,useNavigate,useParams} from 'react-router-dom';
@@ -59,6 +59,7 @@ function BusDetails() {
         }
       );
       window.alert('Bus deleted successfully.');
+      window.location.reload(); 
     } catch (error) {
       if(error.response && error.response.status === 403){
         window.alert("Unuthorized")
@@ -69,7 +70,8 @@ function BusDetails() {
 
 
   return (
-    <div><BusOperatorNavbar/>
+    <div>
+       {role === 'Admin' ? <AdminNavbar /> : <BusOperatorNavbar />}
      <table className="table table-dark">
         <thead>
           <tr>

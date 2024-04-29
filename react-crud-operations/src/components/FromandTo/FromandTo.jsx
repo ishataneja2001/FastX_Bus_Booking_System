@@ -8,17 +8,17 @@ import Navbar from '../Navbar/Navbar';
 import wallpaper from '../../assets/wallpaper.jpg'; // Import the wallpaper image
 
 function FromAndTo() {
-    const cities = ['Delhi', 'KKR', 'Bangalore', 'Mumbai', 'Chennai'];
+    const cities = ['Delhi', 'Hyderabad', 'Bangalore', 'Mumbai', 'Chennai'];
     const sourceOptions = cities.map(city => (
         <option key={city} value={city}>{city}</option>
     ));
 
     const destinations = {
-        'KKR': ['Manali', 'Bangalore', 'Mumbai', 'Delhi'],
-        'Manali': ['KKR', 'Bangalore', 'Mumbai', 'Delhi'],
-        'Bangalore': ['KKR', 'Manali', 'Mumbai', 'Delhi'],
-        'Mumbai': ['KKR', 'Manali', 'Bangalore', 'Delhi'],
-        'Delhi': ['KKR', 'Manali', 'Bangalore', 'Mumbai']
+        'Hyderabad': ['Manali', 'Bangalore', 'Mumbai', 'Delhi', 'Chennai'],
+        'Manali': ['Hyderabad', 'Bangalore', 'Mumbai', 'Delhi', 'Chennai'],
+        'Bangalore': ['Hyderabad', 'Manali', 'Mumbai', 'Delhi', 'Chennai'],
+        'Mumbai': ['Hyderabad', 'Manali', 'Bangalore', 'Delhi', 'Chennai'],
+        'Delhi': ['Hyderabad', 'Manali', 'Bangalore', 'Mumbai', 'Chennai']
     };
 
     const token = sessionStorage.getItem('authToken');
