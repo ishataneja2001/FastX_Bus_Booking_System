@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import DetailsContainer from '../DetailsContainer/DetailsContainer';
 import './BusBookingDetails.css'
+import AdminNavbar from '../AdminNavbar/AdminNavbar'
 
 
 function BookingDetails() {
@@ -65,7 +66,7 @@ function BookingDetails() {
 
   return (
     <>
-  <BusOperatorNavbar />
+    {role === 'Admin' ? <AdminNavbar /> : <BusOperatorNavbar />}
   <div className="container-fluid status-container">
     <ul className="nav nav-tabs statustabs">
       <li className="nav-item tab-item">
