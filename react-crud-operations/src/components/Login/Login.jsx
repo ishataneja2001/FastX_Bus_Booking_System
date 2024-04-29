@@ -121,7 +121,7 @@ const Login = () => {
                                         <div className="form-group">
                                             <input className="loginInfo" type="text" name="name" autoComplete="off" value={username} 
             onChange={(e)=>setUsername(e.target.value)} required />
-                                            <label>Username</label>
+                                            <label>Email</label>
                                         </div>
                                         <div className="form-group">
                                             <input className="loginInfo" type="password" name="password" autoComplete="off" value={password} 

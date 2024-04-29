@@ -32,7 +32,7 @@ function RegisterBusOperator() {
         }
     }
     catch(error){
-        if(error.response.status=409){
+        if(error.response.status==409){
             setErrorMessage('Account with this email already exists')
         }
         else if (error.response && error.response.data) {
