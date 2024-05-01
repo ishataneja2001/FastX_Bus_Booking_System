@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
 
 namespace FastXBookingSample.Models
 {
@@ -9,7 +8,6 @@ namespace FastXBookingSample.Models
         public User()
         {
             Bookings = new HashSet<Booking>();
-            Buses = new HashSet<Bus>();
         }
 
         public int UserId { get; set; }
@@ -20,7 +18,7 @@ namespace FastXBookingSample.Models
         public string? Address { get; set; }
         public string? Gender { get; set; }
         public string ContactNo { get; set; } = null!;
+
         public virtual ICollection<Booking> Bookings { get; set; }
-        public virtual ICollection<Bus> Buses { get; set; }
     }
 }

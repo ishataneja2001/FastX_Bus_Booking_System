@@ -67,11 +67,6 @@ namespace FastXBookingSample.Models
             {
                 entity.ToTable("Booking");
 
-                entity.HasOne(d => d.Boarding)
-                    .WithMany(p => p.Bookings)
-                    .HasForeignKey(d => d.BoardingId)
-                    .HasConstraintName("FK_Booking_BoardingId");
-
                 entity.HasOne(d => d.Bus)
                     .WithMany(p => p.Bookings)
                     .HasForeignKey(d => d.BusId)
@@ -153,11 +148,6 @@ namespace FastXBookingSample.Models
                 entity.Property(e => e.Origin)
                     .HasMaxLength(20)
                     .IsUnicode(false);
-
-                entity.HasOne(d => d.BusOperatorNavigation)
-                    .WithMany(p => p.Buses)
-                    .HasForeignKey(d => d.BusOperator)
-                    .HasConstraintName("FK__Bus__BusOperator__4D94879B");
             });
 
             modelBuilder.Entity<BusAmenity>(entity =>
@@ -183,7 +173,8 @@ namespace FastXBookingSample.Models
                 entity.HasOne(d => d.Bus)
                     .WithMany(p => p.BusSeats)
                     .HasForeignKey(d => d.BusId)
-                    .HasConstraintName("FK__BusSeats__BusId__5070F446");
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("FK_BusSeats_BusId");
             });
 
             modelBuilder.Entity<DroppingPoint>(entity =>
@@ -239,6 +230,9 @@ namespace FastXBookingSample.Models
 
             modelBuilder.Entity<User>(entity =>
             {
+                entity.HasIndex(e => e.Email, "UQ_Users_Email")
+                    .IsUnique();
+
                 entity.Property(e => e.Address)
                     .HasMaxLength(50)
                     .IsUnicode(false);

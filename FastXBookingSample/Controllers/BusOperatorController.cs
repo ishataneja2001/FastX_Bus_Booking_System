@@ -110,6 +110,11 @@ namespace FastXBookingSample.Controllers
             {
                 return StatusCode(406,ex.Message);
             }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(409, ex.Message);
+            }
             catch (BusOperatorNotFoundException ex)
             {
                 _logger.LogError(ex.Message);
