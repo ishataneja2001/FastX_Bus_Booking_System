@@ -28,7 +28,6 @@ namespace FastXBookingSample.Models
         public int? BusOperator { get; set; }
         public DateTime DepartureDate { get; set; }
 
-        public virtual User? BusOperatorNavigation { get; set; }
         public virtual ICollection<BoardingPoint> BoardingPoints { get; set; }
         public virtual ICollection<Booking> Bookings { get; set; }
         public virtual ICollection<BusAmenity> BusAmenities { get; set; }
